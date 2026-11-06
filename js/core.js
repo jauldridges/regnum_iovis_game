@@ -15,7 +15,7 @@ var Game = (function () {
     '######...######'
   ];
   var OBJ = { T: 'obj_throne', F: 'obj_sickle', C: 'obj_cradle' }, inspected = {};
-  var scene = 'start', saturn = null;
+  var scene = 'start', saturn = null, guard = null;
   var solid = [], npc = {}, player = {}, dir = { x: 0, y: -1 };
   var content = {}, ctx, msgOpen = false, moveTimer = 0, keys = {};
 
@@ -52,7 +52,7 @@ var Game = (function () {
 
   function blocked(x, y) {
     if (x < 0 || y < 0 || x >= W || y >= H) return true;
-    return solid[y][x] || (x === npc.x && y === npc.y) || (saturn && x === saturn.x && y === saturn.y);
+    return solid[y][x] || (x === npc.x && y === npc.y) || (saturn && x === saturn.x && y === saturn.y) || (guard && x === guard.x && y === guard.y);
   }
   function step(dx, dy) {
     if (msgOpen) return;
@@ -62,6 +62,7 @@ var Game = (function () {
   function act() {
     if (msgOpen) return;
     var fx = player.x + dir.x, fy = player.y + dir.y;
+    if (guard && fx === guard.x && fy === guard.y) { Battle.start(); return; }
     if (fx === npc.x && fy === npc.y) {
       var t = line('ch1_servant_warn');
       if (t) showMessages([t], function () { if (scene === 'start') saturnScene(); });
@@ -83,7 +84,7 @@ var Game = (function () {
       showChoice(line('ch1_choice_prompt'), [
         { label: line('ch1_choice_stone'), fn: function () {
             showMessages([line('ch1_right_1'), line('ch1_right_2'), line('ch1_right_3')],
-              function () { saturn = null; scene = 'done'; }); } },
+              function () { saturn = null; scene = 'done'; if (Battle.ready()) guard = { x: 11, y: 6 }; }); } },
         { label: line('ch1_choice_baby'), fn: function () { showMessages([line('ch1_wrong')], ask); } }
       ]);
     }
@@ -158,7 +159,8 @@ var Game = (function () {
       var held = ['up', 'down', 'left', 'right'].filter(function (k) { return keys[k]; })[0];
       if (held) { stepDir(held); moveTimer = ts; }
     }
-    draw(); requestAnimationFrame(loop);
+    if (Battle.active) Battle.draw(ctx); else draw();
+    requestAnimationFrame(loop);
   }
 
   function draw() {
@@ -168,10 +170,16 @@ var Game = (function () {
       ctx.fillRect(x * T, y * T, T, T);
     }
     if (saturn) { ctx.fillStyle = '#b02a2a'; ctx.fillRect(saturn.x * T + 2, saturn.y * T + 2, T - 4, T - 4); }
+    if (guard) { ctx.fillStyle = '#b5651d'; ctx.fillRect(guard.x * T + 4, guard.y * T + 4, T - 8, T - 8); }
     ctx.fillStyle = '#6a4fa3'; ctx.fillRect(npc.x * T + 4, npc.y * T + 4, T - 8, T - 8);   // servant
     ctx.fillStyle = '#2f7fd1'; ctx.fillRect(player.x * T + 4, player.y * T + 4, T - 8, T - 8); // Ops
     ctx.fillStyle = '#fff'; ctx.fillRect(player.x * T + 14 + dir.x * 8, player.y * T + 14 + dir.y * 8, 4, 4);
   }
 
-  return { init: init, state: function () { return { player: player, npc: npc, msgOpen: msgOpen, scene: scene, inspected: inspected }; } };
+  function endBattle() {
+    guard = null; msgOpen = false; scene = 'battled';
+    document.getElementById('msg').hidden = true; document.getElementById('choices').innerHTML = '';
+  }
+  return { line: line, clean: clean, rawLatin: function (id) { return content[id].latin; },
+           setBusy: function (b) { msgOpen = b; }, endBattle: endBattle, init: init, state: function () { return { player: player, npc: npc, msgOpen: msgOpen, guard: guard, scene: scene, inspected: inspected }; } };
 })();

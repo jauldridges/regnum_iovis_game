@@ -33,7 +33,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "obj_sickle",
@@ -42,7 +42,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "obj_cradle",
@@ -51,7 +51,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "ch1_saturn_comes",
@@ -60,7 +60,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "ch1_choice_prompt",
@@ -69,7 +69,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "ch1_choice_stone",
@@ -78,7 +78,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": null,
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "ch1_choice_baby",
@@ -87,7 +87,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": null,
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "ch1_wrong",
@@ -96,7 +96,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "ch1_right_1",
@@ -105,7 +105,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "ch1_right_2",
@@ -114,7 +114,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "ch1_right_3",
@@ -122,6 +122,78 @@ window.CONTENT = [
   "english": "Jupiter is safe.",
   "type": "message",
   "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "approved"
+ },
+ {
+  "id": "battle_intro",
+  "latin": "Custōs Saturnī appāret!",
+  "english": "A guard of Saturn appears!",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "cmd_tona",
+  "latin": "Tonā!",
+  "english": "Thunder!",
+  "type": "ui_label",
+  "nle_category": null,
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "battle_tona",
+  "latin": "Tonitrus Iovis custōdem terret.",
+  "english": "Jupiter's thunder frightens the guard.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "battle_enemy_spear",
+  "latin": "Custōs hastam iacit.",
+  "english": "The guard throws a spear.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "battle_win_1",
+  "latin": "Custōs fugit!",
+  "english": "The guard runs away!",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "battle_win_2",
+  "latin": "Iuppiter vincit.",
+  "english": "Jupiter wins.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "name_iuppiter",
+  "latin": "Iuppiter",
+  "english": "Jupiter",
+  "type": "ui_label",
+  "nle_category": null,
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "name_custos",
+  "latin": "Custōs",
+  "english": "Guard",
+  "type": "ui_label",
+  "nle_category": null,
   "spec_node_id": "",
   "review_status": "draft"
  }
