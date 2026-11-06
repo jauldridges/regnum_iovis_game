@@ -46,7 +46,7 @@ var Game = (function () {
       var c = document.getElementById('game'); c.hidden = false;
       document.getElementById('pad').hidden = false;
       ctx = c.getContext('2d');
-      bind(); requestAnimationFrame(loop);
+      bind(); Book.init(); requestAnimationFrame(loop);
     }
   }
 
@@ -84,7 +84,8 @@ var Game = (function () {
       showChoice(line('ch1_choice_prompt'), [
         { label: line('ch1_choice_stone'), fn: function () {
             showMessages([line('ch1_right_1'), line('ch1_right_2'), line('ch1_right_3')],
-              function () { saturn = null; scene = 'done'; if (Battle.ready()) guard = { x: 11, y: 6 }; }); } },
+              function () { saturn = null; scene = 'done'; ['iuppiter', 'ops', 'saturnus'].forEach(Book.unlock);
+                if (Battle.ready()) guard = { x: 11, y: 6 }; }); } },
         { label: line('ch1_choice_baby'), fn: function () { showMessages([line('ch1_wrong')], ask); } }
       ]);
     }
@@ -176,10 +177,18 @@ var Game = (function () {
     ctx.fillStyle = '#fff'; ctx.fillRect(player.x * T + 14 + dir.x * 8, player.y * T + 14 + dir.y * 8, 4, 4);
   }
 
+  // Question lookup (language-aware, same draft rule as line()).
+  function qline(id) {
+    var e = content[id];
+    if (!e || (e.review_status !== 'approved' && !DRAFTS)) return null;
+    return LANG === 'en' ? { question: e.en_question, choices: e.en_choices, answer: e.answer }
+                         : { question: e.question, choices: e.choices, answer: e.answer };
+  }
+
   function endBattle() {
     guard = null; msgOpen = false; scene = 'battled';
     document.getElementById('msg').hidden = true; document.getElementById('choices').innerHTML = '';
   }
-  return { line: line, clean: clean, rawLatin: function (id) { return content[id].latin; },
+  return { qline: qline, pauseButtons: pauseButtons, line: line, clean: clean, rawLatin: function (id) { return content[id].latin; },
            setBusy: function (b) { msgOpen = b; }, endBattle: endBattle, init: init, state: function () { return { player: player, npc: npc, msgOpen: msgOpen, guard: guard, scene: scene, inspected: inspected }; } };
 })();

@@ -1,0 +1,91 @@
+# Fact map. No fact ships without a source. Citations are Claude's recollection: verified stays false until a person reads the passage.
+- id: iuppiter_parents
+  claim: Jupiter (Zeus) is the son of Saturn (Kronos) and Ops (Rhea).
+  game: [lib_iuppiter, lib_iuppiter_q, lib_neptunus]
+  kind: tradition
+  sources: [{ type: primary, work: Hesiod, ref: "Theogony 453-458" }]
+  confidence: high
+  verified: false
+  checked_by: ""
+  checked_on: ""
+  note: ""
+- id: saturn_parents
+  claim: Saturn (Kronos) is the son of Caelus (Ouranos) and Terra (Gaia).
+  game: [lib_saturnus]
+  kind: tradition
+  sources: [{ type: primary, work: Hesiod, ref: "Theogony 126-138" }]
+  confidence: high
+  verified: false
+  checked_by: ""
+  checked_on: ""
+  note: ""
+- id: ops_stone
+  claim: Ops gives Saturn a stone wrapped in cloth instead of the baby Jupiter.
+  game: [lib_ops, lib_ops_q, ch1_right_1]
+  kind: tradition
+  sources: [{ type: primary, work: Hesiod, ref: "Theogony 485-491" }]
+  confidence: high
+  verified: false
+  checked_by: ""
+  checked_on: ""
+  note: ""
+- id: saturn_sickle
+  claim: The sickle is Saturn's symbol (he wounds Caelus with it).
+  game: [lib_saturnus, lib_saturnus_q]
+  kind: tradition
+  sources: [{ type: primary, work: Hesiod, ref: "Theogony 173-182" }]
+  confidence: medium
+  verified: false
+  checked_by: ""
+  checked_on: ""
+  note: "Roman Saturn is also shown with a sickle as a farming god; check a modern source."
+- id: saturn_aerarium
+  claim: The temple of Saturn in Rome housed the state treasury (aerarium).
+  game: [lib_saturnus]
+  kind: archaeology
+  sources: [{ type: primary, work: Macrobius, ref: "Saturnalia 1.8.1-3" }]
+  confidence: medium
+  verified: false
+  checked_by: ""
+  checked_on: ""
+  note: "Add a modern source (e.g. a Roman topography reference)."
+- id: saturnalia_december
+  claim: The Saturnalia is celebrated in December.
+  game: [lib_saturnus]
+  kind: tradition
+  sources: [{ type: primary, work: Macrobius, ref: "Saturnalia 1.10" }]
+  confidence: medium
+  verified: false
+  checked_by: ""
+  checked_on: ""
+  note: ""
+- id: neptunalia_summer
+  claim: The Neptunalia was a summer festival (23 July).
+  game: [lib_neptunus]
+  kind: tradition
+  sources: [{ type: primary, work: Varro, ref: "De Lingua Latina 6.19" }]
+  confidence: low
+  verified: false
+  checked_by: ""
+  checked_on: ""
+  note: "Check the date in a calendar reference."
+- id: jupiter_capitoline
+  claim: The temple of Jupiter stood on the Capitoline hill.
+  game: [lib_iuppiter]
+  kind: archaeology
+  sources: [{ type: primary, work: Livy, ref: "1.38; 1.55" }]
+  confidence: medium
+  verified: false
+  checked_by: ""
+  checked_on: ""
+  note: "Triumphs ending there is a separate claim; add if used."
+- id: greek_names
+  claim: Roman/Greek name pairs (Jupiter/Zeus, Saturn/Kronos, Ops/Rhea, Neptune/Poseidon).
+  game: [lib_iuppiter, lib_ops, lib_saturnus, lib_neptunus]
+  kind: language
+  sources: [{ type: secondary, work: "Oxford Classical Dictionary", ref: "entries for each god" }]
+  confidence: high
+  verified: false
+  checked_by: ""
+  checked_on: ""
+  note: "Confirm Greek spellings with the Latin teacher (design §23, open question 9)."

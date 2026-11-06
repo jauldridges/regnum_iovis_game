@@ -154,3 +154,217 @@
   nle_category: 
   spec_node_id: ""
   review_status: draft
+- id: lib_title
+  latin: Liber Deōrum
+  english: Book of the Gods
+  type: ui_label
+  nle_category: ''
+  spec_node_id: ''
+  review_status: draft
+- id: ui_party
+  latin: Sociī
+  english: Party
+  type: ui_label
+  nle_category: ''
+  spec_node_id: ''
+  review_status: draft
+- id: ui_close
+  latin: Claude
+  english: Close
+  type: ui_label
+  nle_category: ''
+  spec_node_id: ''
+  review_status: draft
+- id: ui_correct
+  latin: Rēctē!
+  english: Correct!
+  type: ui_label
+  nle_category: ''
+  spec_node_id: ''
+  review_status: draft
+- id: ui_wrong
+  latin: Relege et iterum temptā.
+  english: Read again and try once more.
+  type: ui_label
+  nle_category: ''
+  spec_node_id: ''
+  review_status: draft
+- id: ui_answer_is
+  latin: 'Responsum rēctum:'
+  english: 'The right answer is:'
+  type: ui_label
+  nle_category: ''
+  spec_node_id: ''
+  review_status: draft
+- id: lib_iuppiter
+  latin: 'Iuppiter, Iovis
+
+    Graecē: Zeus
+
+    Familia: fīlius Saturnī et Opis
+
+    Rēgnum: caelum
+
+    Signum: fulmen, aquila
+
+    Rōmae: Templum Iovis in Capitōliō stat.'
+  english: 'Jupiter, Iovis
+
+    Greek: Zeus
+
+    Family: son of Saturn and Ops
+
+    Domain: the sky
+
+    Symbol: thunderbolt, eagle
+
+    In Rome: The temple of Jupiter stands on the Capitoline.'
+  type: culture_note
+  nle_category: mythology
+  spec_node_id: ''
+  review_status: draft
+- id: lib_iuppiter_q
+  latin: Cuius fīlius est Iuppiter?
+  english: Whose son is Jupiter?
+  type: card_question
+  nle_category: mythology
+  spec_node_id: ''
+  review_status: draft
+  question: Cuius fīlius est Iuppiter?
+  choices:
+  - Saturnī et Opis
+  - Caelī et Terrae
+  - Neptūnī
+  answer: 0
+  en_question: Whose son is Jupiter?
+  en_choices:
+  - Saturn and Ops
+  - Caelus and Terra
+  - Neptune
+- id: lib_ops
+  latin: 'Ops, Opis
+
+    Graecē: Rhea
+
+    Familia: uxor Saturnī, māter Iovis
+
+    Ops saxum Saturnō dat.'
+  english: 'Ops, Opis
+
+    Greek: Rhea
+
+    Family: wife of Saturn, mother of Jupiter
+
+    Ops gives the stone to Saturn.'
+  type: culture_note
+  nle_category: mythology
+  spec_node_id: ''
+  review_status: draft
+- id: lib_ops_q
+  latin: Quid Ops Saturnō dat?
+  english: What does Ops give to Saturn?
+  type: card_question
+  nle_category: mythology
+  spec_node_id: ''
+  review_status: draft
+  question: Quid Ops Saturnō dat?
+  choices:
+  - saxum
+  - falcem
+  - pōculum
+  answer: 0
+  en_question: What does Ops give to Saturn?
+  en_choices:
+  - a stone
+  - a sickle
+  - a cup
+- id: lib_saturnus
+  latin: 'Saturnus, Saturnī
+
+    Graecē: Kronos
+
+    Familia: fīlius Caelī et Terrae
+
+    Rēgnum: rēx Titānum
+
+    Signum: falx
+
+    Rōmae: In templō Saturnī aerārium est. Mēnse Decembrī Saturnālia sunt.'
+  english: 'Saturn, Saturnī
+
+    Greek: Kronos
+
+    Family: son of Caelus and Terra
+
+    Domain: king of the Titans
+
+    Symbol: sickle
+
+    In Rome: The treasury is in the temple of Saturn. In December comes the Saturnalia.'
+  type: culture_note
+  nle_category: mythology
+  spec_node_id: ''
+  review_status: draft
+- id: lib_saturnus_q
+  latin: Quod signum Saturnī est?
+  english: What is Saturn's symbol?
+  type: card_question
+  nle_category: mythology
+  spec_node_id: ''
+  review_status: draft
+  question: Quod signum Saturnī est?
+  choices:
+  - fulmen
+  - falx
+  - tridēns
+  answer: 1
+  en_question: What is Saturn's symbol?
+  en_choices:
+  - thunderbolt
+  - sickle
+  - trident
+- id: lib_neptunus
+  latin: 'Neptūnus, Neptūnī
+
+    Graecē: Poseidon
+
+    Familia: fīlius Saturnī et Opis
+
+    Rēgnum: mare
+
+    Signum: tridēns
+
+    Rōmae: Neptūnālia in aestāte sunt.'
+  english: 'Neptune, Neptūnī
+
+    Greek: Poseidon
+
+    Family: son of Saturn and Ops
+
+    Domain: the sea
+
+    Symbol: trident
+
+    In Rome: The Neptunalia are in summer.'
+  type: culture_note
+  nle_category: mythology
+  spec_node_id: ''
+  review_status: draft
+- id: lib_neptunus_q
+  latin: Quod est rēgnum Neptūnī?
+  english: What is Neptune's domain?
+  type: card_question
+  nle_category: mythology
+  spec_node_id: ''
+  review_status: draft
+  question: Quod est rēgnum Neptūnī?
+  choices:
+  - caelum
+  - mare
+  - īnferī
+  answer: 1
+  en_question: What is Neptune's domain?
+  en_choices:
+  - the sky
+  - the sea
+  - the underworld

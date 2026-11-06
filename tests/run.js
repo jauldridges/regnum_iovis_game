@@ -67,6 +67,46 @@ const url = 'file://' + path.resolve(__dirname, '../index.html');
   s = await st(); assert.equal(s.scene, 'battled'); assert(!s.msgOpen && !s.guard);
   await tap('ArrowUp'); assert.equal((await st()).player.y, 4, 'can walk again');
 
+  // --- Collection book (drafts mode): pause, question, retry rules, party
+  await open('?lang=la&drafts=1');
+  await p.evaluate(() => ['iuppiter', 'ops', 'saturnus'].forEach(Book.unlock));   // as Chapter 1 does when it ends
+  await p.keyboard.press('b');
+  assert(await p.isVisible('#book'));
+  await tap('ArrowLeft'); assert.equal((await st()).player.x, 3, 'no walking while the book is open');
+  const page = n => p.click(`#book button:has-text("${n}")`);
+  const bookText = () => p.textContent('#book');
+  await page('Iuppiter, Iovis');
+  assert(await p.isDisabled('#book button'), 'card waits 3 seconds');
+  await p.keyboard.press('Enter'); await p.waitForTimeout(500);
+  assert((await bookText()).includes('Graecē: Zeus'));
+  await p.waitForTimeout(2800); await p.click('#book button');
+  assert((await bookText()).includes('Cuius fīlius'));
+  await p.click('#book button:has-text("Neptūnī")');           // wrong, 1st try
+  assert((await bookText()).includes('Relege')); await p.click('#book button');
+  assert((await bookText()).includes('Graecē: Zeus'), 'wrong answer sends the student back to the text');
+  assert(await p.isDisabled('#book button'), 'pause again'); await p.waitForTimeout(3200); await p.click('#book button');
+  await p.click('#book button:has-text("Saturnī et Opis")');   // right on retry
+  assert((await bookText()).includes('Rēctē')); await p.click('#book button');
+  let bs = await p.evaluate(() => Book.state());
+  assert.deepEqual(bs.results.iuppiter, { tries: 2, correct: true, firstTry: false });
+  await page('Saturnus, Saturnī'); await p.waitForTimeout(3200); await p.click('#book button');
+  await p.click('#book button:has-text("fulmen")');            // wrong
+  await p.click('#book button'); await p.waitForTimeout(3200); await p.click('#book button');
+  await p.click('#book button:has-text("tridēns")');           // wrong again
+  assert((await bookText()).includes('Responsum rēctum: falx'), 'second miss shows the answer');
+  await p.click('#book button');
+  assert.equal((await p.evaluate(() => Book.state())).results.saturnus.correct, false);
+  // party: Neptune is recruited later in the story; toggle him in and out
+  await p.evaluate(() => Book.recruit('neptunus'));
+  await p.click('#book button:has-text("Claude")');
+  assert(!(await st()).msgOpen, 'book closes');
+  await p.keyboard.press('b');
+  await p.click('#book button.pty');
+  assert.deepEqual((await p.evaluate(() => Book.state())).party, ['neptunus']);
+  await p.screenshot({ path: process.env.SHOT || '/tmp/step4.png' });
+  await p.click('#book button.pty');
+  assert.deepEqual((await p.evaluate(() => Book.state())).party, []);
+
   // --- English mode: English button with small Latin label
   await open('?lang=en&drafts=1');
   await p.evaluate(() => Battle.start());

@@ -7,6 +7,9 @@ ids = [e["id"] for e in entries]
 assert len(ids) == len(set(ids)), "duplicate ids"
 for e in entries:
     assert e["review_status"] in ("draft", "approved"), e["id"]
+for e in entries:
+    if e["type"] == "card_question":
+        assert 0 <= e["answer"] < len(e["choices"]) == len(e["en_choices"]), e["id"]
 (root / "content/latin.js").write_text(
     "window.CONTENT = " + json.dumps(entries, ensure_ascii=False, indent=1) + ";\n", encoding="utf-8")
 print(f"{len(entries)} entries -> content/latin.js")
