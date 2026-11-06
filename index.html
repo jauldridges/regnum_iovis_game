@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="la"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rēgnum Iovis</title>
+<link rel="stylesheet" href="style.css"></head>
+<body>
+<div id="wrap">
+  <div id="title">
+    <h1>Rēgnum Iovis</h1>
+    <button id="btn-la">Latīnē</button>
+    <button id="btn-en">English</button>
+  </div>
+  <canvas id="game" width="480" height="320" hidden></canvas>
+  <div id="msg" hidden><div id="msg-text"></div><button id="msg-btn" disabled></button></div>
+  <div id="pad" hidden>
+    <button data-d="up">▲</button><button data-d="left">◀</button><button data-d="down">▼</button><button data-d="right">▶</button><button data-d="act">●</button>
+  </div>
+</div>
+<script src="boot.js"></script>
+</body></html>
