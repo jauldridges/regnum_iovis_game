@@ -118,14 +118,15 @@ var Game = (function () {
 
   // ---- screen wipe: bars close over the scene, `mid` runs while it is covered, then the bars open
   function ease(p) { return p * p * (3 - 2 * p); }
-  function transition(mid) { msgOpen = true; trans = { t0: performance.now(), d1: 900, d2: 700, mid: mid, fired: false }; }
+  // unlock: give control back when the wipe ends (for a plain change of map; battles and the finale keep it locked)
+  function transition(mid, unlock) { msgOpen = true; trans = { t0: performance.now(), d1: 900, d2: 700, mid: mid, fired: false, unlock: unlock }; }
   function drawTrans(now) {
     if (!trans) return;
     var e = now - trans.t0, p, N = 10, h = 320 / N;
     if (e < trans.d1) p = e / trans.d1;
     else {
       if (!trans.fired) { trans.fired = true; trans.mid(); }
-      var e2 = e - trans.d1; if (e2 >= trans.d2) { trans = null; return; }
+      var e2 = e - trans.d1; if (e2 >= trans.d2) { if (trans.unlock) msgOpen = false; trans = null; return; }
       p = 1 - e2 / trans.d2;
     }
     ctx.fillStyle = 'rgba(0,0,0,' + (0.35 * p) + ')'; ctx.fillRect(0, 0, 480, 320);

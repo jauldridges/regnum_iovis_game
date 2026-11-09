@@ -9,7 +9,8 @@
   assert((await st()).flags.metis);
   await walk('D5 D1'.replace(' D1', ''));                    // down to the south exit
   await p.waitForFunction(() => Game.state().map === 'hall2', null, { timeout: 5000 });
-  await walk('D1'); assert((await text()).includes('nōndum bibit')); await cont();   // exit shut until Saturn drinks
+  await p.waitForFunction(() => !Game.state().trans, null, { timeout: 5000 });   // input is locked during the wipe
+  await walk('D1'); const gt = await text(); assert(gt.includes('nōndum bibit'), 'gate text: ' + gt + ' ' + JSON.stringify(await st())); await cont();   // exit shut until Saturn drinks
   await walk('U5 L1'); await act();                          // Jupiter brings the cup to Saturn
   await cont(); await cont();
   assert((await text()).includes('Cui pōculum dās?')); await choose(2);

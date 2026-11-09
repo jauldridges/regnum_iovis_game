@@ -58,7 +58,7 @@ var Story = (function () {
     var t = Game.line(id); if (!t) return;
     if (!OBJ_SEEN[id]) { OBJ_SEEN[id] = true; Score.add('objects', Score.CFG.object); }
     if (id === 'obj_herba' && !F.herb) { F.herb = true; }
-    say([t]);
+    say([id]);
   };
   S.seen = function () { return Object.keys(OBJ_SEEN); };
 
@@ -75,7 +75,7 @@ var Story = (function () {
   S.exit = function (id) {
     if (id === 'ida_east') startCh3();
     else if (id === 'ocean_south') {
-      ch = 3; F.cupDone = false; Game.transition(function () { Game.loadMap('hall2'); });
+      ch = 3; F.cupDone = false; Game.transition(function () { Game.loadMap('hall2'); }, true);
     } else if (id === 'hall2_exit') Game.transition(function () { Game.finish(); });   // chapter 4 is not built yet
   };
 
