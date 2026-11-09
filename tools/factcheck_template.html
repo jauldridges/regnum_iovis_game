@@ -1,0 +1,243 @@
+<title>Rēgnum Iovis Fact Check</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap">
+<style>
+/* Layout: one narrow column of claim cards under a sticky progress bar; handout feel, ink on cool white. */
+:root {
+  --bg: #f4f6f8; --card: #ffffff; --fg: #18212c; --muted: #5d6b7a; --line: #d9e0e7;
+  --accent: #1f5f73; --accent-soft: #e2eef2;
+  --ok: #1d7a45; --ok-soft: #e1f2e8; --fix: #a8610a; --fix-soft: #fbeedb; --cant: #b0322d; --cant-soft: #fae6e4;
+  --font-head: "Space Grotesk", "Helvetica Neue", Arial, sans-serif; --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #11171d; --card: #19212a; --fg: #e8edf2; --muted: #9aa8b6; --line: #2c3947;
+  --accent: #7cc2d6; --accent-soft: #1c313a;
+  --ok: #6fd09a; --ok-soft: #173326; --fix: #f0b25c; --fix-soft: #392a14; --cant: #f08c86; --cant-soft: #3b1d1b; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #11171d; --card: #19212a; --fg: #e8edf2; --muted: #9aa8b6; --line: #2c3947;
+  --accent: #7cc2d6; --accent-soft: #1c313a;
+  --ok: #6fd09a; --ok-soft: #173326; --fix: #f0b25c; --fix-soft: #392a14; --cant: #f08c86; --cant-soft: #3b1d1b; color-scheme: dark; }
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 400 16px/1.5 var(--font-body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 0 48px; }
+.wrap { max-width: 760px; margin: 0 auto; }
+header.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); padding: 14px 0 10px; border-bottom: 1px solid var(--line); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+h1 { font: 600 1.35rem/1.2 var(--font-head); margin: 0; text-wrap: balance; }
+.sub { color: var(--muted); font-size: .9rem; margin: 2px 0 10px; }
+.bar { height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; display: flex; }
+.bar span { display: block; height: 100%; transition: width .25s; }
+.bar .b-ok { background: var(--ok); } .bar .b-fix { background: var(--fix); } .bar .b-cant { background: var(--cant); }
+.count { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; margin: 6px 0 8px; font-size: .9rem; font-variant-numeric: tabular-nums; flex-wrap: wrap; }
+.saved { color: var(--muted); min-height: 1.3em; }
+.tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+.tabs button { font: 500 .85rem var(--font-body); padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); color: var(--fg); cursor: pointer; }
+.tabs button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+.banner { margin: 12px 0 0; padding: 10px 12px; border-radius: 8px; background: var(--fix-soft); color: var(--fg); font-size: .9rem; border: 1px solid var(--fix); }
+.legend { margin: 14px 0 4px; padding: 12px 14px; background: var(--accent-soft); border-radius: 8px; font-size: .88rem; color: var(--fg); }
+.legend b { font-weight: 600; }
+.legend p { margin: 0 0 4px; } .legend p:last-child { margin: 0; }
+main { display: grid; gap: 14px; margin-top: 14px; }
+article.card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: grid; gap: 12px; min-width: 0; border-left: 5px solid var(--line); }
+article.card[data-status="ok"] { border-left-color: var(--ok); }
+article.card[data-status="fix"] { border-left-color: var(--fix); }
+article.card[data-status="cant"] { border-left-color: var(--cant); }
+.meta { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; font-size: .78rem; color: var(--muted); }
+.tag { padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line); font-weight: 500; letter-spacing: .02em; }
+.tag.low { color: var(--cant); border-color: var(--cant); } .tag.medium { color: var(--fix); border-color: var(--fix); } .tag.high { color: var(--ok); border-color: var(--ok); }
+.claim { font: 600 1.25rem/1.3 var(--font-head); margin: 0; text-wrap: balance; }
+.note { font-size: .9rem; padding: 8px 10px; background: var(--fix-soft); border-radius: 6px; }
+.note b { font-weight: 600; }
+.src { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) auto; gap: 8px; align-items: center; }
+.src label, .lbl { font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600; }
+input[type="text"], textarea { width: 100%; font: 400 .95rem var(--font-body); padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--fg); min-width: 0; }
+textarea { resize: vertical; min-height: 64px; }
+a.find { font: 500 .85rem var(--font-body); color: var(--accent); text-decoration: none; padding: 7px 10px; border: 1px solid var(--accent); border-radius: 6px; white-space: nowrap; }
+a.find:hover { background: var(--accent-soft); }
+.srcs { display: grid; gap: 8px; }
+.addsrc { justify-self: start; font: 500 .82rem var(--font-body); background: none; border: 0; color: var(--accent); cursor: pointer; padding: 2px 0; }
+details.lines { font-size: .88rem; color: var(--muted); }
+details.lines summary { cursor: pointer; }
+details.lines ul { margin: 6px 0 0; padding-left: 18px; }
+details.lines li { margin: 2px 0; } details.lines .la { color: var(--fg); } details.lines .id { font-size: .75rem; opacity: .8; }
+.actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.actions button { flex: 1 1 120px; font: 600 .95rem var(--font-body); padding: 10px 12px; border-radius: 8px; border: 2px solid var(--line); background: var(--card); color: var(--fg); cursor: pointer; }
+.actions button[data-s="ok"]:hover, .actions button[data-s="ok"][aria-pressed="true"] { border-color: var(--ok); background: var(--ok-soft); color: var(--ok); }
+.actions button[data-s="fix"]:hover, .actions button[data-s="fix"][aria-pressed="true"] { border-color: var(--fix); background: var(--fix-soft); color: var(--fix); }
+.actions button[data-s="cant"]:hover, .actions button[data-s="cant"][aria-pressed="true"] { border-color: var(--cant); background: var(--cant-soft); color: var(--cant); }
+.notebox { display: grid; gap: 4px; }
+.empty { text-align: center; color: var(--muted); padding: 32px 0; }
+button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.copyrow { margin-top: 10px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: .88rem; }
+.copyrow button { font: 500 .85rem var(--font-body); padding: 6px 12px; border-radius: 6px; border: 1px solid var(--line); background: var(--card); color: var(--fg); cursor: pointer; }
+@media (max-width: 560px) { .src { grid-template-columns: 1fr; } a.find { justify-self: start; } }
+@media (prefers-reduced-motion: reduce) { .bar span { transition: none; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <h1>Rēgnum Iovis fact check</h1>
+    <p class="sub">Read each claim, open the passage, and mark it. Your choices save as you go.</p>
+    <div class="bar" aria-hidden="true"><span class="b-ok" id="bar-ok"></span><span class="b-fix" id="bar-fix"></span><span class="b-cant" id="bar-cant"></span></div>
+    <div class="count"><span id="count">0 of 0 checked</span><span class="saved" id="saved" role="status" aria-live="polite"></span></div>
+    <div class="tabs" id="tabs" role="group" aria-label="Show"></div>
+  </header>
+  <div id="banner" class="banner" hidden></div>
+  <section class="legend" aria-label="What the labels mean">
+    <p><b>Tradition</b> is what the ancient sources say happened. It is not history. <b>Archaeology</b> and <b>language</b> claims need a modern source too.</p>
+    <p><b>Gameplay</b> marks a rule of the game that is not history, so only check that the wording does not pretend otherwise.</p>
+    <p>Citations here come from memory and may be wrong. Fix them in the boxes. Riskiest claims are first.</p>
+  </section>
+  <main id="list"></main>
+  <p class="empty" id="empty" hidden>Nothing here.</p>
+  <div class="copyrow" id="copyrow" hidden><button id="copybtn" type="button">Copy my decisions</button><span id="copymsg"></span></div>
+</div>
+
+<script>
+const FACTS = /*FACTS_JSON*/;
+const LABEL = { ok: 'Looks right', fix: 'Fix it', cant: "Can't find it" };
+const KIND = { tradition: 'Tradition', archaeology: 'Archaeology', language: 'Language', etymology: 'Etymology', date: 'Date', scholarship: 'Scholarship', gameplay: 'Gameplay' };
+const $ = (s, r = document) => r.querySelector(s);
+const draft = {};          // id -> {status, sources, note}
+const cards = {};          // id -> {el, ...}
+const timers = {};
+let col = null, filter = 'todo';
+try { filter = localStorage.getItem('fc-filter') || 'todo'; } catch (e) {}
+
+function el(tag, props, ...kids) {
+  const e = document.createElement(tag);
+  for (const k in (props || {})) { if (k === 'class') e.className = props[k]; else if (k === 'text') e.textContent = props[k]; else e.setAttribute(k, props[k]); }
+  kids.forEach(k => k && e.append(k));
+  return e;
+}
+function searchUrl(s) { return 'https://www.google.com/search?q=' + encodeURIComponent((s.work + ' ' + s.ref + ' text perseus').trim()); }
+function blank(f) { return { status: '', sources: f.sources.map(s => ({ work: s.work, ref: s.ref })), note: '' }; }
+
+function buildCard(f) {
+  const d = draft[f.id] = blank(f);
+  const card = el('article', { class: 'card', 'data-id': f.id, 'data-status': '' });
+  const meta = el('div', { class: 'meta' }, el('span', { class: 'tag', text: KIND[f.kind] || f.kind }),
+    el('span', { class: 'tag ' + f.confidence, text: 'my confidence: ' + f.confidence }), el('span', { text: f.id }));
+  const claim = el('h2', { class: 'claim', text: f.claim });
+  const parts = [meta, claim];
+  if (f.note) { const n = el('div', { class: 'note' }); n.append(el('b', { text: 'Watch for: ' }), document.createTextNode(f.note)); parts.push(n); }
+  // sources: editable work and passage, each with a search link
+  const srcs = el('div', { class: 'srcs' }); const srcRows = [];
+  function addRow(s) {
+    const row = el('div', { class: 'src' });
+    const w = el('input', { type: 'text', 'aria-label': 'Work', value: s.work, placeholder: 'Work' });
+    const r = el('input', { type: 'text', 'aria-label': 'Passage', value: s.ref, placeholder: 'Passage, e.g. Theogony 453-491' });
+    const a = el('a', { class: 'find', href: searchUrl(s), target: '_blank', rel: 'noopener', text: 'Find passage' });
+    const upd = () => { a.href = searchUrl({ work: w.value, ref: r.value }); readSources(); editedByHand(f.id); };
+    w.addEventListener('input', upd); r.addEventListener('input', upd);
+    row.append(w, r, a); srcs.append(row); srcRows.push({ w, r });
+  }
+  function readSources() { d.sources = srcRows.map(x => ({ work: x.w.value.trim(), ref: x.r.value.trim() })).filter(s => s.work || s.ref); }
+  (f.sources.length ? f.sources : [{ work: '', ref: '' }]).forEach(addRow);
+  const add = el('button', { class: 'addsrc', type: 'button', text: '+ Add another source' });
+  add.onclick = () => addRow({ work: '', ref: '' });
+  if (f.kind === 'gameplay') parts.push(el('div', { class: 'lbl', text: 'No source needed. Check the wording only.' }));
+  else parts.push(el('div', { class: 'lbl', text: 'Source (edit if wrong)' }), srcs, add);
+  // what students read
+  if (f.lines.length) {
+    const det = el('details', { class: 'lines' }, el('summary', { text: 'What the game says (' + f.lines.length + ')' }));
+    const ul = el('ul');
+    f.lines.forEach(l => { const li = el('li'); li.append(el('span', { class: 'la', text: l.en }), document.createTextNode('  '), el('span', { class: 'id', text: l.la ? '(' + l.la.replace(/\n/g, ' / ') + ')' : '' })); ul.append(li); });
+    det.append(ul); parts.push(det);
+  }
+  // decision
+  const actions = el('div', { class: 'actions' });
+  const btns = {};
+  ['ok', 'fix', 'cant'].forEach(s => { const b = el('button', { type: 'button', 'data-s': s, 'aria-pressed': 'false', text: LABEL[s] }); b.onclick = () => decide(f.id, s); btns[s] = b; actions.append(b); });
+  const nb = el('div', { class: 'notebox' }, el('label', { class: 'lbl', for: 'n-' + f.id, text: "What's right, or where you looked (optional)" }));
+  const ta = el('textarea', { id: 'n-' + f.id }); ta.addEventListener('input', () => { d.note = ta.value; queueSave(f.id); }); nb.append(ta); nb.hidden = true;
+  parts.push(actions, nb);
+  card.append(...parts);
+  cards[f.id] = { el: card, btns, ta, nb, srcRows, readSources };
+  return card;
+}
+
+function paint(id) {
+  const c = cards[id], d = draft[id]; if (!c) return;
+  c.el.dataset.status = d.status || '';
+  Object.keys(c.btns).forEach(s => c.btns[s].setAttribute('aria-pressed', String(d.status === s)));
+  c.nb.hidden = !(d.status === 'fix' || d.status === 'cant' || d.note);
+  if (document.activeElement !== c.ta) c.ta.value = d.note || '';
+}
+function editedByHand(id) { if (!draft[id].status) { draft[id].status = 'fix'; paint(id); } queueSave(id); stats(); }
+function decide(id, s) { draft[id].status = draft[id].status === s ? '' : s; paint(id); queueSave(id); stats(); applyFilter(); }
+
+// saving: one write at a time per document, after a short pause
+const chain = {};
+function queueSave(id) { clearTimeout(timers[id]); setSaved('Saving…'); timers[id] = setTimeout(() => save(id), 500); }
+function save(id) {
+  const d = draft[id];
+  const body = { status: d.status || '', sources: d.sources, note: d.note || '', updatedAt: new Date().toISOString() };
+  chain[id] = (chain[id] || Promise.resolve()).then(async () => {
+    if (col) { try { await col.doc(id).set(body); setSaved('Saved'); } catch (e) { setSaved('Could not save (' + (e && e.code || 'error') + ')'); } }
+    else { try { const all = JSON.parse(localStorage.getItem('fc-local') || '{}'); all[id] = body; localStorage.setItem('fc-local', JSON.stringify(all)); setSaved('Saved in this browser'); } catch (e) { setSaved('Not saved: ' + (e && e.message)); } }
+  });
+}
+function setSaved(t) { $('#saved').textContent = t; }
+
+function stats() {
+  const n = FACTS.length, c = { ok: 0, fix: 0, cant: 0 };
+  FACTS.forEach(f => { const s = draft[f.id].status; if (c[s] !== undefined) c[s]++; });
+  const done = c.ok + c.fix + c.cant;
+  $('#count').textContent = done + ' of ' + n + ' checked · ' + c.ok + ' right · ' + c.fix + ' to fix · ' + c.cant + " can't find";
+  ['ok', 'fix', 'cant'].forEach(s => { $('#bar-' + s).style.width = (100 * c[s] / n) + '%'; });
+  renderTabs(c, n - done);
+}
+function renderTabs(c, todo) {
+  const defs = [['todo', 'To check (' + todo + ')'], ['ok', LABEL.ok + ' (' + c.ok + ')'], ['fix', LABEL.fix + ' (' + c.fix + ')'], ['cant', LABEL.cant + ' (' + c.cant + ')'], ['all', 'All (' + FACTS.length + ')']];
+  const t = $('#tabs'); t.innerHTML = '';
+  defs.forEach(([k, lab]) => { const b = el('button', { type: 'button', 'aria-pressed': String(filter === k), text: lab }); b.onclick = () => { filter = k; try { localStorage.setItem('fc-filter', k); } catch (e) {} stats(); applyFilter(); }; t.append(b); });
+}
+function applyFilter() {
+  let shown = 0;
+  FACTS.forEach(f => { const s = draft[f.id].status; const show = filter === 'all' || (filter === 'todo' ? !s : s === filter); cards[f.id].el.hidden = !show; if (show) shown++; });
+  $('#empty').hidden = shown > 0;
+  $('#empty').textContent = filter === 'todo' ? 'Everything is checked. Tell Claude you are done.' : 'Nothing here.';
+}
+
+// load: live from the shared store when it is available; this browser only if not
+function applyRecord(id, rec) {
+  const d = draft[id], c = cards[id]; if (!d || !rec) return;
+  const busy = c.el.contains(document.activeElement);
+  if (busy) return;                                    // never overwrite what is being typed
+  d.status = rec.status || ''; d.note = rec.note || '';
+  if (Array.isArray(rec.sources) && rec.sources.length) {
+    d.sources = rec.sources;
+    c.srcRows.forEach((x, i) => { const s = rec.sources[i]; if (s) { x.w.value = s.work || ''; x.r.value = s.ref || ''; x.r.closest('.src').querySelector('a').href = searchUrl(s); } });
+  }
+  paint(id);
+}
+function fill(map) { Object.keys(map).forEach(id => applyRecord(id, map[id])); stats(); applyFilter(); }
+
+async function start() {
+  const list = $('#list');
+  FACTS.forEach(f => list.append(buildCard(f)));
+  FACTS.forEach(f => paint(f.id)); stats(); applyFilter();
+  let db = null;
+  try { db = window.claude && await window.claude.use('db'); } catch (e) { db = null; }
+  if (db) {
+    col = db.collection('decisions');
+    const timer = setTimeout(() => setSaved("Can't reach the saved decisions yet"), 10000);
+    col.onSnapshot(snap => { clearTimeout(timer); const m = {}; snap.docs.forEach(d => { m[d.id] = d.data(); }); fill(m); },
+      e => { clearTimeout(timer); setSaved('Saved decisions unavailable (' + (e && e.code || 'error') + ')'); });
+  } else {
+    const b = $('#banner'); b.hidden = false;
+    b.textContent = 'Saving to the shared store is not available here, so your choices stay in this browser and Claude cannot read them. Use "Copy my decisions" at the bottom and paste the result to Claude when you are done.';
+    $('#copyrow').hidden = false;
+    try { fill(JSON.parse(localStorage.getItem('fc-local') || '{}')); } catch (e) {}
+    $('#copybtn').onclick = async () => {
+      const out = {}; FACTS.forEach(f => { const d = draft[f.id]; if (d.status || d.note) out[f.id] = { status: d.status, sources: d.sources, note: d.note }; });
+      const text = JSON.stringify(out, null, 1);
+      try { await navigator.clipboard.writeText(text); $('#copymsg').textContent = 'Copied.'; }
+      catch (e) { const ta = el('textarea', { 'aria-label': 'Decisions' }); ta.value = text; $('#copyrow').append(ta); ta.select(); $('#copymsg').textContent = 'Select and copy this text.'; }
+    };
+  }
+}
+start();
+</script>
