@@ -217,7 +217,7 @@ window.CONTENT = [
  },
  {
   "id": "ui_close",
-  "latin": "Claude",
+  "latin": "Claudāmus",
   "english": "Close",
   "type": "ui_label",
   "nle_category": "",

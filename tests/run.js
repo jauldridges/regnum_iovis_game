@@ -98,7 +98,7 @@ const url = 'file://' + path.resolve(__dirname, '../index.html');
   assert.equal((await p.evaluate(() => Book.state())).results.saturnus.correct, false);
   // party: Neptune is recruited later in the story; toggle him in and out
   await p.evaluate(() => Book.recruit('neptunus'));
-  await p.click('#book button:has-text("Claude")');
+  await p.click('#book button:has-text("Claudāmus")');
   assert(!(await st()).msgOpen, 'book closes');
   await p.keyboard.press('b');
   await p.click('#book button.pty');
