@@ -390,3 +390,288 @@
   checked_by: ''
   checked_on: ''
   note: Move names follow the design document; effects are invented for the game.
+
+- id: campe_jailer
+  claim: Campe is the jailer of Tartarus who guards the Cyclopes and the Hundred-Handers.
+  game:
+  - lib_campe
+  - campe_1
+  - campe_2
+  kind: tradition
+  sources:
+  - type: primary
+    work: Apollodorus
+    ref: Library 1.2.1
+  confidence: medium
+  verified: false
+  checked_by: ''
+  checked_on: ''
+  note: Not in Hesiod. Campe as a dragon (cauda dracōnis, flames) is a later detail (Nonnus); the flames in the battle are a game choice.
+- id: cyclopes_names_parentage
+  claim: The Cyclopes (Brontes, Steropes, Arges) are children of Caelus and Terra.
+  game:
+  - lib_cyclopes
+  kind: tradition
+  sources:
+  - type: primary
+    work: Hesiod
+    ref: Theogony 139-146
+  confidence: high
+  verified: false
+  checked_by: ''
+  checked_on: ''
+  note: ''
+- id: cyclopes_weapons
+  claim: The Cyclopes, freed from Tartarus, give Jupiter the thunderbolt (and, in Apollodorus, Neptune the trident and Pluto the helmet).
+  game:
+  - lib_cyclopes
+  - cyc_gift1
+  - cyc_gift2
+  - cyc_gift3
+  - learn_fulmen
+  kind: tradition
+  sources:
+  - type: primary
+    work: Hesiod
+    ref: Theogony 501-506
+  - type: primary
+    work: Apollodorus
+    ref: Library 1.2.1
+  confidence: medium
+  verified: false
+  checked_by: ''
+  checked_on: ''
+  note: Hesiod names only the thunderbolt; the trident and helmet are in Apollodorus.
+- id: hundred_handers
+  claim: The Hundred-Handers (Briareus, Cottus, Gyges) are freed and help the gods in the war.
+  game:
+  - lib_centimani
+  - cent_1
+  - cent_2
+  kind: tradition
+  sources:
+  - type: primary
+    work: Hesiod
+    ref: Theogony 147-153; 617-686
+  confidence: high
+  verified: false
+  checked_by: ''
+  checked_on: ''
+  note: ''
+- id: titan_siblings
+  claim: Hyperion and Iapetus are Titans, children of Caelus and Terra; Iapetus is the father of Atlas and Prometheus.
+  game:
+  - lib_hyperion
+  - lib_iapetus
+  - iap_1
+  - lib_prometheus
+  kind: tradition
+  sources:
+  - type: primary
+    work: Hesiod
+    ref: Theogony 132-138; 507-511
+  confidence: high
+  verified: false
+  checked_by: ''
+  checked_on: ''
+  note: ''
+- id: atlas_sky
+  claim: Atlas holds up the sky.
+  game:
+  - lib_atlas
+  - aft_2
+  - battle_atlas_heavy
+  kind: tradition
+  sources:
+  - type: primary
+    work: Hesiod
+    ref: Theogony 517-520
+  confidence: high
+  verified: false
+  checked_by: ''
+  checked_on: ''
+  note: ''
+- id: hyperion_light
+  claim: Hyperion is associated with light (he is father of Helios, the Sun).
+  game:
+  - lib_hyperion
+  - battle_hyperion_light
+  kind: tradition
+  sources:
+  - type: primary
+    work: Hesiod
+    ref: Theogony 371-374
+  confidence: low
+  verified: false
+  checked_by: ''
+  checked_on: ''
+  note: '"Hyperion throws light" is a game device.'
+- id: prometheus_themis_switch
+  claim: Prometheus and Themis side with Jupiter against the Titans.
+  game:
+  - prom_1
+  - them_1
+  - lib_prometheus
+  - lib_themis
+  kind: tradition
+  sources:
+  - type: primary
+    work: Aeschylus
+    ref: Prometheus Bound 209-221
+  - type: primary
+    work: Apollodorus
+    ref: Library 1.2.2
+  confidence: low
+  verified: false
+  checked_by: ''
+  checked_on: ''
+  note: NOT in Hesiod's Theogony as the design describes. Aeschylus makes Themis (Gaia) Prometheus's mother and has Prometheus advise Zeus. Needs a person to check before release.
+- id: themis_symbol
+  claim: Themis stands for law and order (the "law" symbol in her book page).
+  game:
+  - lib_themis
+  - battle_themis
+  kind: tradition
+  sources:
+  - type: primary
+    work: Hesiod
+    ref: Theogony 901-906
+  confidence: low
+  verified: false
+  checked_by: ''
+  checked_on: ''
+  note: 'Check; the "symbol: law" wording is the game''s.'
+- id: styx_first
+  claim: Styx is the first of the gods to come to Zeus's side, bringing her children, including Victory (Nike).
+  game:
+  - styx_1
+  - styx_2
+  - lib_styx
+  - lib_victoria
+  kind: tradition
+  sources:
+  - type: primary
+    work: Hesiod
+    ref: Theogony 383-403
+  confidence: high
+  verified: false
+  checked_by: ''
+  checked_on: ''
+  note: ''
+- id: styx_oceanus
+  claim: Styx is a daughter of Oceanus.
+  game:
+  - lib_styx
+  kind: tradition
+  sources:
+  - type: primary
+    work: Hesiod
+    ref: Theogony 361
+  confidence: high
+  verified: false
+  checked_by: ''
+  checked_on: ''
+  note: ''
+- id: titans_in_tartarus
+  claim: The defeated Titans are imprisoned in Tartarus, guarded by the Hundred-Handers.
+  game:
+  - aft_1
+  kind: tradition
+  sources:
+  - type: primary
+    work: Hesiod
+    ref: Theogony 713-735
+  confidence: high
+  verified: false
+  checked_by: ''
+  checked_on: ''
+  note: ''
+- id: war_order_gameplay
+  claim: The order of the boss battles (Hyperion, Iapetus, Atlas, Saturn) and Atlas as the Titans' "leader" are game choices, not tradition.
+  game:
+  - hyp_1
+  - iap_1
+  - atl_1
+  - sat_1
+  kind: gameplay
+  sources: []
+  confidence: high
+  verified: false
+  checked_by: ''
+  checked_on: ''
+  note: 'Design flag: mark as gameplay unless a source is found. In tradition Atlas is punished with the sky after the war.'
+- id: brothers_lots
+  claim: The three brothers draw lots for the sky, the sea and the underworld.
+  game:
+  - epi_1
+  - epi_1_q
+  kind: tradition
+  sources:
+  - type: primary
+    work: Homer
+    ref: Iliad 15.187-193
+  confidence: high
+  verified: false
+  checked_by: ''
+  checked_on: ''
+  note: ''
+- id: saturn_latium
+  claim: Saturn flees to Latium and hides there (Latium from latēre).
+  game:
+  - epi_2
+  - epi_2_q
+  - lib_saxum
+  kind: tradition
+  sources:
+  - type: primary
+    work: Ovid
+    ref: Fasti 1.233-238
+  - type: primary
+    work: Vergil
+    ref: Aeneid 8.319-325
+  confidence: medium
+  verified: false
+  checked_by: ''
+  checked_on: ''
+  note: The etymology is Roman folk etymology, not modern linguistics.
+- id: golden_age
+  claim: Saturn teaches the farmers and a golden age begins in Latium.
+  game:
+  - epi_3
+  kind: tradition
+  sources:
+  - type: primary
+    work: Vergil
+    ref: Aeneid 8.319-327
+  confidence: medium
+  verified: false
+  checked_by: ''
+  checked_on: ''
+  note: ''
+- id: juno_carthage
+  claim: Juno loves Carthage and later opposes the Trojans/Romans.
+  game:
+  - epi_5
+  kind: tradition
+  sources:
+  - type: primary
+    work: Vergil
+    ref: Aeneid 1.12-22
+  confidence: high
+  verified: false
+  checked_by: ''
+  checked_on: ''
+  note: '"Ibi Carthāgō erit" is a game line (a foreshadowing), not a quotation.'
+- id: gameplay_type_chart
+  claim: The power chart (sky beats earth, earth beats sea, sea beats fire, fire beats underworld, underworld beats sky) and all damage, heals and uses are game rules, not history.
+  game:
+  - eff_super
+  - eff_weak
+  - cmd_tona
+  kind: gameplay
+  sources: []
+  confidence: high
+  verified: false
+  checked_by: ''
+  checked_on: ''
+  note: ''

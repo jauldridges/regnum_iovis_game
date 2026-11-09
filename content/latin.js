@@ -150,7 +150,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_enemy_spear",
@@ -598,7 +598,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "pro_2",
@@ -607,7 +607,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "pro_3",
@@ -616,7 +616,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "pro_4",
@@ -625,7 +625,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "pro_4_q",
@@ -634,7 +634,7 @@ window.CONTENT = [
   "type": "card_question",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft",
+  "review_status": "approved",
   "question": "Quis Saturnō falcem dat?",
   "choices": [
    "Terra",
@@ -656,7 +656,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "pro_6",
@@ -665,7 +665,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "pro_6_q",
@@ -674,7 +674,7 @@ window.CONTENT = [
   "type": "card_question",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft",
+  "review_status": "approved",
   "question": "Quis Saturnum vincet?",
   "choices": [
    "Fīlius Saturnī",
@@ -696,7 +696,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "ch1_end",
@@ -705,7 +705,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "ch2_title",
@@ -714,7 +714,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "ch3_title",
@@ -723,7 +723,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "ch3_intro",
@@ -732,7 +732,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "obj_cave",
@@ -741,7 +741,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "obj_herba",
@@ -750,7 +750,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "amal_hungry",
@@ -759,7 +759,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "amal_choice",
@@ -768,7 +768,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "opt_herba",
@@ -777,7 +777,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "amal_wrong",
@@ -786,7 +786,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "amal_ate",
@@ -795,7 +795,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "amal_join",
@@ -804,7 +804,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "amal_done",
@@ -813,7 +813,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cur_warn",
@@ -822,7 +822,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cur_choice",
@@ -831,7 +831,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cur_opt_shields",
@@ -840,7 +840,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cur_opt_sleep",
@@ -849,7 +849,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cur_wrong",
@@ -858,7 +858,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cur_ok",
@@ -867,7 +867,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cur_done",
@@ -876,7 +876,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "learn_nubes",
@@ -885,7 +885,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "gate_ch2",
@@ -894,7 +894,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "ch2_ready",
@@ -903,7 +903,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "lose_ch2_1",
@@ -912,7 +912,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "lose_ch2_2",
@@ -921,7 +921,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "obj_ocean",
@@ -930,7 +930,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "obj_concha",
@@ -939,7 +939,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "metis_1",
@@ -948,7 +948,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "metis_2",
@@ -957,7 +957,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "gate_ch3a",
@@ -966,7 +966,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cup_1",
@@ -975,7 +975,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cup_2",
@@ -984,7 +984,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cup_choice",
@@ -993,7 +993,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "opt_saturno",
@@ -1002,7 +1002,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "opt_custodi",
@@ -1011,7 +1011,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cup_wrong",
@@ -1020,7 +1020,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cup_right",
@@ -1029,7 +1029,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cup_drink",
@@ -1038,7 +1038,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "out_saxum",
@@ -1047,7 +1047,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "out_neptunus",
@@ -1056,7 +1056,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "out_pluto",
@@ -1065,7 +1065,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "out_iuno",
@@ -1074,7 +1074,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "out_ceres",
@@ -1083,7 +1083,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "out_vesta",
@@ -1092,7 +1092,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cup_end",
@@ -1101,7 +1101,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "gate_ch3b",
@@ -1110,7 +1110,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "guard_hall",
@@ -1119,7 +1119,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "acc_neptunus",
@@ -1128,7 +1128,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "acc_pluto",
@@ -1137,7 +1137,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "acc_iuno",
@@ -1146,7 +1146,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "acc_ceres",
@@ -1155,7 +1155,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "acc_vesta",
@@ -1164,7 +1164,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "lose_swallow",
@@ -1173,7 +1173,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "resc_start",
@@ -1182,7 +1182,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "resc_ok",
@@ -1191,7 +1191,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cmd_nubes",
@@ -1200,7 +1200,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_nubes",
@@ -1209,7 +1209,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cmd_amalthea",
@@ -1218,7 +1218,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_amalthea",
@@ -1227,7 +1227,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cmd_curetes",
@@ -1236,7 +1236,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_curetes",
@@ -1245,7 +1245,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cmd_metis",
@@ -1254,7 +1254,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_metis",
@@ -1263,7 +1263,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cmd_neptunus",
@@ -1272,7 +1272,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_neptunus",
@@ -1281,7 +1281,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cmd_pluto",
@@ -1290,7 +1290,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_pluto",
@@ -1299,7 +1299,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cmd_iuno",
@@ -1308,7 +1308,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_iuno",
@@ -1317,7 +1317,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cmd_ceres",
@@ -1326,7 +1326,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_ceres",
@@ -1335,7 +1335,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cmd_vesta",
@@ -1344,7 +1344,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_vesta",
@@ -1353,7 +1353,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_blocked",
@@ -1362,7 +1362,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_enemy_frozen",
@@ -1371,7 +1371,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "br_story",
@@ -1380,7 +1380,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "lib_amalthea",
@@ -1389,7 +1389,7 @@ window.CONTENT = [
   "type": "culture_note",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "lib_amalthea_q",
@@ -1398,7 +1398,7 @@ window.CONTENT = [
   "type": "card_question",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft",
+  "review_status": "approved",
   "question": "Quid Amalthēa Iovī dat?",
   "choices": [
    "lac",
@@ -1420,7 +1420,7 @@ window.CONTENT = [
   "type": "culture_note",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "lib_curetes_q",
@@ -1429,7 +1429,7 @@ window.CONTENT = [
   "type": "card_question",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft",
+  "review_status": "approved",
   "question": "Quid faciunt Cūrētēs?",
   "choices": [
    "scūta pulsant",
@@ -1451,7 +1451,7 @@ window.CONTENT = [
   "type": "culture_note",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "lib_metis_q",
@@ -1460,7 +1460,7 @@ window.CONTENT = [
   "type": "card_question",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft",
+  "review_status": "approved",
   "question": "Quid Mētis Iovī dat?",
   "choices": [
    "medicāmentum",
@@ -1482,7 +1482,7 @@ window.CONTENT = [
   "type": "culture_note",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "lib_pluto_q",
@@ -1491,7 +1491,7 @@ window.CONTENT = [
   "type": "card_question",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft",
+  "review_status": "approved",
   "question": "Quod signum Plūtōnis est?",
   "choices": [
    "galea",
@@ -1513,7 +1513,7 @@ window.CONTENT = [
   "type": "culture_note",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "lib_iuno_q",
@@ -1522,7 +1522,7 @@ window.CONTENT = [
   "type": "card_question",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft",
+  "review_status": "approved",
   "question": "Cuius fīlia est Iūnō?",
   "choices": [
    "Saturnī et Opis",
@@ -1544,7 +1544,7 @@ window.CONTENT = [
   "type": "culture_note",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "lib_ceres_q",
@@ -1553,7 +1553,7 @@ window.CONTENT = [
   "type": "card_question",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft",
+  "review_status": "approved",
   "question": "Quod est rēgnum Cereris?",
   "choices": [
    "frūgēs",
@@ -1575,7 +1575,7 @@ window.CONTENT = [
   "type": "culture_note",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "lib_vesta_q",
@@ -1584,7 +1584,7 @@ window.CONTENT = [
   "type": "card_question",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft",
+  "review_status": "approved",
   "question": "Quid in templō Vestae ardet?",
   "choices": [
    "ignis",
@@ -1606,7 +1606,7 @@ window.CONTENT = [
   "type": "culture_note",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "lib_saxum_q",
@@ -1615,7 +1615,7 @@ window.CONTENT = [
   "type": "card_question",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft",
+  "review_status": "approved",
   "question": "Ubi saxum posteā stat?",
   "choices": [
    "Delphīs",
@@ -1637,7 +1637,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "ch4_intro",
@@ -1646,7 +1646,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "ch5_title",
@@ -1655,7 +1655,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "ch5_intro",
@@ -1664,7 +1664,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "ch6_title",
@@ -1673,7 +1673,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "gate_ch3c",
@@ -1682,7 +1682,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "obj_inscr1",
@@ -1691,7 +1691,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "obj_inscr2",
@@ -1700,7 +1700,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "obj_catena",
@@ -1709,7 +1709,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "campe_1",
@@ -1718,7 +1718,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "campe_2",
@@ -1727,7 +1727,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "campe_down",
@@ -1736,7 +1736,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cyc_free",
@@ -1745,7 +1745,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "q_fulmen",
@@ -1754,7 +1754,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "q_tridens",
@@ -1763,7 +1763,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "q_galea",
@@ -1772,7 +1772,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "opt_iovi",
@@ -1781,7 +1781,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "opt_neptuno",
@@ -1790,7 +1790,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "opt_plutoni",
@@ -1799,7 +1799,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cyc_gift1",
@@ -1808,7 +1808,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cyc_gift2",
@@ -1817,7 +1817,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cyc_gift3",
@@ -1826,7 +1826,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cyc_wrong",
@@ -1835,7 +1835,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cyc_join",
@@ -1844,7 +1844,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "learn_fulmen",
@@ -1853,7 +1853,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cyc_done",
@@ -1862,7 +1862,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cent_1",
@@ -1871,7 +1871,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cent_2",
@@ -1880,7 +1880,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cent_done",
@@ -1889,7 +1889,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "gate_ch4",
@@ -1898,7 +1898,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "obj_olympus",
@@ -1907,7 +1907,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "obj_othrys",
@@ -1916,7 +1916,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "styx_1",
@@ -1925,7 +1925,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "styx_2",
@@ -1934,7 +1934,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "styx_done",
@@ -1943,7 +1943,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "gate_ch5a",
@@ -1952,7 +1952,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "hyp_1",
@@ -1961,7 +1961,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "iap_1",
@@ -1970,7 +1970,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "atl_1",
@@ -1979,7 +1979,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "sat_1",
@@ -1988,7 +1988,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "prom_arr",
@@ -1997,7 +1997,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "prom_1",
@@ -2006,7 +2006,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "them_1",
@@ -2015,7 +2015,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "war_1",
@@ -2024,7 +2024,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "war_2",
@@ -2033,7 +2033,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "aft_1",
@@ -2042,7 +2042,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "aft_2",
@@ -2051,7 +2051,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "epi_1",
@@ -2060,7 +2060,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "epi_1_q",
@@ -2069,7 +2069,7 @@ window.CONTENT = [
   "type": "card_question",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft",
+  "review_status": "approved",
   "question": "Quis mare habet?",
   "choices": [
    "Neptūnus",
@@ -2091,7 +2091,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "epi_2_q",
@@ -2100,7 +2100,7 @@ window.CONTENT = [
   "type": "card_question",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft",
+  "review_status": "approved",
   "question": "Quō Saturnus fugit?",
   "choices": [
    "in Latium",
@@ -2122,7 +2122,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "epi_4",
@@ -2131,7 +2131,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "epi_5",
@@ -2140,7 +2140,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "fin_recap",
@@ -2149,7 +2149,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "fin_allies",
@@ -2158,7 +2158,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "name_campe",
@@ -2167,7 +2167,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "name_hyperion",
@@ -2176,7 +2176,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "name_iapetus",
@@ -2185,7 +2185,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "name_atlas",
@@ -2194,7 +2194,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "name_saturnus",
@@ -2203,7 +2203,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "intent_guard_light",
@@ -2212,7 +2212,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "intent_guard_heavy",
@@ -2221,7 +2221,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_guard_heavy",
@@ -2230,7 +2230,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "intent_campe_light",
@@ -2239,7 +2239,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_campe_light",
@@ -2248,7 +2248,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "intent_campe_heavy",
@@ -2257,7 +2257,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_campe_heavy",
@@ -2266,7 +2266,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "win_campe",
@@ -2275,7 +2275,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "intent_hyperion_light",
@@ -2284,7 +2284,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_hyperion_light",
@@ -2293,7 +2293,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "intent_hyperion_heavy",
@@ -2302,7 +2302,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_hyperion_heavy",
@@ -2311,7 +2311,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "win_hyperion",
@@ -2320,7 +2320,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "intent_iapetus_light",
@@ -2329,7 +2329,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_iapetus_light",
@@ -2338,7 +2338,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "intent_iapetus_heavy",
@@ -2347,7 +2347,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_iapetus_heavy",
@@ -2356,7 +2356,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "win_iapetus",
@@ -2365,7 +2365,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "intent_atlas_light",
@@ -2374,7 +2374,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_atlas_light",
@@ -2383,7 +2383,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "intent_atlas_heavy",
@@ -2392,7 +2392,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_atlas_heavy",
@@ -2401,7 +2401,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "win_atlas",
@@ -2410,7 +2410,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "intent_saturnus_light",
@@ -2419,7 +2419,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_saturnus_light",
@@ -2428,7 +2428,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "intent_saturnus_heavy",
@@ -2437,7 +2437,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_saturnus_heavy",
@@ -2446,7 +2446,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "win_saturnus",
@@ -2455,7 +2455,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_blocked_g",
@@ -2464,7 +2464,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_frozen",
@@ -2473,7 +2473,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "eff_super",
@@ -2482,7 +2482,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "eff_weak",
@@ -2491,7 +2491,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cmd_fulmen",
@@ -2500,7 +2500,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_fulmen",
@@ -2509,7 +2509,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cmd_cyclopes",
@@ -2518,7 +2518,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_cyclopes",
@@ -2527,7 +2527,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cmd_centimani",
@@ -2536,7 +2536,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_centimani",
@@ -2545,7 +2545,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cmd_prometheus",
@@ -2554,7 +2554,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_prometheus",
@@ -2563,7 +2563,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cmd_themis",
@@ -2572,7 +2572,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_themis",
@@ -2581,7 +2581,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cmd_victoria",
@@ -2590,7 +2590,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_victoria",
@@ -2599,7 +2599,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "lib_campe",
@@ -2608,7 +2608,7 @@ window.CONTENT = [
   "type": "culture_note",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "lib_campe_q",
@@ -2617,7 +2617,7 @@ window.CONTENT = [
   "type": "card_question",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft",
+  "review_status": "approved",
   "question": "Cuius custōs est Campē?",
   "choices": [
    "Tartarī",
@@ -2639,7 +2639,7 @@ window.CONTENT = [
   "type": "culture_note",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "lib_cyclopes_q",
@@ -2648,7 +2648,7 @@ window.CONTENT = [
   "type": "card_question",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft",
+  "review_status": "approved",
   "question": "Quid Cyclōpēs Iovī dant?",
   "choices": [
    "fulmen",
@@ -2670,7 +2670,7 @@ window.CONTENT = [
   "type": "culture_note",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "lib_centimani_q",
@@ -2679,7 +2679,7 @@ window.CONTENT = [
   "type": "card_question",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft",
+  "review_status": "approved",
   "question": "Quot manūs habent Centimanī?",
   "choices": [
    "centum",
@@ -2701,7 +2701,7 @@ window.CONTENT = [
   "type": "culture_note",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "lib_prometheus_q",
@@ -2710,7 +2710,7 @@ window.CONTENT = [
   "type": "card_question",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft",
+  "review_status": "approved",
   "question": "Quis Iovī auxilium dat?",
   "choices": [
    "Promētheus",
@@ -2732,7 +2732,7 @@ window.CONTENT = [
   "type": "culture_note",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "lib_themis_q",
@@ -2741,7 +2741,7 @@ window.CONTENT = [
   "type": "card_question",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft",
+  "review_status": "approved",
   "question": "Quod signum Themidis est?",
   "choices": [
    "lēx",
@@ -2763,7 +2763,7 @@ window.CONTENT = [
   "type": "culture_note",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "lib_styx_q",
@@ -2772,7 +2772,7 @@ window.CONTENT = [
   "type": "card_question",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft",
+  "review_status": "approved",
   "question": "Quae prīma ad Iovem venit?",
   "choices": [
    "Styx",
@@ -2794,7 +2794,7 @@ window.CONTENT = [
   "type": "culture_note",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "lib_victoria_q",
@@ -2803,7 +2803,7 @@ window.CONTENT = [
   "type": "card_question",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft",
+  "review_status": "approved",
   "question": "Quid Victōria Iovī dat?",
   "choices": [
    "victōriam",
@@ -2825,7 +2825,7 @@ window.CONTENT = [
   "type": "culture_note",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "lib_hyperion_q",
@@ -2834,7 +2834,7 @@ window.CONTENT = [
   "type": "card_question",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft",
+  "review_status": "approved",
   "question": "Quid Hyperīōn iacit?",
   "choices": [
    "lūcem",
@@ -2856,7 +2856,7 @@ window.CONTENT = [
   "type": "culture_note",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "lib_iapetus_q",
@@ -2865,7 +2865,7 @@ window.CONTENT = [
   "type": "card_question",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft",
+  "review_status": "approved",
   "question": "Quid Iapetus iacit?",
   "choices": [
    "hastam",
@@ -2887,7 +2887,7 @@ window.CONTENT = [
   "type": "culture_note",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "lib_atlas_q",
@@ -2896,7 +2896,7 @@ window.CONTENT = [
   "type": "card_question",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft",
+  "review_status": "approved",
   "question": "Quid Atlās umerīs portat?",
   "choices": [
    "caelum",

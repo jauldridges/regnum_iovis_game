@@ -118,7 +118,7 @@
   type: message
   nle_category: mythology
   spec_node_id: ""
-  review_status: draft
+  review_status: approved
 - id: battle_enemy_spear
   latin: "Custōs hastam iacit."
   english: "The guard throws a spear."
@@ -542,35 +542,35 @@
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: pro_2
   latin: 'Terra et Caelus līberōs habent: Titānās, Cyclōpas, Centimanōs.'
   english: 'Terra and Caelus (Ouranos) have children: Titans, Cyclopes, Hundred-Handers.'
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: pro_3
   latin: Caelus līberōs timet. Eōs sub terrā claudit.
   english: Caelus fears his children. He shuts them under the earth.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: pro_4
   latin: Terra īrāta fīliō suō Saturnō falcem dat.
   english: Angry Terra gives her son Saturn (Kronos) a sickle.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: pro_4_q
   latin: Quis Saturnō falcem dat?
   english: Who gives Saturn a sickle?
   type: card_question
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
   question: Quis Saturnō falcem dat?
   choices:
   - Terra
@@ -588,21 +588,21 @@
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: pro_6
   latin: 'Fātum dīcit: Fīlius tuus tē vincet.'
   english: 'Fate says: Your son will defeat you.'
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: pro_6_q
   latin: Quis Saturnum vincet?
   english: Who will defeat Saturn?
   type: card_question
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
   question: Quis Saturnum vincet?
   choices:
   - Fīlius Saturnī
@@ -620,539 +620,539 @@
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: ch1_end
   latin: Ops Iovem in Crētam portat.
   english: Ops carries Jupiter to Crete.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: ch2_title
   latin: 'Capitulum II: Crēta'
   english: 'Chapter 2: Crete'
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: ch3_title
   latin: 'Capitulum III: Mētis et Pōculum'
   english: 'Chapter 3: Metis and the Drink'
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: ch3_intro
   latin: Iuppiter adultus est. Ad Ōceanum venit.
   english: Jupiter is grown. He comes to Ocean.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: obj_cave
   latin: Haec est spēlunca. Hīc Iuppiter latet.
   english: This is a cave. Jupiter hides here.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: obj_herba
   latin: Hīc herba est. Iuppiter herbam tollit.
   english: Here is grass. Jupiter picks up the grass.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: amal_hungry
   latin: Capella ēsurit.
   english: The goat is hungry.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: amal_choice
   latin: Quid capellae dās?
   english: What do you give the goat?
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: opt_herba
   latin: Herbam
   english: The grass
   type: ui_label
   nle_category: ''
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: amal_wrong
   latin: Capella saxum nōn ēdit.
   english: The goat does not eat the stone.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: amal_ate
   latin: Capella herbam ēdit.
   english: The goat eats the grass.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: amal_join
   latin: Amalthēa Iovem alit. Nunc socia est!
   english: Amalthea feeds Jupiter. Now she is an ally!
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: amal_done
   latin: Amalthēa laeta est.
   english: Amalthea is happy.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cur_warn
   latin: Custōdēs adsunt! Iuppiter flet!
   english: The guards are here! Jupiter is crying!
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cur_choice
   latin: Quid faciunt Cūrētēs?
   english: What do the Curetes do?
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cur_opt_shields
   latin: Scūta pulsant
   english: They clash their shields
   type: ui_label
   nle_category: ''
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cur_opt_sleep
   latin: Dormiunt
   english: They sleep
   type: ui_label
   nle_category: ''
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cur_wrong
   latin: Iuppiter flet. Custōdēs propius veniunt!
   english: Jupiter cries. The guards come closer!
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cur_ok
   latin: Cūrētēs scūta pulsant. Custōdēs nihil audiunt.
   english: The Curetes clash their shields. The guards hear nothing.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cur_done
   latin: Cūrētēs scūta pulsant.
   english: The Curetes clash their shields.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: learn_nubes
   latin: 'Iuppiter nova verba discit: Nūbibus tē tege!'
   english: 'Jupiter learns new words: Cover yourself with clouds!'
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: gate_ch2
   latin: Nōndum! Hīc sociī et custōdēs sunt.
   english: Not yet! Allies and guards are here.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: ch2_ready
   latin: Via aperta est!
   english: The way is open!
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: lose_ch2_1
   latin: Custōdēs speluncam inveniunt!
   english: The guards find the cave!
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: lose_ch2_2
   latin: Cūrētēs Iovem ad novum locum portant.
   english: The Curetes carry Jupiter to a new hiding place.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: obj_ocean
   latin: Hīc est Ōceanus.
   english: This is Ocean.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: obj_concha
   latin: Haec est concha.
   english: This is a shell.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: metis_1
   latin: Mētis dea sapiēns est.
   english: Metis is a wise goddess.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: metis_2
   latin: Mētis Iovī medicāmentum dat.
   english: Metis gives Jupiter a drug.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: gate_ch3a
   latin: Mētis tē exspectat.
   english: Metis is waiting for you.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cup_1
   latin: Iuppiter pōculum portat.
   english: Jupiter carries the cup.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cup_2
   latin: Saturnus pōculum poscit.
   english: Saturn demands the cup.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cup_choice
   latin: Cui pōculum dās?
   english: To whom do you give the cup?
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: opt_saturno
   latin: Saturnō
   english: To Saturn
   type: ui_label
   nle_category: ''
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: opt_custodi
   latin: Custōdī
   english: To the guard
   type: ui_label
   nle_category: ''
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cup_wrong
   latin: Custōs pōculum nōn accipit. Saturnus pōculum poscit!
   english: The guard does not take the cup. Saturn demands the cup!
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cup_right
   latin: Iuppiter Saturnō pōculum dat.
   english: Jupiter gives the cup to Saturn.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cup_drink
   latin: Saturnus bibit. Omnia ēvomit!
   english: Saturn drinks. He brings everything up!
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: out_saxum
   latin: Prīmum saxum exit.
   english: First the stone comes out.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: out_neptunus
   latin: Neptūnus ex Saturnō exit.
   english: Neptune comes out of Saturn.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: out_pluto
   latin: Plūtō ex Saturnō exit.
   english: Pluto comes out of Saturn.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: out_iuno
   latin: Iūnō ex Saturnō exit.
   english: Juno comes out of Saturn.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: out_ceres
   latin: Cerēs ex Saturnō exit.
   english: Ceres comes out of Saturn.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: out_vesta
   latin: Vesta ex Saturnō exit.
   english: Vesta comes out of Saturn.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cup_end
   latin: Saturnus īrātus est! Bellum incipit!
   english: Saturn is angry! The war begins!
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: gate_ch3b
   latin: Saturnus pōculum nōndum bibit.
   english: Saturn has not yet drunk the cup.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: guard_hall
   latin: Hostis! Iuppiter hīc est!
   english: An enemy! Jupiter is here!
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: acc_neptunus
   latin: Neptūnum
   english: Neptune
   type: ui_label
   nle_category: ''
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: acc_pluto
   latin: Plūtōnem
   english: Pluto
   type: ui_label
   nle_category: ''
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: acc_iuno
   latin: Iūnōnem
   english: Juno
   type: ui_label
   nle_category: ''
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: acc_ceres
   latin: Cererem
   english: Ceres
   type: ui_label
   nle_category: ''
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: acc_vesta
   latin: Vestam
   english: Vesta
   type: ui_label
   nle_category: ''
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: lose_swallow
   latin: Saturnus {x} dēvorat!
   english: Saturn swallows {x}!
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: resc_start
   latin: Iuppiter pōculum quaerit.
   english: Jupiter looks for the cup.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: resc_ok
   latin: '{x} ē Saturnō redit!'
   english: '{x} returns from Saturn!'
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cmd_nubes
   latin: Nūbibus tē tege!
   english: Cover yourself with clouds!
   type: ui_label
   nle_category: ''
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: battle_nubes
   latin: Nūbēs Iovem tegunt.
   english: Clouds cover Jupiter.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cmd_amalthea
   latin: Iovī lac dā!
   english: Give Jupiter milk!
   type: ui_label
   nle_category: ''
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: battle_amalthea
   latin: Amalthēa Iovī lac dat.
   english: Amalthea gives Jupiter milk.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cmd_curetes
   latin: Scūta pulsā!
   english: Clash the shields!
   type: ui_label
   nle_category: ''
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: battle_curetes
   latin: Cūrētēs scūta pulsant. Iuppiter effugit.
   english: The Curetes clash their shields. Jupiter escapes.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cmd_metis
   latin: Cōnsilium dā!
   english: Give advice!
   type: ui_label
   nle_category: ''
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: battle_metis
   latin: Mētis cōnsilium dat. Hostis īnfīrmus est.
   english: Metis gives advice. The enemy is weak.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cmd_neptunus
   latin: Tridente percute!
   english: Strike with the trident!
   type: ui_label
   nle_category: ''
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: battle_neptunus
   latin: "Tridēns Neptūnī hostem ferit."
   english: "Neptune's trident strikes the enemy."
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cmd_pluto
   latin: Galeam indue!
   english: Put on the helmet!
   type: ui_label
   nle_category: ''
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: battle_pluto
   latin: Galea Plūtōnis Iovem cēlat.
   english: Pluto's helmet hides Jupiter.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cmd_iuno
   latin: Hostēs terrē!
   english: Terrify the enemies!
   type: ui_label
   nle_category: ''
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: battle_iuno
   latin: "Iūnō hostem terret."
   english: "Juno frightens the enemy."
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cmd_ceres
   latin: Sociīs frūgēs dā!
   english: Give grain to your allies!
   type: ui_label
   nle_category: ''
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: battle_ceres
   latin: Cerēs sociīs frūgēs dat.
   english: Ceres gives grain to her allies.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cmd_vesta
   latin: Ignem accende!
   english: Light the fire!
   type: ui_label
   nle_category: ''
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: battle_vesta
   latin: "Ignis Vestae hostem urit."
   english: "Vesta's fire burns the enemy."
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: battle_blocked
   latin: Hasta nihil ferit.
   english: The spear strikes nothing.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: battle_enemy_frozen
   latin: Custōs timet.
   english: The guard is afraid.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: br_story
   latin: Quaestiōnēs fābulae
   english: Story questions
   type: ui_label
   nle_category: ''
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: lib_amalthea
   latin: 'Amalthēa, Amalthēae
 
@@ -1175,14 +1175,14 @@
   type: culture_note
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: lib_amalthea_q
   latin: Quid Amalthēa Iovī dat?
   english: What does Amalthea give Jupiter?
   type: card_question
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
   question: Quid Amalthēa Iovī dat?
   choices:
   - lac
@@ -1216,14 +1216,14 @@
   type: culture_note
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: lib_curetes_q
   latin: Quid faciunt Cūrētēs?
   english: What do the Curetes do?
   type: card_question
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
   question: Quid faciunt Cūrētēs?
   choices:
   - scūta pulsant
@@ -1257,14 +1257,14 @@
   type: culture_note
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: lib_metis_q
   latin: Quid Mētis Iovī dat?
   english: What does Metis give Jupiter?
   type: card_question
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
   question: Quid Mētis Iovī dat?
   choices:
   - medicāmentum
@@ -1298,14 +1298,14 @@
   type: culture_note
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: lib_pluto_q
   latin: Quod signum Plūtōnis est?
   english: What is Pluto's symbol?
   type: card_question
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
   question: Quod signum Plūtōnis est?
   choices:
   - galea
@@ -1343,14 +1343,14 @@
   type: culture_note
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: lib_iuno_q
   latin: Cuius fīlia est Iūnō?
   english: Whose daughter is Juno?
   type: card_question
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
   question: Cuius fīlia est Iūnō?
   choices:
   - Saturnī et Opis
@@ -1388,14 +1388,14 @@
   type: culture_note
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: lib_ceres_q
   latin: Quod est rēgnum Cereris?
   english: What is Ceres's domain?
   type: card_question
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
   question: Quod est rēgnum Cereris?
   choices:
   - frūgēs
@@ -1433,14 +1433,14 @@
   type: culture_note
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: lib_vesta_q
   latin: Quid in templō Vestae ardet?
   english: What burns in the temple of Vesta?
   type: card_question
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
   question: Quid in templō Vestae ardet?
   choices:
   - ignis
@@ -1466,14 +1466,14 @@
   type: culture_note
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: lib_saxum_q
   latin: Ubi saxum posteā stat?
   english: Where does the stone stand later?
   type: card_question
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
   question: Ubi saxum posteā stat?
   choices:
   - Delphīs
@@ -1491,343 +1491,343 @@
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: ch4_intro
   latin: Iuppiter et sociī in Tartarum descendunt.
   english: Jupiter and his allies go down into Tartarus.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: ch5_title
   latin: 'Capitulum V: Bellum Titānum'
   english: 'Chapter 5: The War of the Titans'
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: ch5_intro
   latin: Mōns Olympus contrā Mōntem Othryn.
   english: Mount Olympus against Mount Othrys.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: ch6_title
   latin: 'Epilogus: Latium'
   english: 'Epilogue: Latium'
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: gate_ch3c
   latin: Custōs viam claudit.
   english: The guard blocks the way.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: obj_inscr1
   latin: Campē hīc custōs est.
   english: Campe is the guard here.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: obj_inscr2
   latin: Hīc Cyclōpēs et Centimanī sunt.
   english: The Cyclopes and the Hundred-Handers are here.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: obj_catena
   latin: Hae sunt catēnae.
   english: These are chains.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: campe_1
   latin: Campē custōs Tartarī est!
   english: Campe is the jailer of Tartarus!
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: campe_2
   latin: Nēmō hinc exit!
   english: No one leaves from here!
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: campe_down
   latin: Claustra patent!
   english: The cells are open!
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cyc_free
   latin: Iuppiter Cyclōpēs līberat.
   english: Jupiter frees the Cyclopes.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: q_fulmen
   latin: Cui Cyclōpēs fulmen dant?
   english: To whom do the Cyclopes give the thunderbolt?
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: q_tridens
   latin: Cui Cyclōpēs tridentem dant?
   english: To whom do the Cyclopes give the trident?
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: q_galea
   latin: Cui Cyclōpēs galeam dant?
   english: To whom do the Cyclopes give the helmet?
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: opt_iovi
   latin: Iovī
   english: To Jupiter
   type: ui_label
   nle_category: ''
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: opt_neptuno
   latin: Neptūnō
   english: To Neptune
   type: ui_label
   nle_category: ''
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: opt_plutoni
   latin: Plūtōnī
   english: To Pluto
   type: ui_label
   nle_category: ''
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cyc_gift1
   latin: Cyclōpēs Iovī fulmen dant.
   english: The Cyclopes give Jupiter the thunderbolt.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cyc_gift2
   latin: Cyclōpēs Neptūnō tridentem dant.
   english: The Cyclopes give Neptune the trident.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cyc_gift3
   latin: Cyclōpēs Plūtōnī galeam dant.
   english: The Cyclopes give Pluto the helmet.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cyc_wrong
   latin: Nōn ita! Cyclōpēs rīdent.
   english: Not so! The Cyclopes laugh.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cyc_join
   latin: Cyclōpēs sociī sunt!
   english: The Cyclopes are allies!
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: learn_fulmen
   latin: 'Iuppiter novam vim discit: Fulmen iace!'
   english: 'Jupiter learns a new power: Throw the thunderbolt!'
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cyc_done
   latin: Cyclōpēs arma fabricant.
   english: The Cyclopes forge weapons.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cent_1
   latin: Centimanī līberī sunt!
   english: The Hundred-Handers are free!
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cent_2
   latin: Centum manūs, centum saxa! Nunc sociī sunt.
   english: A hundred hands, a hundred rocks! Now they are allies.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cent_done
   latin: Centimanī saxa parant.
   english: The Hundred-Handers ready their rocks.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: gate_ch4
   latin: Prīmum sociōs līberā!
   english: First free the allies!
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: obj_olympus
   latin: Hīc est Olympus, mōns deōrum.
   english: Here is Olympus, the mountain of the gods.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: obj_othrys
   latin: Hīc est Othrys, mōns Titānum.
   english: Here is Othrys, the mountain of the Titans.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: styx_1
   latin: Styx prīma ad sociōs venit.
   english: Styx comes first to the allies.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: styx_2
   latin: Styx Victōriam addūcit.
   english: Styx brings Victory.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: styx_done
   latin: Styx et Victōria Iovem iuvant.
   english: Styx and Victory help Jupiter.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: gate_ch5a
   latin: Styx tē exspectat.
   english: Styx is waiting for you.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: hyp_1
   latin: Hyperīōn prīmus pugnat!
   english: Hyperion fights first!
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: iap_1
   latin: Iapetus Hyperīōnis frāter est.
   english: Iapetus is Hyperion's brother.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: atl_1
   latin: Atlās Titānum dux est.
   english: Atlas is the leader of the Titans.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: sat_1
   latin: Saturnus ipse venit!
   english: Saturn himself comes!
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: prom_arr
   latin: Duo Titānēs ad Iovem veniunt.
   english: Two Titans come to Jupiter.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: prom_1
   latin: Promētheus Titān est, sed Iovī auxilium dat.
   english: Prometheus is a Titan, but he helps Jupiter.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: them_1
   latin: Themis quoque Iovī auxilium dat.
   english: Themis also helps Jupiter.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: war_1
   latin: Iuppiter fulmen iacit.
   english: Jupiter throws the thunderbolt.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: war_2
   latin: Saturnus cadit.
   english: Saturn falls.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: aft_1
   latin: Titānēs in Tartarum dēscendunt. Centimanī eōs custōdiunt.
   english: The Titans go down into Tartarus. The Hundred-Handers guard them.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: aft_2
   latin: Atlās caelum umerīs portat.
   english: Atlas carries the sky on his shoulders.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: epi_1
   latin: Frātrēs sortem trahunt. Iuppiter caelum, Neptūnus mare, Plūtō rēgnum īnferōrum habet.
   english: The brothers draw lots. Jupiter has the sky, Neptune the sea, Pluto the realm of the dead.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: epi_1_q
   latin: Quis mare habet?
   english: Who has the sea?
   type: card_question
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
   question: Quis mare habet?
   choices:
   - Neptūnus
@@ -1845,14 +1845,14 @@
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: epi_2_q
   latin: Quō Saturnus fugit?
   english: Where does Saturn flee?
   type: card_question
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
   question: Quō Saturnus fugit?
   choices:
   - in Latium
@@ -1870,378 +1870,378 @@
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: epi_4
   latin: Rōmae aerārium in templō Saturnī est. Mēnse Decembrī Saturnālia sunt.
   english: In Rome the treasury is in the temple of Saturn. In December there is the Saturnalia.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: epi_5
   latin: Iūnō trāns mare spectat. Ibi Carthāgō erit.
   english: Juno looks across the sea. There Carthage will be.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: fin_recap
   latin: Iuppiter Saturnum vīcit. Nunc Iuppiter rēx deōrum est.
   english: Jupiter defeated Saturn. Now Jupiter is king of the gods.
   type: ui_label
   nle_category: ''
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: fin_allies
   latin: 'Sociī tuī:'
   english: 'Your allies:'
   type: ui_label
   nle_category: ''
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: name_campe
   latin: Campē
   english: Campe
   type: ui_label
   nle_category: ''
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: name_hyperion
   latin: Hyperīōn
   english: Hyperion
   type: ui_label
   nle_category: ''
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: name_iapetus
   latin: Iapetus
   english: Iapetus
   type: ui_label
   nle_category: ''
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: name_atlas
   latin: Atlās
   english: Atlas
   type: ui_label
   nle_category: ''
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: name_saturnus
   latin: Saturnus
   english: Saturn
   type: ui_label
   nle_category: ''
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: intent_guard_light
   latin: Custōs hastam parat.
   english: The guard readies a spear.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: intent_guard_heavy
   latin: Custōs hastam altē tollit!
   english: The guard raises his spear high!
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: battle_guard_heavy
   latin: Hasta custōdis validē ferit!
   english: The guard's spear strikes hard!
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: intent_campe_light
   latin: Campē caudam tollit.
   english: Campe lifts her tail.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: battle_campe_light
   latin: Cauda Campēs ferit.
   english: Campe's tail strikes.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: intent_campe_heavy
   latin: Campē flammās parat!
   english: Campe prepares flames!
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: battle_campe_heavy
   latin: Campē flammās spīrat!
   english: Campe breathes flames!
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: win_campe
   latin: Campē cadit.
   english: Campe falls.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: intent_hyperion_light
   latin: Hyperīōn lūcem parat.
   english: Hyperion readies his light.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: battle_hyperion_light
   latin: Hyperīōn lūcem iacit.
   english: Hyperion throws light.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: intent_hyperion_heavy
   latin: Hyperīōn sōlem colligit!
   english: Hyperion gathers the sun!
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: battle_hyperion_heavy
   latin: Lux Hyperīōnis validē ferit!
   english: Hyperion's light strikes hard!
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: win_hyperion
   latin: Hyperīōn cadit.
   english: Hyperion falls.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: intent_iapetus_light
   latin: Iapetus hastam parat.
   english: Iapetus readies a spear.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: battle_iapetus_light
   latin: Iapetus hastam iacit.
   english: Iapetus throws a spear.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: intent_iapetus_heavy
   latin: Iapetus duās hastās tollit!
   english: Iapetus raises two spears!
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: battle_iapetus_heavy
   latin: Duae hastae Iovem ferunt!
   english: Two spears strike Jupiter!
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: win_iapetus
   latin: Iapetus cadit.
   english: Iapetus falls.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: intent_atlas_light
   latin: Atlās saxum tollit.
   english: Atlas lifts a rock.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: battle_atlas_light
   latin: Atlās saxum iacit.
   english: Atlas throws a rock.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: intent_atlas_heavy
   latin: Atlās montem tollit!
   english: Atlas lifts a mountain!
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: battle_atlas_heavy
   latin: Atlās montem iacit!
   english: Atlas throws a mountain!
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: win_atlas
   latin: Atlās cadit.
   english: Atlas falls.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: intent_saturnus_light
   latin: Saturnus falcem tollit.
   english: Saturn lifts his sickle.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: battle_saturnus_light
   latin: Saturnus falcem vibrat.
   english: Saturn swings his sickle.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: intent_saturnus_heavy
   latin: Saturnus falcem altē tollit!
   english: Saturn raises his sickle high!
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: battle_saturnus_heavy
   latin: Falx Saturnī Iovem ferit!
   english: Saturn's sickle strikes Jupiter!
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: win_saturnus
   latin: Saturnus cadit.
   english: Saturn falls.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: battle_blocked_g
   latin: Nihil Iovem ferit.
   english: Nothing strikes Jupiter.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: battle_frozen
   latin: Hostis nōn pugnat.
   english: The enemy does not fight.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: eff_super
   latin: Magnum vulnus!
   english: A great wound!
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: eff_weak
   latin: Parvum vulnus.
   english: A small wound.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cmd_fulmen
   latin: Fulmen iace!
   english: Throw the thunderbolt!
   type: ui_label
   nle_category: ''
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: battle_fulmen
   latin: Fulmen Iovis hostem ferit!
   english: Jupiter's thunderbolt strikes the enemy!
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cmd_cyclopes
   latin: Malleō percute!
   english: Strike with the hammer!
   type: ui_label
   nle_category: ''
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: battle_cyclopes
   latin: Malleus Cyclōpum hostem ferit.
   english: The Cyclopes' hammer strikes the enemy.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cmd_centimani
   latin: Centum saxa iace!
   english: Throw a hundred rocks!
   type: ui_label
   nle_category: ''
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: battle_centimani
   latin: Centum saxa hostem ferunt.
   english: A hundred rocks strike the enemy.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cmd_prometheus
   latin: Ignem fer!
   english: Bring fire!
   type: ui_label
   nle_category: ''
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: battle_prometheus
   latin: Promētheus Iovī ignem dat.
   english: Prometheus gives Jupiter fire.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cmd_themis
   latin: Lēgem dīc!
   english: Speak the law!
   type: ui_label
   nle_category: ''
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: battle_themis
   latin: Themis lēgem dīcit.
   english: Themis speaks the law.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: cmd_victoria
   latin: Iovī victōriam dā!
   english: Give Jupiter victory!
   type: ui_label
   nle_category: ''
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: battle_victoria
   latin: Victōria Iovī victōriam dat.
   english: Victory gives Jupiter victory.
   type: message
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: lib_campe
   latin: 'Campē, Campēs
 
@@ -2264,14 +2264,14 @@
   type: culture_note
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: lib_campe_q
   latin: Cuius custōs est Campē?
   english: What does Campe guard?
   type: card_question
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
   question: Cuius custōs est Campē?
   choices:
   - Tartarī
@@ -2309,14 +2309,14 @@
   type: culture_note
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: lib_cyclopes_q
   latin: Quid Cyclōpēs Iovī dant?
   english: What do the Cyclopes give Jupiter?
   type: card_question
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
   question: Quid Cyclōpēs Iovī dant?
   choices:
   - fulmen
@@ -2350,14 +2350,14 @@
   type: culture_note
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: lib_centimani_q
   latin: Quot manūs habent Centimanī?
   english: How many hands do the Hundred-Handers have?
   type: card_question
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
   question: Quot manūs habent Centimanī?
   choices:
   - centum
@@ -2391,14 +2391,14 @@
   type: culture_note
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: lib_prometheus_q
   latin: Quis Iovī auxilium dat?
   english: Who helps Jupiter?
   type: card_question
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
   question: Quis Iovī auxilium dat?
   choices:
   - Promētheus
@@ -2432,14 +2432,14 @@
   type: culture_note
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: lib_themis_q
   latin: Quod signum Themidis est?
   english: What is Themis's symbol?
   type: card_question
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
   question: Quod signum Themidis est?
   choices:
   - lēx
@@ -2473,14 +2473,14 @@
   type: culture_note
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: lib_styx_q
   latin: Quae prīma ad Iovem venit?
   english: Who comes to Jupiter first?
   type: card_question
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
   question: Quae prīma ad Iovem venit?
   choices:
   - Styx
@@ -2514,14 +2514,14 @@
   type: culture_note
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: lib_victoria_q
   latin: Quid Victōria Iovī dat?
   english: What does Victoria give Jupiter?
   type: card_question
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
   question: Quid Victōria Iovī dat?
   choices:
   - victōriam
@@ -2555,14 +2555,14 @@
   type: culture_note
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: lib_hyperion_q
   latin: Quid Hyperīōn iacit?
   english: What does Hyperion throw?
   type: card_question
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
   question: Quid Hyperīōn iacit?
   choices:
   - lūcem
@@ -2596,14 +2596,14 @@
   type: culture_note
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: lib_iapetus_q
   latin: Quid Iapetus iacit?
   english: What does Iapetus throw?
   type: card_question
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
   question: Quid Iapetus iacit?
   choices:
   - hastam
@@ -2637,14 +2637,14 @@
   type: culture_note
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
 - id: lib_atlas_q
   latin: Quid Atlās umerīs portat?
   english: What does Atlas carry on his shoulders?
   type: card_question
   nle_category: mythology
   spec_node_id: ''
-  review_status: draft
+  review_status: approved
   question: Quid Atlās umerīs portat?
   choices:
   - caelum
