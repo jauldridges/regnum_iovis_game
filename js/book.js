@@ -12,7 +12,10 @@ var Book = (function () {
   function nameOf(id) { return C('lib_' + id).split('\n')[0]; }
 
   B.unlock = function (id) { unlocked[id] = true; };
-  B.recruit = function (id) { recruited[id] = true; unlocked[id] = true; };   // used by later chapters
+  B.recruit = function (id) {
+    if (!recruited[id]) Score.add('allies', Score.CFG.ally);
+    recruited[id] = true; unlocked[id] = true;
+  };   // used by later chapters
   function partySize() { return Object.keys(party).length; }
 
   function el(tag, text, cls) {
@@ -60,6 +63,7 @@ var Book = (function () {
     var r = screen();
     if (right) {
       results[id] = { tries: attempt, correct: true, firstTry: attempt === 1 };
+      Score.add('book', attempt === 1 ? Score.CFG.bookFirst : Score.CFG.bookRetry);
       r.appendChild(el('div', C('ui_correct'), 'page'));
       r.appendChild(btn(C('ui_continue'), home));
     } else if (attempt === 1) {

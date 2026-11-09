@@ -127,8 +127,8 @@ window.CONTENT = [
  },
  {
   "id": "battle_intro",
-  "latin": "Custōs Saturnī appāret!",
-  "english": "A guard of Saturn appears!",
+  "latin": "Iuppiter sē dēfendit!",
+  "english": "Jupiter defends himself!",
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
@@ -141,7 +141,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": null,
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_tona",
@@ -150,7 +150,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_enemy_spear",
@@ -159,7 +159,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_win_1",
@@ -168,7 +168,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_win_2",
@@ -177,7 +177,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "name_iuppiter",
@@ -186,7 +186,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": null,
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "name_custos",
@@ -195,7 +195,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": null,
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "lib_title",
@@ -204,7 +204,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "ui_party",
@@ -213,7 +213,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "ui_close",
@@ -222,7 +222,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "ui_correct",
@@ -231,7 +231,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "ui_wrong",
@@ -240,7 +240,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "ui_answer_is",
@@ -249,7 +249,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "lib_iuppiter",
@@ -258,7 +258,7 @@ window.CONTENT = [
   "type": "culture_note",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "lib_iuppiter_q",
@@ -267,7 +267,7 @@ window.CONTENT = [
   "type": "card_question",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft",
+  "review_status": "approved",
   "question": "Cuius fīlius est Iuppiter?",
   "choices": [
    "Saturnī et Opis",
@@ -289,7 +289,7 @@ window.CONTENT = [
   "type": "culture_note",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "lib_ops_q",
@@ -298,7 +298,7 @@ window.CONTENT = [
   "type": "card_question",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft",
+  "review_status": "approved",
   "question": "Quid Ops Saturnō dat?",
   "choices": [
    "saxum",
@@ -320,7 +320,7 @@ window.CONTENT = [
   "type": "culture_note",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "lib_saturnus_q",
@@ -329,7 +329,7 @@ window.CONTENT = [
   "type": "card_question",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft",
+  "review_status": "approved",
   "question": "Quod signum Saturnī est?",
   "choices": [
    "fulmen",
@@ -351,7 +351,7 @@ window.CONTENT = [
   "type": "culture_note",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "lib_neptunus_q",
@@ -360,7 +360,7 @@ window.CONTENT = [
   "type": "card_question",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft",
+  "review_status": "approved",
   "question": "Quod est rēgnum Neptūnī?",
   "choices": [
    "caelum",
@@ -374,5 +374,221 @@ window.CONTENT = [
    "the sea",
    "the underworld"
   ]
+ },
+ {
+  "id": "guard_1",
+  "latin": "Ecce! Īnfāns hīc est!",
+  "english": "Look! The baby is here!",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "guard_2",
+  "latin": "Īnfantem Saturnō dō!",
+  "english": "I give the baby to Saturn!",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "fin_end",
+  "latin": "Fīnis",
+  "english": "The End",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "fin_win",
+  "latin": "Euge!",
+  "english": "Congratulations!",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "fin_lose",
+  "latin": "Bene cōnāris!",
+  "english": "Nice try!",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "fin_score",
+  "latin": "Glōria tua:",
+  "english": "Your glory:",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "fin_rank",
+  "latin": "Gradus tuus:",
+  "english": "Your rank:",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "fin_breakdown",
+  "latin": "Unde glōria vēnit?",
+  "english": "Where your glory came from",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "br_objects",
+  "latin": "Rēs inspectae",
+  "english": "Objects inspected",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "br_choice",
+  "latin": "Ēlēctiōnēs rēctae",
+  "english": "Right choices",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "br_battles",
+  "latin": "Proelia victa",
+  "english": "Battles won",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "br_book",
+  "latin": "Quaestiōnēs Librī",
+  "english": "Book questions",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "br_allies",
+  "latin": "Sociī",
+  "english": "Allies",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "br_speed",
+  "latin": "Celeritās",
+  "english": "Speed bonus",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "fin_again",
+  "latin": "Iterum lūdere",
+  "english": "Play again",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "fin_try",
+  "latin": "Iterum temptāre",
+  "english": "Try again",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "fin_confirm",
+  "latin": "Dē integrō incipiāmus? Glōria tua āmittētur.",
+  "english": "Start over? Your score will be lost.",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "fin_yes",
+  "latin": "Ita",
+  "english": "Yes",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "fin_no",
+  "latin": "Minimē",
+  "english": "No",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "rank_1",
+  "latin": "Īnfāns",
+  "english": "Infant",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "rank_2",
+  "latin": "Puer",
+  "english": "Boy",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "rank_3",
+  "latin": "Iuvenis",
+  "english": "Young man",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "rank_4",
+  "latin": "Dux",
+  "english": "Leader",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "rank_5",
+  "latin": "Rēx deōrum",
+  "english": "King of the gods",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
  }
 ];

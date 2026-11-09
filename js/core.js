@@ -62,13 +62,21 @@ var Game = (function () {
   function act() {
     if (msgOpen) return;
     var fx = player.x + dir.x, fy = player.y + dir.y;
-    if (guard && fx === guard.x && fy === guard.y) { Battle.start(); return; }
+    if (guard && fx === guard.x && fy === guard.y) {
+      // The guard says why we fight, then the screen wipes into the battle.
+      showMessages(Battle.lines(), function () { msgOpen = true; transition(function () { Battle.start(finish); }); });
+      return;
+    }
     if (fx === npc.x && fy === npc.y) {
       var t = line('ch1_servant_warn');
       if (t) showMessages([t], function () { if (scene === 'start') saturnScene(); });
     } else if (fx >= 0 && fy >= 0 && fx < W && fy < H && OBJ[MAP[fy][fx]]) {
       var ot = line(OBJ[MAP[fy][fx]]);
-      if (ot) { inspected[OBJ[MAP[fy][fx]]] = true; showMessages([ot]); }
+      if (ot) {
+        var oid = OBJ[MAP[fy][fx]];
+        if (!inspected[oid]) { inspected[oid] = true; Score.add('objects', Score.CFG.object); }
+        showMessages([ot]);
+      }
     }
   }
 
@@ -78,15 +86,16 @@ var Game = (function () {
     var ids = ['ch1_saturn_comes', 'ch1_choice_prompt', 'ch1_choice_stone', 'ch1_choice_baby',
                'ch1_wrong', 'ch1_right_1', 'ch1_right_2', 'ch1_right_3'];
     if (ids.some(function (i) { return !line(i); })) return;
-    scene = 'saturn'; saturn = { x: 7, y: 8 };
+    scene = 'saturn'; saturn = { x: 7, y: 8 }; var missed = false;
     showMessages([line('ch1_saturn_comes')], ask);
     function ask() {
       showChoice(line('ch1_choice_prompt'), [
         { label: line('ch1_choice_stone'), fn: function () {
+            Score.add('choice', missed ? Score.CFG.choiceRetry : Score.CFG.choice);
             showMessages([line('ch1_right_1'), line('ch1_right_2'), line('ch1_right_3')],
               function () { saturn = null; scene = 'done'; ['iuppiter', 'ops', 'saturnus'].forEach(Book.unlock);
                 if (Battle.ready()) guard = { x: 11, y: 6 }; }); } },
-        { label: line('ch1_choice_baby'), fn: function () { showMessages([line('ch1_wrong')], ask); } }
+        { label: line('ch1_choice_baby'), fn: function () { missed = true; showMessages([line('ch1_wrong')], ask); } }
       ]);
     }
   }
@@ -155,12 +164,38 @@ var Game = (function () {
     else if (k === 'left') step(-1, 0); else step(1, 0);
   }
 
+  // Screen wipe: bars close over the scene, `mid` runs while it is covered, then the bars open.
+  var trans = null, lastTs = 0;
+  function transition(mid) { msgOpen = true; trans = { t0: performance.now(), d1: 900, d2: 700, mid: mid, fired: false }; }
+  function drawTrans(now) {
+    if (!trans) return;
+    var e = now - trans.t0, p, N = 10, h = 320 / N;
+    if (e < trans.d1) p = e / trans.d1;
+    else {
+      if (!trans.fired) { trans.fired = true; trans.mid(); }
+      var e2 = e - trans.d1; if (e2 >= trans.d2) { trans = null; return; }
+      p = 1 - e2 / trans.d2;
+    }
+    ctx.fillStyle = 'rgba(0,0,0,' + (0.35 * p) + ')'; ctx.fillRect(0, 0, 480, 320);   // gentle darkening
+    ctx.fillStyle = '#000';
+    for (var i = 0; i < N; i++) {
+      var w = 480 * ease(Math.max(0, Math.min(1, p * 1.5 - (i / N) * 0.5)));
+      if (i % 2) ctx.fillRect(480 - w, i * h, w, h); else ctx.fillRect(0, i * h, w, h);
+    }
+  }
+  function ease(p) { return p * p * (3 - 2 * p); }
+
+  function finish() { if (Finale.ready()) Finale.show(); }   // for now the game ends after the first battle
+
   function loop(ts) {
+    if (lastTs) Score.tick(ts - lastTs, (!msgOpen || Battle.active) && !Book.state().open && !trans);
+    lastTs = ts;
     if (ts - moveTimer > 150) {
       var held = ['up', 'down', 'left', 'right'].filter(function (k) { return keys[k]; })[0];
       if (held) { stepDir(held); moveTimer = ts; }
     }
     if (Battle.active) Battle.draw(ctx); else draw();
+    drawTrans(performance.now());
     requestAnimationFrame(loop);
   }
 
@@ -189,6 +224,6 @@ var Game = (function () {
     guard = null; msgOpen = false; scene = 'battled';
     document.getElementById('msg').hidden = true; document.getElementById('choices').innerHTML = '';
   }
-  return { qline: qline, pauseButtons: pauseButtons, line: line, clean: clean, rawLatin: function (id) { return content[id].latin; },
+  return { englishOf: function (id) { return content[id].english; }, qline: qline, pauseButtons: pauseButtons, line: line, clean: clean, rawLatin: function (id) { return content[id].latin; },
            setBusy: function (b) { msgOpen = b; }, endBattle: endBattle, init: init, state: function () { return { player: player, npc: npc, msgOpen: msgOpen, guard: guard, scene: scene, inspected: inspected }; } };
 })();

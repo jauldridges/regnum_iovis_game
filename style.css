@@ -17,3 +17,6 @@ canvas{width:100%;max-height:70vh;aspect-ratio:3/2;image-rendering:pixelated;bac
 #book .page{white-space:pre-line;margin:.5em 0}
 #book .ok{background:#8fd18f}
 #book .sel{outline:3px solid #2f7fd1}
+#finale{position:absolute;inset:0;background:#1b1b24;color:#fff;z-index:5;overflow:auto;padding:1em}
+#finale h1{font-size:3rem;margin:.5em 0}#finale .big{font-size:1.8rem;margin:.3em 0}#finale .sub{opacity:.8}
+#finale .rows{list-style:none;padding:0;font-size:1.2rem}#finale .confirm{margin-top:1em;font-size:1.4rem}
