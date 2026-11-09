@@ -89,3 +89,304 @@
   checked_by: ""
   checked_on: ""
   note: "Confirm Greek spellings with the Latin teacher (design §23, open question 9)."
+
+- id: prologue_genealogy
+  claim: Chaos, then Terra; Terra and Caelus have the Titans, Cyclopes and Hundred-Handers.
+  game:
+  - pro_1
+  - pro_2
+  kind: tradition
+  sources:
+  - type: primary
+    work: Hesiod
+    ref: Theogony 116-153
+  confidence: high
+  verified: false
+  checked_by: ''
+  checked_on: ''
+  note: ''
+- id: caelus_imprisons
+  claim: Caelus shuts some of his children away under the earth.
+  game:
+  - pro_3
+  kind: tradition
+  sources:
+  - type: primary
+    work: Hesiod
+    ref: Theogony 154-160
+  - type: primary
+    work: Apollodorus
+    ref: Library 1.1.4
+  confidence: medium
+  verified: false
+  checked_by: ''
+  checked_on: ''
+  note: Game text says "shuts them under the earth"; Hesiod has them hidden in Terra.
+- id: terra_sickle
+  claim: Terra gives Saturn a sickle and he overthrows Caelus.
+  game:
+  - pro_4
+  - pro_4_q
+  - pro_5
+  kind: tradition
+  sources:
+  - type: primary
+    work: Hesiod
+    ref: Theogony 173-182
+  confidence: high
+  verified: false
+  checked_by: ''
+  checked_on: ''
+  note: 'Softened in the game: the overthrow happens off screen.'
+- id: prophecy_son
+  claim: A prophecy says a son will overthrow Saturn.
+  game:
+  - pro_6
+  - pro_6_q
+  kind: tradition
+  sources:
+  - type: primary
+    work: Hesiod
+    ref: Theogony 463-465
+  - type: primary
+    work: Apollodorus
+    ref: Library 1.1.5
+  confidence: medium
+  verified: false
+  checked_by: ''
+  checked_on: ''
+  note: ''
+- id: amalthea_nurse
+  claim: Amalthea, a goat, nurses the infant Jupiter on Crete.
+  game:
+  - lib_amalthea
+  - amal_join
+  kind: tradition
+  sources:
+  - type: primary
+    work: Callimachus
+    ref: Hymn to Zeus 46-49
+  - type: primary
+    work: Ovid
+    ref: Fasti 5.111-128
+  confidence: medium
+  verified: false
+  checked_by: ''
+  checked_on: ''
+  note: Traditions differ on whether Amalthea is a goat or a nymph with a goat.
+- id: amalthea_horn
+  claim: The horn of plenty (cornū cōpiae) is associated with Amalthea.
+  game:
+  - lib_amalthea
+  kind: tradition
+  sources:
+  - type: primary
+    work: Ovid
+    ref: Fasti 5.115-128
+  confidence: medium
+  verified: false
+  checked_by: ''
+  checked_on: ''
+  note: ''
+- id: curetes_shields
+  claim: The Curetes clash their shields to cover the infant Jupiter's crying.
+  game:
+  - lib_curetes
+  - cur_ok
+  kind: tradition
+  sources:
+  - type: primary
+    work: Callimachus
+    ref: Hymn to Zeus 52-54
+  - type: primary
+    work: Ovid
+    ref: Fasti 4.207-214
+  confidence: medium
+  verified: false
+  checked_by: ''
+  checked_on: ''
+  note: ''
+- id: metis_daughter
+  claim: Metis is a daughter of Oceanus.
+  game:
+  - lib_metis
+  kind: tradition
+  sources:
+  - type: primary
+    work: Hesiod
+    ref: Theogony 358
+  confidence: high
+  verified: false
+  checked_by: ''
+  checked_on: ''
+  note: ''
+- id: metis_drug
+  claim: Metis gives Jupiter a drug that makes Saturn bring up his children.
+  game:
+  - lib_metis
+  - metis_2
+  - cup_drink
+  kind: tradition
+  sources:
+  - type: primary
+    work: Apollodorus
+    ref: Library 1.2.1
+  confidence: medium
+  verified: false
+  checked_by: ''
+  checked_on: ''
+  note: Not in Hesiod (where Gaia tricks Kronos); the cupbearer disguise in the game is a gameplay device.
+- id: reverse_order
+  claim: The children come out in reverse order of swallowing (Neptune, Pluto, Juno, Ceres, Vesta), after the stone.
+  game:
+  - out_saxum
+  - out_neptunus
+  - out_pluto
+  - out_iuno
+  - out_ceres
+  - out_vesta
+  kind: tradition
+  sources:
+  - type: primary
+    work: Hesiod
+    ref: Theogony 495-497
+  - type: primary
+    work: Apollodorus
+    ref: Library 1.2.1
+  confidence: medium
+  verified: false
+  checked_by: ''
+  checked_on: ''
+  note: Check the exact order against Hesiod's birth order (Hestia, Demeter, Hera, Hades, Poseidon).
+- id: stone_delphi
+  claim: The stone was set up at Delphi (Pytho).
+  game:
+  - lib_saxum
+  kind: tradition
+  sources:
+  - type: primary
+    work: Hesiod
+    ref: Theogony 497-500
+  confidence: high
+  verified: false
+  checked_by: ''
+  checked_on: ''
+  note: ''
+- id: hades_helmet
+  claim: Pluto's symbol is the helmet (of invisibility).
+  game:
+  - lib_pluto
+  - battle_pluto
+  kind: tradition
+  sources:
+  - type: primary
+    work: Apollodorus
+    ref: Library 1.2.1
+  confidence: medium
+  verified: false
+  checked_by: ''
+  checked_on: ''
+  note: ''
+- id: juno_moneta
+  claim: Juno Moneta's temple on the Capitoline housed the mint; sacred geese of Juno on the Capitoline.
+  game:
+  - lib_iuno
+  kind: archaeology
+  sources:
+  - type: primary
+    work: Livy
+    ref: 7.28; 5.47
+  confidence: medium
+  verified: false
+  checked_by: ''
+  checked_on: ''
+  note: Add a modern source for the mint location.
+- id: juno_peacock
+  claim: The peacock is Hera/Juno's bird.
+  game:
+  - lib_iuno
+  kind: tradition
+  sources:
+  - type: primary
+    work: Ovid
+    ref: Metamorphoses 1.722-723
+  confidence: low
+  verified: false
+  checked_by: ''
+  checked_on: ''
+  note: Mostly attested in later tradition; check.
+- id: ceres_aventine
+  claim: The temple of Ceres, Liber and Libera stood on the Aventine, a centre for the plebeians.
+  game:
+  - lib_ceres
+  kind: archaeology
+  sources:
+  - type: primary
+    work: Livy
+    ref: '3.55'
+  - type: primary
+    work: Dionysius of Halicarnassus
+    ref: Roman Antiquities 6.17
+  confidence: medium
+  verified: false
+  checked_by: ''
+  checked_on: ''
+  note: ''
+- id: ceres_grain
+  claim: Ceres (Demeter) is goddess of grain; the ear of grain is her symbol.
+  game:
+  - lib_ceres
+  kind: tradition
+  sources:
+  - type: primary
+    work: Homeric Hymn to Demeter
+    ref: passim
+  confidence: high
+  verified: false
+  checked_by: ''
+  checked_on: ''
+  note: ''
+- id: vesta_fire
+  claim: The eternal fire of Vesta was tended by the Vestal Virgins.
+  game:
+  - lib_vesta
+  kind: tradition
+  sources:
+  - type: primary
+    work: Livy
+    ref: '1.20'
+  - type: primary
+    work: Ovid
+    ref: Fasti 6.249-460
+  confidence: high
+  verified: false
+  checked_by: ''
+  checked_on: ''
+  note: ''
+- id: vesta_greek
+  claim: Vesta corresponds to Greek Hestia, eldest child of Kronos and Rhea.
+  game:
+  - lib_vesta
+  kind: tradition
+  sources:
+  - type: primary
+    work: Hesiod
+    ref: Theogony 453-454
+  confidence: high
+  verified: false
+  checked_by: ''
+  checked_on: ''
+  note: ''
+- id: gameplay_moves
+  claim: Battle moves, uses per battle, party size, HP and the 3-second pause are game rules, not history.
+  game:
+  - battle_tona
+  - battle_nubes
+  - cmd_tona
+  kind: gameplay
+  sources: []
+  confidence: high
+  verified: false
+  checked_by: ''
+  checked_on: ''
+  note: Move names follow the design document; effects are invented for the game.

@@ -57,7 +57,7 @@ var Battle = (function () {
   }
 
   function end(result) {
-    B.active = false; Game.endBattle();
+    B.active = false; document.getElementById('msg').classList.remove('battle'); document.body.classList.remove('inbattle'); Game.endBattle();
     if (result === 'won') Score.add('battles', Score.CFG.battle);
     if (done) done(result);
   }
@@ -121,7 +121,7 @@ var Battle = (function () {
     B.uses = {}; Object.keys(MOVES).forEach(function (k) { B.uses[k] = MOVES[k].uses; });
     log = []; busy = true; done = onEnd; S = fresh(); Game.setBusy(true);
     wait(700).then(function () {
-      document.getElementById('msg').hidden = false; document.getElementById('msg-btn').hidden = true;
+      document.getElementById('msg').hidden = false; document.getElementById('msg').classList.add('battle'); document.body.classList.add('inbattle'); document.getElementById('msg-btn').hidden = true;
       say('battle_intro'); return wait(1500);
     }).then(function () { busy = false; render(); });
   };
