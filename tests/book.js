@@ -43,6 +43,6 @@
   await p.evaluate(() => { Battle.start({ hp: 3 }); });
   await p.waitForSelector('#choices button:not([disabled])', { timeout: 6000 });
   const lab = (await p.textContent('#choices button')).replace(/\s+/g, ' ').trim();
-  assert.equal(lab, 'Thunder! Tonā!', 'English label: ' + lab);
+  assert.equal(lab, '☁️ Thunder! Tonā!', 'English label (sky icon, English, small Latin): ' + lab);
   await H.finish('book');
 })().catch(e => { console.error(e); process.exit(1); });
