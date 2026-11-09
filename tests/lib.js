@@ -18,6 +18,7 @@ module.exports = async function setup() {
   const enabled = async sel => { await p.waitForSelector(sel + ':not([disabled])', { timeout: 8000 }); };
   H.cont = async () => { await enabled('#msg-btn'); await p.click('#msg-btn'); };
   H.choose = async i => { await enabled(`#choices button:nth-child(${i})`); await p.click(`#choices button:nth-child(${i})`); };
+  H.chooseLabel = async label => { const sel = `#choices button:has-text("${label}")`; await enabled(sel); await p.click(sel); };
   H.pcont = async () => { await enabled('#story button'); await p.click('#story button'); };   // story panels
   H.pick = async label => { await p.click(`#story button:has-text("${label}")`); };
   H.finish = async name => { assert.deepEqual(errs, []); await b.close(); console.log(name + ' OK'); };

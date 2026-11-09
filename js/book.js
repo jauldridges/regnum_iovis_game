@@ -4,6 +4,8 @@ var Book = (function () {
   // Story data only; all text lives in content/latin.yaml (lib_<id>, lib_<id>_q).
   var CH = { iuppiter: {}, ops: {}, saturnus: {}, saxum: {},
              amalthea: { helper: true }, curetes: { helper: true }, metis: { helper: true },
+             cyclopes: { helper: true }, centimani: { helper: true }, prometheus: { helper: true }, themis: { helper: true }, victoria: { helper: true },
+             styx: {}, campe: {}, hyperion: {}, iapetus: {}, atlas: {},
              neptunus: { sibling: true }, pluto: { sibling: true }, iuno: { sibling: true }, ceres: { sibling: true }, vesta: { sibling: true } };
   var unlocked = {}, recruited = {}, party = [], root, open = false;
 
@@ -21,6 +23,7 @@ var Book = (function () {
     if (CH[id].sibling && party.indexOf(id) < 0 && party.length < MAXSIB) party.push(id);
   };
   B.partyInfo = function () { return { siblings: party.slice(), helpers: ids(function (i) { return CH[i].helper && recruited[i]; }) }; };
+  B.setParty = function (list) { party = list.slice(0, MAXSIB); };   // used by tests and chapter select
   B.lastSibling = function () { return party[party.length - 1] || null; };
   B.nameNom = function (id) { return nameOf(id).split(',')[0]; };
 
@@ -46,7 +49,8 @@ var Book = (function () {
         home();
       }, 'pty' + (inP ? ' sel' : '')));
     });
-    root.appendChild(el('br'));
+    // the type chart, icons only: each power beats the next (sky > earth > sea > fire > underworld > sky)
+    root.appendChild(el('div', '☁️ → ⛰️ → 🌊 → 🔥 → 💀 → ☁️', 'page chart'));
     root.appendChild(btn(C('ui_close'), close));
   }
 

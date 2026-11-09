@@ -11,9 +11,9 @@ var Score = (function () {
     bookFirst: 50,         // book question right on the first try
     bookRetry: 25,         // book question right on the retry
     speedMax: 500,         // speed bonus, falling to nothing after speedMinutes of play
-    speedMinutes: 15,
-    goal: 1400,            // "Congratulations!" at or above this
-    ranks: [0, 300, 700, 1100, 1800]   // thresholds for rank_1 .. rank_5
+    speedMinutes: 30,
+    goal: 2800,            // "Congratulations!" at or above this
+    ranks: [0, 600, 1400, 2200, 3400]   // thresholds for rank_1 .. rank_5
   };
   var parts = {}, playMs = 0;
 
@@ -37,6 +37,7 @@ var Score = (function () {
   S.rankIndex = function (total) {
     var r = 0; CFG.ranks.forEach(function (t, i) { if (total >= t) r = i; }); return r + 1;
   };
+  S.count = function (key) { return parts[key] ? parts[key].n : 0; };
   S.playMs = function () { return playMs; };
   return S;
 })();
@@ -44,7 +45,7 @@ var Score = (function () {
 var Finale = (function () {
   var F = {}, IDS = ['fin_end', 'fin_win', 'fin_lose', 'fin_score', 'fin_rank', 'fin_breakdown', 'br_objects',
     'br_choice', 'br_battles', 'br_book', 'br_story', 'br_allies', 'br_speed', 'fin_again', 'fin_try', 'fin_confirm',
-    'fin_yes', 'fin_no', 'rank_1', 'rank_2', 'rank_3', 'rank_4', 'rank_5'];
+    'fin_yes', 'fin_no', 'fin_recap', 'fin_allies', 'rank_1', 'rank_2', 'rank_3', 'rank_4', 'rank_5'];
   F.ready = function () { return IDS.every(function (i) { return Game.line(i); }); };
   function C(id) { return Game.clean(Game.line(id)); }
   function en(id) { return Game.clean(Game.englishOf(id)); }
@@ -71,6 +72,8 @@ var Finale = (function () {
     rankBox.appendChild(el('div', C('fin_rank') + ' ' + C(rk), 'big'));
     rankBox.appendChild(el('div', en(rk), 'sub'));      // English underneath
     root.appendChild(rankBox);
+    root.appendChild(el('div', C('fin_recap'), 'big recap'));
+    root.appendChild(el('div', C('fin_allies') + ' ' + Score.count('allies'), 'big'));
     await wait(600);
     root.appendChild(el('h3', C('fin_breakdown')));
     var ul = el('ul', '', 'rows');

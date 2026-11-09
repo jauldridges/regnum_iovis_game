@@ -10,15 +10,15 @@
   await walk('U1 R6 U1'); await act();                       // pick up the grass
   assert((await text()).includes('herba')); await cont();
   await walk('L5 D1'); await act();                          // feed Amalthea: wrong, then right
-  assert((await text()).includes('Quid capellae dās?')); await choose(2);
+  assert((await text()).includes('Quid capellae dās?')); await H.chooseLabel('Saxum');
   assert((await text()).includes('saxum nōn ēdit')); await cont();
-  await choose(1); assert((await text()).includes('herbam ēdit')); await cont(); await cont();
+  await H.chooseLabel('Herbam'); assert((await text()).includes('herbam ēdit')); await cont(); await cont();
   assert((await st()).flags.amalthea);
   assert.deepEqual((await p.evaluate(() => Book.partyInfo())).helpers, ['amalthea']);
   await walk('R7 D2 D1'); await act();                       // the Curetes: wrong, then right
   assert((await text()).includes('adsunt')); await cont();
-  await choose(2); assert((await text()).includes('propius veniunt')); await cont();
-  await choose(1); assert((await text()).includes('nihil audiunt')); await cont();
+  await H.chooseLabel('Dormiunt'); assert((await text()).includes('propius veniunt')); await cont();
+  await H.chooseLabel('Scūta pulsant'); assert((await text()).includes('nihil audiunt')); await cont();
   assert((await text()).includes('Nūbibus')); await cont();
   let f = (await st()).flags; assert(f.curetes && f.nubes);
   await walk('L6 D1 D1'); await act();                       // guard 1

@@ -10,8 +10,8 @@
   await p.evaluate(() => { ['neptunus', 'pluto', 'iuno'].forEach(s => Book.recruit(s, true)); window.again = 0; Story.lose(() => { window.again++; }); });
   assert((await text()).includes('Saturnus Iūnōnem dēvorat'), 'most recent sibling is swallowed'); await cont();
   assert((await text()).includes('pōculum quaerit')); await cont();
-  await choose(2); assert((await text()).includes('nōn accipit')); await cont();
-  await choose(1); assert((await text()).includes('Iūnō ē Saturnō redit')); await cont();
+  await H.chooseLabel('Custōdī'); assert((await text()).includes('nōn accipit')); await cont();
+  await H.chooseLabel('Saturnō'); assert((await text()).includes('Iūnō ē Saturnō redit')); await cont();
   assert.equal(await p.evaluate(() => window.again), 1);
   // English mode
   await H.open('lang=en&drafts=1&ch=3');

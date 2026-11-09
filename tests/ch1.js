@@ -39,9 +39,9 @@
   await walk('D3 L1'); await act();                            // the servant
   assert((await text()).includes('Cēlā')); await cont();
   assert((await text()).includes('poscit')); await cont();
-  assert((await text()).includes('Quid Ops')); await choose(2);   // the baby: wrong
+  assert((await text()).includes('Quid Ops')); await H.chooseLabel('Īnfantem');   // the baby: wrong
   assert((await text()).includes('retrahit')); await cont();
-  assert((await text()).includes('Quid Ops')); await choose(1);   // the stone
+  assert((await text()).includes('Quid Ops')); await H.chooseLabel('Saxum');   // the stone
   await cont(); await cont(); await cont();
   assert((await pt()).includes('in Crētam portat')); await pcont();
   assert((await pt()).includes('Crēta')); await pcont();
