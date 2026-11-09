@@ -189,14 +189,14 @@ var Battle = (function () {
     ctx.fillStyle = '#6b8e4e'; ctx.fillRect(0, 140, 480, 180);
     // allies: Jupiter big, the rest small behind him
     var others = allies(), pos = {};
-    var jx = 90 + (S.ax.iuppiter || 0) + shake(S.aHit), jy = 70;
+    var jx = 112 + (S.ax.iuppiter || 0) + shake(S.aHit), jy = 70;
     pos.iuppiter = [jx, jy, 56];
-    others.forEach(function (id, i) { pos[id] = [24 + (i % 2) * 30 + (S.ax[id] || 0), 50 + Math.floor(i / 2) * 32, 24]; });
+    others.forEach(function (id, i) { pos[id] = [14 + (i % 3) * 28 + (S.ax[id] || 0), 48 + Math.floor(i / 3) * 30, 24]; });
     ctx.globalAlpha = B.up === 'dodge' ? 0.4 : 1;
     Object.keys(pos).forEach(function (id) { var p = pos[id]; ctx.fillStyle = COLORS[id] || '#999'; ctx.fillRect(p[0], p[1], p[2], p[2]); });
     ctx.globalAlpha = 1;
     flash(ctx, jx, jy, 56, 56, S.aHit, '#f33');
-    var sz = B.def.size, gx = 400 - sz + S.gx + shake(S.gHit), gy = 120 - sz + S.gy;
+    var sz = B.def.size, gx = 400 - sz + S.gx + shake(S.gHit), gy = 112 - sz + S.gy;
     ctx.globalAlpha = S.gAlpha; ctx.fillStyle = B.def.color; ctx.fillRect(gx, gy, sz, sz); ctx.globalAlpha = 1;
     flash(ctx, gx, gy, sz, sz, S.gHit, S.fx === 'fear' ? '#a5f' : '#fff');
     if (B.up === 'shield') { ctx.fillStyle = 'rgba(255,255,255,.55)'; [[0, 0], [30, 8], [14, -14], [40, -10]].forEach(function (o) { ctx.beginPath(); ctx.arc(jx + o[0], jy + 20 + o[1], 16, 0, 6.3); ctx.fill(); }); }
@@ -210,7 +210,7 @@ var Battle = (function () {
     if (!S.fx && B.active && B.enemyHp > 0) {
       var heavy = B.pattern[B.turn % B.pattern.length] === 'heavy';
       ctx.textAlign = 'right'; ctx.font = (heavy ? 'bold ' : '') + '13px sans-serif'; ctx.fillStyle = heavy ? '#ffd24a' : '#fff';
-      ctx.fillText((heavy ? '⚡ ' : '') + Game.clean(t(intentId())), 470, 132);
+      ctx.fillText((heavy ? '⚡ ' : '') + Game.clean(t(intentId())), 470, 134);
       ctx.textAlign = 'left';
     }
     if (S.spear !== null) { ctx.fillStyle = '#ddd'; ctx.fillRect(S.spear, 90, 40, 4); }
