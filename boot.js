@@ -9,5 +9,5 @@
     s.src = list[0]; s.onload = function () { load(list.slice(1), done); };
     document.head.appendChild(s);
   }
-  load(['content/latin.js', 'js/score.js', 'js/core.js', 'js/battle.js', 'js/book.js'], function () { Game.init(); });
+  load(['content/latin.js', 'js/score.js', 'js/maps.js', 'js/quiz.js', 'js/story.js', 'js/core.js', 'js/battle.js', 'js/book.js'], function () { Game.init(); });
 })();

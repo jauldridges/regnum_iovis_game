@@ -1,7 +1,7 @@
 // Collection book: pause, question, retry rules, party; English labels.
 (async () => {
   const H = await require('./lib')(); const { p, assert, st, tap } = H;
-  await H.open('?lang=la');
+  await H.open('lang=la&ch=1', { pause: null });
   await p.evaluate(() => ['iuppiter', 'ops', 'saturnus'].forEach(Book.unlock));
   await p.keyboard.press('b');
   assert(await p.isVisible('#book'));
@@ -34,13 +34,13 @@
   await p.evaluate(() => Book.recruit('neptunus'));
   assert.equal(await p.evaluate(() => Score.breakdown().find(r => r.key === 'allies').pts), 100);
   await p.click('#book button:has-text("Claudāmus")'); assert(!(await st()).msgOpen, 'book closes');
-  await p.keyboard.press('b'); await p.click('#book button.pty');
+  await p.keyboard.press('b');
   assert.deepEqual((await p.evaluate(() => Book.state())).party, ['neptunus']);
   await p.click('#book button.pty');
   assert.deepEqual((await p.evaluate(() => Book.state())).party, []);
 
-  await H.open('?lang=en');
-  await p.evaluate(() => { Battle.start(); });
+  await H.open('lang=en&ch=1');
+  await p.evaluate(() => { Battle.start({ hp: 3 }); });
   await p.waitForSelector('#choices button:not([disabled])', { timeout: 6000 });
   const lab = (await p.textContent('#choices button')).replace(/\s+/g, ' ').trim();
   assert.equal(lab, 'Thunder! Tonā!', 'English label: ' + lab);
