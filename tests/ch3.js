@@ -24,7 +24,7 @@
   assert(await p.evaluate(() => Battle.def.pattern.join()) === 'light,light,heavy');
   await cmd('Cōnsilium'); await cmd('Tridente'); await cmd('Nūbibus');
   assert((await text()).includes('Hasta nihil ferit'), 'heavy attack blocked: ' + await text());
-  await cmd('Tridente'); await cmd('Tonā');
+  await cmd('Tridente');
   await p.waitForFunction(() => !Battle.active);
   assert((await st()).flags.guardH); await H.scene();                                              // the guards run for the doors
   assert.equal(await p.evaluate(() => Story.flags.guardsGone), true);

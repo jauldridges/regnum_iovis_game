@@ -321,7 +321,7 @@ var Story = (function () {
   function cup() {
     say(['cup_2'], function () {
       choice('cup_choice', 'opt_saturno', 'opt_custodi', ['cup_wrong'], function () {
-        Game.scene(cupScene, function () { fight('guardH', [], { enemy: 'guard', hp: 6 }, guardsFlee); });   // the first battle of the war: the guards Saturn sent in
+        Game.scene(cupScene, function () { fight('guardH', [], { enemy: 'guard', hp: 5 }, guardsFlee); });   // the first battle of the war: the guards Saturn sent in
       });
     });
   }
@@ -398,9 +398,9 @@ var Story = (function () {
   var ALIAS = { guardH: 'gH2', saturnBoss: 'saturn_boss', guard1: 'guard1', guard2: 'guard2', guard3: 'guard3' };
   function fight(entId, pre, opts, after) {
     function run() { Game.transition(function () { Battle.start(opts, result); }); }
-    function result(res) {
+    function result(res, hpLeft, hpMax) {
       if (res === 'won') { F[entId] = true; freeHeld(function () { if (after) after(); else checkReady(); }); }
-      else if (res === 'lost') lose(run, entId);
+      else if (res === 'lost') { opts.max = hpMax; opts.hp = Math.max(1, hpLeft); lose(run, entId); }   // the enemy stays hurt for the next try
     }
     say(pre, run);
   }

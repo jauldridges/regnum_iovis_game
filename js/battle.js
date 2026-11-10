@@ -85,6 +85,8 @@ var Battle = (function () {
         var small = document.createElement('small'); small.textContent = ' ' + Game.clean(Game.rawLatin('cmd_' + id));
         small.style.fontSize = '.6em'; b.appendChild(small);
       } else b.textContent = glyph + Game.clean(tr) + suffix;
+      var heavyNext = B.pattern[B.turn % B.pattern.length] === 'heavy';
+      if (!busy && left > 0 && ((heavyNext && (m.kind === 'shield' || m.kind === 'dodge' || m.kind === 'stun')) || (B.teamHp <= 2 && m.kind === 'heal'))) b.className = 'hint';
       b.disabled = busy || left <= 0;
       b.onclick = function () { if (!busy) doMove(id); };
       holder.appendChild(b);
@@ -95,7 +97,7 @@ var Battle = (function () {
     B.active = false; document.getElementById('msg').classList.remove('battle'); document.body.classList.remove('inbattle');
     Game.endBattle();
     if (result === 'won') Score.add('battles', Score.CFG.battle);
-    if (done) done(result);
+    if (done) done(result, B.enemyHp, B.maxEnemy);
   }
 
   async function effect(name, ms) { S.fx = name; await tween(ms, function (p) { S.fxp = p; }); S.fx = null; }
@@ -164,7 +166,7 @@ var Battle = (function () {
     var item = Story.flags.item;                                             // the keepsake Ops took from the storeroom
     if (item === 'scutum') M.nubes.uses += 1; if (item === 'mel') { M.amalthea.amt = 2; M.amalthea.uses = 3; }
     maxHp = 4 + Math.max(0, Story.ch() - 3) + (Story.flags.item === 'pallium' ? 1 : 0);
-    B.active = true; B.teamHp = maxHp; B.enemyHp = O.hp || B.def.hp; B.maxEnemy = B.enemyHp;
+    B.active = true; B.teamHp = maxHp; B.enemyHp = O.hp || B.def.hp; B.maxEnemy = O.max || B.enemyHp;   // O.hp is lower than O.max on a retry: the enemy stays hurt
     B.weak = false; B.fire = false; B.stun = false; B.up = null; B.power = 0;
     B.uses = {}; Object.keys(M).forEach(function (k) { B.uses[k] = M[k].uses; });
     log = []; busy = true; done = onEnd; S = fresh(); Game.setBusy(true);
