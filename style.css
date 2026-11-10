@@ -83,3 +83,4 @@ body.inbattle #bookbtn { display: none; }
 button.withimg { display: inline-flex; flex-direction: column; align-items: center; gap: .1em; padding: .25em .9em; }
 button.withimg canvas { width: 56px; height: 56px; image-rendering: pixelated; }
 body.film #bookbtn, body.film #hud, body.film #lvl { display: none; }
+body.inbattle #lvl { display: none; }
