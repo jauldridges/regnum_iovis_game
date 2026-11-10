@@ -1113,15 +1113,6 @@ window.CONTENT = [
   "review_status": "approved"
  },
  {
-  "id": "guard_hall",
-  "latin": "Hostis! Iuppiter hīc est!",
-  "english": "An enemy! Jupiter is here!",
-  "type": "message",
-  "nle_category": "mythology",
-  "spec_node_id": "",
-  "review_status": "approved"
- },
- {
   "id": "acc_neptunus",
   "latin": "Neptūnum",
   "english": "Neptune",
@@ -1163,33 +1154,6 @@ window.CONTENT = [
   "english": "Vesta",
   "type": "ui_label",
   "nle_category": "",
-  "spec_node_id": "",
-  "review_status": "approved"
- },
- {
-  "id": "lose_swallow",
-  "latin": "Saturnus {x} dēvorat!",
-  "english": "Saturn swallows {x}!",
-  "type": "message",
-  "nle_category": "mythology",
-  "spec_node_id": "",
-  "review_status": "approved"
- },
- {
-  "id": "resc_start",
-  "latin": "Iuppiter pōculum quaerit.",
-  "english": "Jupiter looks for the cup.",
-  "type": "message",
-  "nle_category": "mythology",
-  "spec_node_id": "",
-  "review_status": "approved"
- },
- {
-  "id": "resc_ok",
-  "latin": "{x} ē Saturnō redit!",
-  "english": "{x} returns from Saturn!",
-  "type": "message",
-  "nle_category": "mythology",
   "spec_node_id": "",
   "review_status": "approved"
  },
@@ -3239,6 +3203,42 @@ window.CONTENT = [
   "id": "ch1_open_3",
   "latin": "Nunc Iuppiter nātus est.",
   "english": "Now Jupiter is born.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "cup_order",
+  "latin": "Custōdēs, capite eōs!",
+  "english": "Guards, seize them!",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "cup_flee",
+  "latin": "Custōdēs fugiunt!",
+  "english": "The guards flee!",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "lose_seize",
+  "latin": "Hostis {x} capit!",
+  "english": "The enemy seizes {x}!",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "freed",
+  "latin": "{x} līber est!",
+  "english": "{x} is free!",
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",

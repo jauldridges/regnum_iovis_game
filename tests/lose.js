@@ -1,21 +1,35 @@
-// Losing changes the story: guards find the cave (before ch 3); Saturn swallows a sibling and Jupiter rescues it (ch 3+).
+// Losing is something you watch: before chapter 3 the guards find the cave; later the enemy seizes your latest sibling,
+// the battle restarts without them, and winning frees them. Also: text already read never waits again.
 (async () => {
-  const H = await require('./lib')(); const { p, assert, text, cont, choose, st } = H;
+  const H = await require('./lib')(); const { p, assert, text, cont, st } = H;
   await H.open('lang=la&drafts=1&ch=2');
-  await p.evaluate(() => { window.again = 0; Story.lose(() => { window.again++; }); });
-  assert((await text()).includes('speluncam inveniunt')); await cont();
-  assert((await text()).includes('novum locum')); await cont();
-  assert.equal(await p.evaluate(() => window.again), 1, 'battle restarts');
+  await p.evaluate(() => { window.again = 0; Story.lose(() => { window.again++; }, 'guard1'); });
+  await p.waitForFunction(() => Game.state().scene, null, { timeout: 3000 });
+  await H.scene(); assert.equal(await p.evaluate(() => window.again), 1, 'the battle restarts after the scene (no walls of text)');
+  assert(!(await p.isVisible('#msg')), 'no message box in the way');
+
   await H.open('lang=la&drafts=1&ch=3');
-  await p.evaluate(() => { ['neptunus', 'pluto', 'iuno'].forEach(s => Book.recruit(s, true)); window.again = 0; Story.lose(() => { window.again++; }); });
-  assert((await text()).includes('Saturnus Iūnōnem dēvorat'), 'most recent sibling is swallowed'); await cont();
-  assert((await text()).includes('pōculum quaerit')); await cont();
-  await H.chooseLabel('Custōdī'); assert((await text()).includes('nōn accipit')); await cont();
-  await H.chooseLabel('Saturnō'); assert((await text()).includes('Iūnō ē Saturnō redit')); await cont();
-  assert.equal(await p.evaluate(() => window.again), 1);
+  await p.evaluate(() => { ['neptunus', 'pluto', 'iuno'].forEach(s => Book.recruit(s, true)); window.again = 0; Story.lose(() => { window.again++; }, 'metis'); });
+  await H.scene(); assert.equal(await p.evaluate(() => window.again), 1);
+  assert.deepEqual(await p.evaluate(() => Book.state().party), ['neptunus', 'pluto'], 'the latest sibling (Juno) is seized, the others fight on');
+  assert((await p.textContent('#toast')).includes('Hostis Iūnōnem capit'), 'the line names who was taken');
+  // lose again: the next sibling goes too
+  await p.evaluate(() => { Story.lose(() => { window.again++; }, 'metis'); }); await H.scene();
+  assert.deepEqual(await p.evaluate(() => Book.state().party), ['neptunus']);
+
   // English mode
   await H.open('lang=en&drafts=1&ch=3');
-  await p.evaluate(() => { ['neptunus', 'pluto'].forEach(s => Book.recruit(s, true)); Story.lose(() => {}); });
-  assert((await text()).includes('Saturn swallows Pluto!'));
+  await p.evaluate(() => { ['neptunus', 'pluto'].forEach(s => Book.recruit(s, true)); Story.lose(() => {}, 'metis'); });
+  await H.scene(); assert((await p.textContent('#toast')).includes('The enemy seizes Pluto!'));
+
+  // text already read never waits again (real 3-second pause)
+  await H.open('lang=la&drafts=1&ch=3', { pause: null });
+  await p.evaluate(() => { Story.talk('metis'); });
+  const sel = '#msg-btn';
+  await p.waitForSelector(sel + ':not([hidden])'); assert(await p.isDisabled(sel), 'first time: wait');
+  await p.waitForSelector(sel + ':not([disabled])', { timeout: 5000 }); await p.click(sel);
+  await p.waitForSelector(sel + ':not([disabled])', { timeout: 5000 }); await p.click(sel);       // second line of Metis, same wait
+  await p.evaluate(() => { Story.talk('metis'); });                                                // Metis again: she says metis_2, already read
+  await p.waitForSelector(sel + ':not([hidden])'); assert(!(await p.isDisabled(sel)), 'a line already read does not wait again');
   await H.finish('lose');
 })().catch(e => { console.error(e); process.exit(1); });

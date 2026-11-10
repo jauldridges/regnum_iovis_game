@@ -43,7 +43,7 @@ var Story = (function () {
       var labels = [{ text: L('map_italia'), x: 43, y: 31 }, { text: L('map_graecia'), x: 63, y: 21 }, { text: L('map_asia'), x: 100, y: 23 }, { text: L('map_africa'), x: 56, y: 72 }, { text: L('map_crete'), x: 74, y: 52 }];
       var t0 = performance.now(), stop = false;
       (function lp() { if (stop) return; Art.med(cx, performance.now() - t0, labels); requestAnimationFrame(lp); })();
-      Game.pauseButtons([btn], [L('ui_continue')]);
+      Game.pauseButtons([btn], [L('ui_continue')], L(titleId));
       btn.onclick = function () { stop = true; res(); };
     });
   }
@@ -257,7 +257,6 @@ var Story = (function () {
     if (id === 'guard3') return fight('guard3', ['ch2_extra', 'guard_1'], { enemy: 'guard', hp: 3 });
     if (id === 'metis') return metis();
     if (id === 'saturn') return cup();
-    if (id === 'guardH') return fight('guardH', ['guard_hall'], { enemy: 'guard', hp: 6 });
     if (id === 'campe') return fight('campe', ['campe_1', 'campe_2'], { enemy: 'campe' }, function () {
       Book.unlock('campe');
       Game.scene(async function (c) {                       // the cells burst open
@@ -322,7 +321,7 @@ var Story = (function () {
   function cup() {
     say(['cup_2'], function () {
       choice('cup_choice', 'opt_saturno', 'opt_custodi', ['cup_wrong'], function () {
-        Game.scene(cupScene, function () { F.cupDone = true; fight('guardH', ['guard_hall'], { enemy: 'guard', hp: 6 }); });   // the first battle of the war
+        Game.scene(cupScene, function () { fight('guardH', [], { enemy: 'guard', hp: 6 }, guardsFlee); });   // the first battle of the war: the guards Saturn sent in
       });
     });
   }
@@ -339,9 +338,19 @@ var Story = (function () {
       c.actor(k, k, s[0], s[1] + 0.4, { size: 24 }); await c.move(k, x, 7, 650, 1.4); await c.burst(x, 7, '✨', 5);
       c.caption('out_' + k, 1400); Book.recruit(k); await c.wait(900);
     }
-    c.tint('saturn', '#ff3030', 0.2, 0.55, 300); await c.flash('#ff0000', 350); await c.shake(800, 3); c.caption('cup_end', 1900); await c.wait(1800);
-    order.forEach(function (k) { c.burst(4 + 3 * order.indexOf(k), 7, '✨', 4); c.remove(k); });                // they join the party
-    c.untint('saturn'); await c.wait(500);
+    c.tint('saturn', '#ff3030', 0.2, 0.55, 300); await c.flash('#ff0000', 350); await c.shake(800, 3); c.caption('cup_end', 1700); await c.wait(1800);
+    order.forEach(function (k) { c.remove(k); });                                                               // the five join Jupiter
+    c.caption('cup_order', 1700); F.cupWar = true;                                                              // Saturn orders the guards in and retreats
+    await Promise.all([c.walk('saturn', [[10, 3], [17, 2]], 3), c.walk('gH1', [[9, 11], [8, 7]], 3.4), c.walk('gH2', [[10, 11], [10, 8]], 3.4), c.walk('gH3', [[11, 11], [12, 7]], 3.4)]);
+    c.untint('saturn'); F.cupDone = true; await c.wait(300);
+  }
+  // after the battle the guards run for the doors
+  function guardsFlee() {
+    Game.scene(async function (c) {
+      c.caption('cup_flee', 1700);
+      await Promise.all([c.walk('gH1', [[8, 7], [9, 11]], 3.6), c.walk('gH2', [[10, 8], [10, 11]], 3.6), c.walk('gH3', [[12, 7], [11, 11]], 3.6)]);
+      F.guardsGone = true; await c.wait(400);
+    });
   }
 
   // Chapter 4: Campe's cells. Gates open when Campe falls.
@@ -385,23 +394,40 @@ var Story = (function () {
   }
 
   // ---- battles: the speaker says why we fight, the screen wipes, then the battle
+  var held = [];                                              // siblings an enemy has seized, freed when the battle is won
+  var ALIAS = { guardH: 'gH2', saturnBoss: 'saturn_boss', guard1: 'guard1', guard2: 'guard2', guard3: 'guard3' };
   function fight(entId, pre, opts, after) {
     function run() { Game.transition(function () { Battle.start(opts, result); }); }
     function result(res) {
-      if (res === 'won') { F[entId] = true; if (after) after(); else checkReady(); }
-      else if (res === 'lost') lose(run);
+      if (res === 'won') { F[entId] = true; freeHeld(function () { if (after) after(); else checkReady(); }); }
+      else if (res === 'lost') lose(run, entId);
     }
     say(pre, run);
   }
-  // Losing changes the story: before chapter 3 the guards find the cave; after, Saturn swallows an ally
-  function lose(again) {
+  function enemyPos(c, entId) { return c.pos(ALIAS[entId] || entId); }   // where the enemy stands (the player's place if it is not on the map)
+  // Losing changes the story: before chapter 3 the guards find the cave; after, the enemy seizes your latest sibling (you see it)
+  // and the battle starts again without them. Win, and they are freed.
+  function lose(again, entId) {
     var sib = ch >= 3 ? Book.lastSibling() : null;
-    if (!sib) return say(['lose_ch2_1', 'lose_ch2_2'], again);
-    say([fill('lose_swallow', Game.line('acc_' + sib)), 'resc_start'], function () {
-      choice('cup_choice', 'opt_saturno', 'opt_custodi', ['cup_wrong'], function () {
-        say([fill('resc_ok', Book.nameNom(sib))], again);
-      });
-    });
+    if (!sib) return Game.scene(async function (c) { c.caption('lose_ch2_1', 1800); await c.wait(1900); c.caption('lose_ch2_2', 1800); await c.wait(1900); }, again);
+    Book.hold(sib); held.push(sib);
+    Game.scene(async function (c) {
+      var p = c.player(), at = enemyPos(c, entId);
+      c.actor('sib', sib, p[0], p[1], { size: 24 }); await c.move('sib', at[0], at[1], 600, 1); c.remove('sib');
+      await c.burst(at[0], at[1] - 0.3, '🔗', 5); await c.shake(300, 2);
+      var t = fill('lose_seize', Game.line('acc_' + sib)); if (t) { Game.toast(t.raw, 2000); } await c.wait(1900);
+    }, again);
+  }
+  function freeHeld(done) {
+    if (!held.length) return done();
+    var list = held.slice(); held = [];
+    Game.scene(async function (c) {
+      for (var i = 0; i < list.length; i++) {
+        var sib = list[i], p = c.player();
+        c.actor('sib', sib, p[0] + 1 + i, p[1] - 1, { size: 24 }); await c.burst(p[0] + 1 + i, p[1] - 1, '✨', 6); Book.release(sib);
+        var t = fill('freed', Book.nameNom(sib)); if (t) Game.toast(t.raw, 1500); await c.wait(1400); c.remove('sib');
+      }
+    }, done);
   }
   S.lose = lose; S.startCh1 = startCh1;   // also used by the tests
   return S;

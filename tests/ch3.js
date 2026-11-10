@@ -14,11 +14,11 @@
   assert((await text()).includes('nōn accipit')); await cont();
   await H.choose('Saturnō');
   assert(await p.evaluate(() => new Promise(r => setTimeout(() => r(Game.state().scene), 300))), 'the cup is a cutscene: Saturn drinks, turns green, and brings it all up');
-  await p.waitForFunction(() => Game.state().flags.cupDone, null, { timeout: 60000 });
+  await p.waitForFunction(() => Game.state().flags.cupWar, null, { timeout: 60000 });
   const info = await p.evaluate(() => ({ party: Book.state().party, stone: Story.flags.stoneOut }));
   assert.deepEqual(info.party, ['neptunus', 'pluto', 'iuno'], 'the first three siblings join the party'); assert(info.stone, 'the stone lies on the floor');
-  // the war begins: the guard attacks at once; the party's moves are needed
-  assert((await text()).includes('Hostis! Iuppiter hīc est!')); await cont(); await battleReady();
+  // the war begins with something you see: Saturn orders the guards in, they storm the hall, then the fight starts (no lone guard, no text)
+  await battleReady();
   const cmds = await p.$$eval('#choices button', bs => bs.map(b => b.textContent.trim()));
   ['Tonā', 'Tridente', 'Galeam', 'Hostēs', 'Cōnsilium'].forEach(c => assert(cmds.some(x => x.includes(c)), c + ' in ' + cmds));
   assert(await p.evaluate(() => Battle.def.pattern.join()) === 'light,light,heavy');
@@ -26,7 +26,8 @@
   assert((await text()).includes('Hasta nihil ferit'), 'heavy attack blocked: ' + await text());
   await cmd('Tridente'); await cmd('Tonā');
   await p.waitForFunction(() => !Battle.active);
-  assert((await st()).flags.guardH);
+  assert((await st()).flags.guardH); await H.scene();                                              // the guards run for the doors
+  assert.equal(await p.evaluate(() => Story.flags.guardsGone), true);
   await H.goTo(10, 11); await H.bump('D');                                                         // out through the door: on to Tartarus
   await pcont(); await pcont();
   assert.equal((await st()).map, 'tartarus');

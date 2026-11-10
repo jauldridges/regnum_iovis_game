@@ -158,7 +158,7 @@ var Art = (function () {
     if (id.indexOf('cent') === 0) return 'centimanus';
     if (id === 'amalthea') return 'goat';
     if (id === 'famula') return 'servant';
-    if (id.indexOf('patrol') === 0) return 'guard';
+    if (id.indexOf('patrol') === 0 || id.indexOf('gH') === 0) return 'guard';
     return SPR[id] ? id : 'servant';
   };
   A.allySprite = function (id) { return { iuppiter: 'jupiter', amalthea: 'goat', curetes: 'curete', cyclopes: 'cyclops', centimani: 'centimanus' }[id] || id; };

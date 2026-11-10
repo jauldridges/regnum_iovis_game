@@ -104,7 +104,9 @@ var MAPS = {
     deco: [{ x: 13, y: 6, spr: 'stone', size: 16, show: function () { return Story.flags.stoneOut; } }],
     start: { x: 10, y: 10 }, exits: [{ x: 9, y: 12, id: 'hall2_exit' }, { x: 10, y: 12, id: 'hall2_exit' }, { x: 11, y: 12, id: 'hall2_exit' }],
     ents: [{ id: 'saturn', x: 10, y: 3, show: function () { return !Story.flags.cupDone; } },
-           { id: 'guardH', x: 15, y: 8, show: function () { return Story.flags.cupDone && !Story.flags.guardH; } }]
+           { id: 'gH1', x: 9, y: 11, show: function () { return Story.flags.cupWar && !Story.flags.guardsGone; } },
+           { id: 'gH2', x: 10, y: 11, show: function () { return Story.flags.cupWar && !Story.flags.guardsGone; } },
+           { id: 'gH3', x: 11, y: 11, show: function () { return Story.flags.cupWar && !Story.flags.guardsGone; } }]
   },
   tartarus: {        // Chapter 4: Tartarus. Campe guards the cells of the Cyclopes (left) and the Hundred-Handers (right)
     rows: ['###I############J###',

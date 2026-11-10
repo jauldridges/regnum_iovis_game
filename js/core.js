@@ -148,13 +148,16 @@ var Game = (function () {
   }
 
   // ---- messages and choices. Buttons stay disabled for PAUSE seconds with a countdown.
-  function pauseButtons(btns, labels) {
+  // `key` is the text being read: once its pause has been served it never waits again (kept in memory only; a reload starts fresh)
+  var seen = {};
+  function pauseButtons(btns, labels, key) {
+    if (key && seen[key]) { btns.forEach(function (b, i) { b.disabled = false; b.textContent = labels[i]; }); btns[0].focus(); return; }
     var end = performance.now() + PAUSE * 1000;
     btns.forEach(function (b, i) { b.disabled = true; b.textContent = labels[i] + ' (' + Math.ceil(PAUSE) + ')'; });
     var iv = setInterval(function () {
       var ms = end - performance.now();
       if (ms > 0) { btns.forEach(function (b, i) { b.textContent = labels[i] + ' (' + Math.ceil(ms / 1000) + ')'; }); return; }
-      clearInterval(iv); btns.forEach(function (b, i) { b.disabled = false; b.textContent = labels[i]; }); btns[0].focus();
+      clearInterval(iv); if (key) seen[key] = true; btns.forEach(function (b, i) { b.disabled = false; b.textContent = labels[i]; }); btns[0].focus();
     }, 100);
   }
   function showMessages(texts, done) {
@@ -164,7 +167,7 @@ var Game = (function () {
     document.getElementById('choices').innerHTML = '';
     document.getElementById('msg-text').textContent = texts[0];
     box.hidden = false; btn.hidden = false;
-    pauseButtons([btn], [clean(line('ui_continue') || '')]);
+    pauseButtons([btn], [clean(line('ui_continue') || '')], texts[0]);
     btn.onclick = function () {
       if (texts.length > 1) return showMessages(texts.slice(1), done);
       box.hidden = true; msgOpen = false; if (done) done();
@@ -181,7 +184,7 @@ var Game = (function () {
       b.onclick = function () { box.hidden = true; msgOpen = false; holder.innerHTML = ''; o.fn(); };
       holder.appendChild(b); return b;
     });
-    if (nopause) btns.forEach(function (b, i) { b.textContent = clean(opts[i].label); }); else pauseButtons(btns, opts.map(function (o) { return clean(o.label); }));
+    if (nopause) btns.forEach(function (b, i) { b.textContent = clean(opts[i].label); }); else pauseButtons(btns, opts.map(function (o) { return clean(o.label); }), prompt);
   }
   // a short note that does not stop the game (the player keeps walking)
   function toast(text, ms) {

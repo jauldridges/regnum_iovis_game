@@ -15,7 +15,7 @@ var Quiz = (function () {
       root.appendChild(el('div', L(textId), 'page'));
       var b = btn('', function () { if (!qId || Q.results[key]) done(); else ask(attempt); });
       root.appendChild(b);
-      Game.pauseButtons([b], [L('ui_continue')]);
+      Game.pauseButtons([b], [L('ui_continue')], L(textId));   // a card already read this session does not wait again
     }
     function ask(attempt) {
       var q = Game.qline(qId); root.innerHTML = '';

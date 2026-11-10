@@ -16,7 +16,7 @@
   await p.click('#book button:has-text("Neptūnī")');
   assert((await bt()).includes('Relege')); await p.click('#book button');
   assert((await bt()).includes('Graecē: Zeus'), 'wrong answer sends the student back to the text');
-  assert(await p.isDisabled('#book button')); await p.waitForTimeout(3200); await p.click('#book button');
+  assert(!(await p.isDisabled('#book button')), 'a card already read does not make the student wait again'); await p.click('#book button');
   await p.click('#book button:has-text("Saturnī et Opis")');
   assert((await bt()).includes('Rēctē')); await p.click('#book button');
   assert.deepEqual((await p.evaluate(() => Book.state())).results.iuppiter, { tries: 2, correct: true, firstTry: false });

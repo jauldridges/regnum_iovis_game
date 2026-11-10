@@ -24,6 +24,8 @@ var Book = (function () {
   };
   B.partyInfo = function () { return { siblings: party.slice(), helpers: ids(function (i) { return CH[i].helper && recruited[i]; }) }; };
   B.setParty = function (list) { party = list.slice(0, MAXSIB); };   // used by tests and chapter select
+  B.hold = function (id) { var i = party.indexOf(id); if (i >= 0) party.splice(i, 1); };      // taken by an enemy for now
+  B.release = function (id) { if (party.indexOf(id) < 0) party.push(id); };
   B.lastSibling = function () { return party[party.length - 1] || null; };
   B.nameNom = function (id) { return nameOf(id).split(',')[0]; };
 
