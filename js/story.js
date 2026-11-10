@@ -13,7 +13,7 @@ var Story = (function () {
   }
 
   S.ch = function () { return ch; };
-  S.playerColor = function () { return ch <= 1 ? '#2f7fd1' : '#e8c547'; };   // Ops, then Jupiter
+  S.playerSprite = function () { return ch <= 1 ? 'ops' : 'jupiter'; };   // Ops, then Jupiter
 
   // Full-screen story cards: [textId, questionId|null] pairs, or 'fade' for a fade to black.
   async function panels(list, done) {

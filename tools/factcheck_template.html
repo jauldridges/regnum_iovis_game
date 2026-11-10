@@ -45,6 +45,7 @@ article.card[data-status="fix"] { border-left-color: var(--fix); }
 article.card[data-status="cant"] { border-left-color: var(--cant); }
 .meta { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; font-size: .78rem; color: var(--muted); }
 .tag { padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line); font-weight: 500; letter-spacing: .02em; }
+.tag.new { background: var(--accent); border-color: var(--accent); color: var(--bg); }
 .tag.low { color: var(--cant); border-color: var(--cant); } .tag.medium { color: var(--fix); border-color: var(--fix); } .tag.high { color: var(--ok); border-color: var(--ok); }
 .claim { font: 600 1.25rem/1.3 var(--font-head); margin: 0; text-wrap: balance; }
 .note { font-size: .9rem; padding: 8px 10px; background: var(--fix-soft); border-radius: 6px; }
@@ -100,6 +101,9 @@ const LABEL = { ok: 'Looks right', fix: 'Fix it', cant: "Can't find it" };
 const KIND = { tradition: 'Tradition', archaeology: 'Archaeology', language: 'Language', etymology: 'Etymology', date: 'Date', scholarship: 'Scholarship', gameplay: 'Gameplay' };
 const $ = (s, r = document) => r.querySelector(s);
 const draft = {};          // id -> {status, sources, note}
+const isNew = {};          // id -> true for claims added since this browser last looked, until decided
+let seen = null; try { seen = JSON.parse(localStorage.getItem('fc-seen') || 'null'); } catch (e) {}
+function markSeen(id) { try { const s = new Set(JSON.parse(localStorage.getItem('fc-seen') || '[]')); s.add(id); localStorage.setItem('fc-seen', JSON.stringify([...s])); } catch (e) {} isNew[id] = false; }
 const cards = {};          // id -> {el, ...}
 const timers = {};
 let col = null, filter = 'todo';
@@ -117,7 +121,7 @@ function blank(f) { return { status: '', sources: f.sources.map(s => ({ work: s.
 function buildCard(f) {
   const d = draft[f.id] = blank(f);
   const card = el('article', { class: 'card', 'data-id': f.id, 'data-status': '' });
-  const meta = el('div', { class: 'meta' }, el('span', { class: 'tag', text: KIND[f.kind] || f.kind }),
+  const meta = el('div', { class: 'meta' }, isNew[f.id] ? el('span', { class: 'tag new', text: 'New' }) : null, el('span', { class: 'tag', text: KIND[f.kind] || f.kind }),
     el('span', { class: 'tag ' + f.confidence, text: 'my confidence: ' + f.confidence }), el('span', { text: f.id }));
   const claim = el('h2', { class: 'claim', text: f.claim });
   const parts = [meta, claim];
@@ -166,7 +170,7 @@ function paint(id) {
   if (document.activeElement !== c.ta) c.ta.value = d.note || '';
 }
 function editedByHand(id) { if (!draft[id].status) { draft[id].status = 'fix'; paint(id); } queueSave(id); stats(); }
-function decide(id, s) { draft[id].status = draft[id].status === s ? '' : s; paint(id); queueSave(id); stats(); applyFilter(); }
+function decide(id, s) { draft[id].status = draft[id].status === s ? '' : s; if (draft[id].status) markSeen(id); paint(id); queueSave(id); stats(); applyFilter(); }
 
 // saving: one write at a time per document, after a short pause
 const chain = {};
@@ -190,13 +194,14 @@ function stats() {
   renderTabs(c, n - done);
 }
 function renderTabs(c, todo) {
-  const defs = [['todo', 'To check (' + todo + ')'], ['ok', LABEL.ok + ' (' + c.ok + ')'], ['fix', LABEL.fix + ' (' + c.fix + ')'], ['cant', LABEL.cant + ' (' + c.cant + ')'], ['all', 'All (' + FACTS.length + ')']];
+  const nNew = FACTS.filter(f => isNew[f.id] && !draft[f.id].status).length;
+  const defs = (nNew ? [['new', 'New (' + nNew + ')']] : []).concat([['todo', 'To check (' + todo + ')'], ['ok', LABEL.ok + ' (' + c.ok + ')'], ['fix', LABEL.fix + ' (' + c.fix + ')'], ['cant', LABEL.cant + ' (' + c.cant + ')'], ['all', 'All (' + FACTS.length + ')']]);
   const t = $('#tabs'); t.innerHTML = '';
   defs.forEach(([k, lab]) => { const b = el('button', { type: 'button', 'aria-pressed': String(filter === k), text: lab }); b.onclick = () => { filter = k; try { localStorage.setItem('fc-filter', k); } catch (e) {} stats(); applyFilter(); }; t.append(b); });
 }
 function applyFilter() {
   let shown = 0;
-  FACTS.forEach(f => { const s = draft[f.id].status; const show = filter === 'all' || (filter === 'todo' ? !s : s === filter); cards[f.id].el.hidden = !show; if (show) shown++; });
+  FACTS.forEach(f => { const s = draft[f.id].status; const show = filter === 'all' || (filter === 'new' ? isNew[f.id] && !s : filter === 'todo' ? !s : s === filter); cards[f.id].el.hidden = !show; if (show) shown++; });
   $('#empty').hidden = shown > 0;
   $('#empty').textContent = filter === 'todo' ? 'Everything is checked. Tell Claude you are done.' : 'Nothing here.';
 }
@@ -206,7 +211,7 @@ function applyRecord(id, rec) {
   const d = draft[id], c = cards[id]; if (!d || !rec) return;
   const busy = c.el.contains(document.activeElement);
   if (busy) return;                                    // never overwrite what is being typed
-  d.status = rec.status || ''; d.note = rec.note || '';
+  d.status = rec.status || ''; d.note = rec.note || ''; if (d.status && isNew[id]) markSeen(id);
   if (Array.isArray(rec.sources) && rec.sources.length) {
     d.sources = rec.sources;
     c.srcRows.forEach((x, i) => { const s = rec.sources[i]; if (s) { x.w.value = s.work || ''; x.r.value = s.ref || ''; x.r.closest('.src').querySelector('a').href = searchUrl(s); } });
@@ -217,6 +222,10 @@ function fill(map) { Object.keys(map).forEach(id => applyRecord(id, map[id])); s
 
 async function start() {
   const list = $('#list');
+  // first visit: nothing is new. Later visits: claims I have added since are marked New until you decide them.
+  const known = new Set(seen || FACTS.map(f => f.id));
+  FACTS.forEach(f => { isNew[f.id] = !known.has(f.id); });
+  try { localStorage.setItem('fc-seen', JSON.stringify(FACTS.filter(f => !isNew[f.id]).map(f => f.id))); } catch (e) {}
   FACTS.forEach(f => list.append(buildCard(f)));
   FACTS.forEach(f => paint(f.id)); stats(); applyFilter();
   let db = null;

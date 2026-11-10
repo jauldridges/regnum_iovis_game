@@ -5,7 +5,7 @@ var Game = (function () {
   var params = new URLSearchParams(location.search);
   var PAUSE = params.has('pause') ? parseFloat(params.get('pause')) : 3;   // seconds; the ?pause= override is for testing only
   var content = {}, ctx, map = null, mapId = '', player = { x: 0, y: 0 }, dir = { x: 0, y: -1 };
-  var msgOpen = false, keys = {}, moveTimer = 0, lastTs = 0, trans = null;
+  var msgOpen = false, keys = {}, moveTimer = 0, lastTs = 0, trans = null, walkUntil = 0;
 
   // ---- text lookup: approved lines only (or drafts, marked, with ?drafts=1)
   function line(id) {
@@ -26,6 +26,8 @@ var Game = (function () {
   function init() {
     CONTENT.forEach(function (e) { content[e.id] = e; });
     var title = document.getElementById('title');
+    var tctx = document.getElementById('titleart').getContext('2d');
+    (function tloop(ts) { if (title.hidden) return; Art.title(tctx, ts); requestAnimationFrame(tloop); })(0);
     document.getElementById('btn-la').onclick = function () { LANG = 'la'; start(); };
     document.getElementById('btn-en').onclick = function () { LANG = 'en'; start(); };
     if (params.has('lang')) start();
@@ -33,7 +35,7 @@ var Game = (function () {
       title.hidden = true;
       var c = document.getElementById('game'); c.hidden = false;
       document.getElementById('pad').hidden = false;
-      ctx = c.getContext('2d');
+      ctx = c.getContext('2d'); ctx.imageSmoothingEnabled = false;
       bind(); Book.init(); requestAnimationFrame(loop);
       Story.begin(params.has('ch') ? parseInt(params.get('ch'), 10) : 0);
     }
@@ -63,7 +65,7 @@ var Game = (function () {
       else Story.exitBlocked(ex.id);
       return;
     }
-    if (!tileAt(nx, ny).solid) { player.x = nx; player.y = ny; }
+    if (!tileAt(nx, ny).solid) { player.x = nx; player.y = ny; walkUntil = performance.now() + 220; }
   }
   function stepDir(k) {
     if (k === 'up') step(0, -1); else if (k === 'down') step(0, 1);
@@ -169,14 +171,29 @@ var Game = (function () {
     drawTrans(performance.now());
     requestAnimationFrame(loop);
   }
+  // which way a character faces: towards the player when close, otherwise down
+  function facing(e) {
+    var dx = player.x - e.x, dy = player.y - e.y;
+    if (Math.abs(dx) + Math.abs(dy) > 3) return 'down';
+    return Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'right' : 'left') : (dy > 0 ? 'down' : 'up');
+  }
   function draw() {
+    var now = performance.now();
     for (var y = 0; y < H; y++) for (var x = 0; x < W; x++) {
-      ctx.fillStyle = TILES[map.rows[y][x]].c; ctx.fillRect(x * T, y * T, T, T);
+      var ch = map.rows[y][x], nb = ch === 'T' ? (map.rows[y][x - 1] === 'T' ? 'l' : '') + (map.rows[y][x + 1] === 'T' ? 'r' : '') : '';
+      ctx.drawImage(Art.tile(ch, mapId, now, (x * 7 + y * 3) % 4, nb), x * T, y * T);
     }
-    map.exits.forEach(function (e) { ctx.fillStyle = Story.canExit(e.id) ? '#f5e9b8' : TILES[map.rows[e.y][e.x]].c; ctx.fillRect(e.x * T, e.y * T, T, T); });
-    map.ents.forEach(function (e) { if (e.show()) { ctx.fillStyle = e.c; ctx.fillRect(e.x * T + 4, e.y * T + 4, T - 8, T - 8); } });
-    ctx.fillStyle = Story.playerColor(); ctx.fillRect(player.x * T + 4, player.y * T + 4, T - 8, T - 8);
-    ctx.fillStyle = '#fff'; ctx.fillRect(player.x * T + 14 + dir.x * 8, player.y * T + 14 + dir.y * 8, 4, 4);
+    map.exits.forEach(function (e) {
+      ctx.drawImage(Art.tile('E', mapId, now), e.x * T, e.y * T);
+      if (!Story.canExit(e.id)) { ctx.fillStyle = 'rgba(30,20,10,.6)'; ctx.fillRect(e.x * T, e.y * T, T, T); }
+      else { ctx.fillStyle = 'rgba(255,255,200,' + (0.12 + 0.1 * Math.sin(now / 300)) + ')'; ctx.fillRect(e.x * T, e.y * T, T, T); }
+    });
+    // characters, back to front so lower ones overlap higher ones
+    var chars = map.ents.filter(function (e) { return e.show(); }).map(function (e) { return { y: e.y, draw: function () { Art.char(ctx, Art.entSprite(e.id), e.x * T, e.y * T, facing(e), 0, now, e.x * 3 + e.y); } }; });
+    var walking = now < walkUntil, fr = walking ? 1 + (Math.floor(now / 110) % 2) : 0;
+    chars.push({ y: player.y, draw: function () { Art.char(ctx, Story.playerSprite(), player.x * T, player.y * T, dir.y < 0 ? 'up' : dir.y > 0 ? 'down' : dir.x < 0 ? 'left' : 'right', fr, now, 0); } });
+    chars.sort(function (a, b) { return a.y - b.y; }).forEach(function (c) { c.draw(); });
+    Art.light(ctx, mapId);
   }
 
   function endBattle() {

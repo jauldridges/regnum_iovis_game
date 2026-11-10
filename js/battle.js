@@ -40,7 +40,9 @@ var Battle = (function () {
     atlas:    { name: 'name_atlas', color: '#5a5a6a', size: 80, el: 'terra', hp: 10, pattern: ['light', 'light', 'heavy'] },
     saturnus: { name: 'name_saturnus', color: '#b02a2a', size: 80, el: 'terra', hp: 14, pattern: ['light', 'heavy', 'light', 'heavy'] }
   };
+  var LOOK = { guard: ['guard', 4], campe: ['campe', 5], hyperion: ['hyperion', 5], iapetus: ['iapetus', 5], atlas: ['atlas', 6], saturnus: ['saturn', 6] };
   Object.keys(ENEMIES).forEach(function (k) {
+    ENEMIES[k].sprite = LOOK[k][0]; ENEMIES[k].size = 16 * LOOK[k][1];
     var e = ENEMIES[k]; if (k === 'guard') return;
     e.light = 'battle_' + k + '_light'; e.heavy = 'battle_' + k + '_heavy'; e.iLight = 'intent_' + k + '_light';
     e.iHeavy = 'intent_' + k + '_heavy'; e.win = 'win_' + k; e.blocked = 'battle_blocked_g';
@@ -57,7 +59,8 @@ var Battle = (function () {
     });
   }
   function fresh() {
-    return { ax: {}, gx: 0, gy: 0, aHit: 0, gHit: 0, fx: null, fxp: 0, spear: null, gAlpha: 1, shownT: maxHp, shownE: B.enemyHp };
+    var th = THEME[Game.state().map] || THEME['default'];
+    return { ax: {}, gx: 0, gy: 0, aHit: 0, gHit: 0, fx: null, fxp: 0, spear: null, gAlpha: 1, shownT: maxHp, shownE: B.enemyHp, bg: backdrop(Game.state().map), pad: th.pad, interior: !!th.interior, clouds: !THEME[Game.state().map] };
   }
 
   // The allies on screen and on the command list: Jupiter's moves, siblings in the party, recruited helpers.
@@ -171,49 +174,78 @@ var Battle = (function () {
     }).then(function () { busy = false; render(); });
   };
 
-  function bar(ctx, x, y, shown, max) {
-    var f = Math.max(0, shown) / max;
-    ctx.fillStyle = '#222'; ctx.fillRect(x - 2, y - 2, 104, 14);
-    ctx.fillStyle = f > 0.5 ? '#4c4' : f > 0.25 ? '#ec3' : '#e33'; ctx.fillRect(x, y, 100 * f, 10);
-  }
   function shake(h) { return h > 0 && h < 1 ? Math.sin(h * 40) * 6 * (1 - h) : 0; }
-  function flash(ctx, x, y, w, h, p, color) {
-    if (p > 0 && p < 1) { ctx.globalAlpha = 0.6 * (1 - p); ctx.fillStyle = color; ctx.fillRect(x, y, w, h); ctx.globalAlpha = 1; }
+  // a backdrop for each place, painted once per battle
+  var THEME = { tartarus: { sky: ['#1c1430', '#4a3560'], ground: '#3d3550', edge: '#2a2440', pad: '#2e2840' },
+                othrys: { sky: ['#6a2f45', '#f0b27a'], ground: '#7a5a46', edge: '#5e4434', pad: '#684c3a' },
+                hall2: { interior: true, ground: '#b8a883', pad: '#9a8a68' },
+                default: { sky: ['#4f86d4', '#cfe8ff'], ground: '#6fa24e', edge: '#5a8a3e', pad: '#5a8a3e' } };
+  function backdrop(mapId) {
+    var th = THEME[mapId] || THEME['default'], c = document.createElement('canvas'); c.width = 480; c.height = 320; var x = c.getContext('2d');
+    x.imageSmoothingEnabled = false;
+    if (th.interior) {
+      for (var ty = 0; ty < 5; ty++) for (var tx = 0; tx < 15; tx++) x.drawImage(Art.tile('#', mapId, 0, (tx + ty) % 4), tx * 32, ty * 32);
+      for (var fy = 5; fy < 10; fy++) for (var fx = 0; fx < 15; fx++) x.drawImage(Art.tile('.', mapId, 0, (fx * 7 + fy * 3) % 4), fx * 32, fy * 32);
+      x.fillStyle = 'rgba(0,0,0,.25)'; x.fillRect(0, 0, 480, 160);
+    } else {
+      var n = 10, a = th.sky[0], b = th.sky[1];
+      function mix(i) { var h1 = [1, 3, 5].map(function (k) { return parseInt(a.substr(k, 2), 16); }), h2 = [1, 3, 5].map(function (k) { return parseInt(b.substr(k, 2), 16); });
+        return 'rgb(' + h1.map(function (v, j) { return Math.round(v + (h2[j] - v) * i / (n - 1)); }).join(',') + ')'; }
+      for (var i = 0; i < n; i++) { x.fillStyle = mix(i); x.fillRect(0, i * 15, 480, 16); }
+      x.fillStyle = Art.shade(th.edge, 1.1);                                  // distant hills, in steps
+      [[0, 40, 90], [90, 28, 80], [170, 46, 100], [270, 30, 90], [360, 42, 130]].forEach(function (h) { for (var k = 0; k < h[2]; k += 8) { var ht = h[1] - Math.abs(h[2] / 2 - k) * h[1] / h[2] * 0.9; x.fillRect(h[0] + k, 150 - ht, 8, ht + 2); } });
+      x.fillStyle = th.ground; x.fillRect(0, 150, 480, 170);
+      x.fillStyle = th.edge; for (var gy = 156; gy < 320; gy += 14) x.fillRect(0, gy, 480, 2);
+    }
+    if (th.interior) { x.fillStyle = 'rgba(0,0,0,.18)'; x.fillRect(0, 150, 480, 2); }
+    return c;
   }
+  function plate(ctx, x, y, w, name, shown, max, glyph, right) {
+    ctx.fillStyle = '#1c1830'; ctx.fillRect(x, y, w, 44); ctx.strokeStyle = '#e8c547'; ctx.lineWidth = 2; ctx.strokeRect(x + 1, y + 1, w - 2, 42);
+    ctx.fillStyle = '#fff'; ctx.font = '15px "Pixelify Sans", sans-serif'; ctx.textAlign = 'left'; ctx.fillText(name + (glyph ? ' ' + glyph : ''), x + 8, y + 19);
+    bar(ctx, x + 8, y + 26, shown, max, w - 20);
+  }
+  function bar(ctx, x, y, shown, max, w) {
+    var f = Math.max(0, shown) / max; w = w || 100;
+    ctx.fillStyle = '#0c0a14'; ctx.fillRect(x - 2, y - 2, w + 4, 14);
+    ctx.fillStyle = f > 0.5 ? '#4c4' : f > 0.25 ? '#ec3' : '#e33'; ctx.fillRect(x, y, w * f, 10);
+    ctx.fillStyle = 'rgba(255,255,255,.35)'; ctx.fillRect(x, y, w * f, 3);
+  }
+  function tint(p, color) { return p > 0 && p < 1 ? { c: color, a: 0.65 * (1 - p) } : null; }
 
   B.draw = function (ctx) {
     var now = performance.now(), dt = lastDraw ? (now - lastDraw) / 1000 : 0; lastDraw = now;
     S.shownT += Math.max(-2 * dt, Math.min(2 * dt, B.teamHp - S.shownT));   // bars move 2 points a second
     S.shownE += Math.max(-2 * dt, Math.min(2 * dt, B.enemyHp - S.shownE));
-    ctx.fillStyle = '#3a5a8c'; ctx.fillRect(0, 0, 480, 140);
-    ctx.fillStyle = '#6b8e4e'; ctx.fillRect(0, 140, 480, 180);
-    // allies: Jupiter big, the rest small behind him
-    var others = allies(), pos = {};
-    var jx = 112 + (S.ax.iuppiter || 0) + shake(S.aHit), jy = 70;
-    pos.iuppiter = [jx, jy, 56];
-    others.forEach(function (id, i) { pos[id] = [14 + (i % 3) * 28 + (S.ax[id] || 0), 48 + Math.floor(i / 3) * 30, 24]; });
-    ctx.globalAlpha = B.up === 'dodge' ? 0.4 : 1;
-    Object.keys(pos).forEach(function (id) { var p = pos[id]; ctx.fillStyle = COLORS[id] || '#999'; ctx.fillRect(p[0], p[1], p[2], p[2]); });
-    ctx.globalAlpha = 1;
-    flash(ctx, jx, jy, 56, 56, S.aHit, '#f33');
-    var sz = B.def.size, gx = 400 - sz + S.gx + shake(S.gHit), gy = 112 - sz + S.gy;
-    ctx.globalAlpha = S.gAlpha; ctx.fillStyle = B.def.color; ctx.fillRect(gx, gy, sz, sz); ctx.globalAlpha = 1;
-    flash(ctx, gx, gy, sz, sz, S.gHit, S.fx === 'fear' ? '#a5f' : '#fff');
-    if (B.up === 'shield') { ctx.fillStyle = 'rgba(255,255,255,.55)'; [[0, 0], [30, 8], [14, -14], [40, -10]].forEach(function (o) { ctx.beginPath(); ctx.arc(jx + o[0], jy + 20 + o[1], 16, 0, 6.3); ctx.fill(); }); }
+    ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(S.bg, 0, 0);
+    if (S.clouds) { ctx.fillStyle = 'rgba(255,255,255,.55)'; [[40, 20, 70], [220, 34, 90], [370, 14, 60]].forEach(function (c) { var cx = (c[0] + now / 90) % 560 - 60; ctx.fillRect(cx, c[1], c[2], 14); ctx.fillRect(cx + 12, c[1] - 8, c[2] - 30, 10); }); }
+    // allies: Jupiter big, the others small behind him
+    var others = allies(), pos = {}, sz = B.def.size;
+    var jx = 150 + (S.ax.iuppiter || 0) + shake(S.aHit), jy = 76;
+    pos.iuppiter = [jx, jy, 80];
+    others.forEach(function (id, i) { pos[id] = [10 + (i % 3) * 34 + (S.ax[id] || 0), 66 + Math.floor(i / 3) * 36, 32]; });
+    var gx = 410 - sz + S.gx + shake(S.gHit), gy = 150 - sz + S.gy;
+    ctx.fillStyle = S.pad;                                                        // platforms
+    ctx.beginPath(); ctx.ellipse(jx + 40 - (S.ax.iuppiter || 0), 154, 52, 10, 0, 0, 6.3); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(410 - sz / 2, 154, sz / 2 + 14, 10, 0, 0, 6.3); ctx.fill();
+    Object.keys(pos).forEach(function (id) {
+      var p = pos[id]; ctx.fillStyle = 'rgba(0,0,0,.25)'; ctx.beginPath(); ctx.ellipse(p[0] + p[2] / 2, p[1] + p[2] - 1, p[2] / 2 - 2, 4, 0, 0, 6.3); ctx.fill();
+      Art.big(ctx, Art.allySprite(id), 'right', p[0], p[1], p[2], id === 'iuppiter' ? tint(S.aHit, '#ff3030') : null, id === 'iuppiter' && B.up === 'dodge' ? 0.4 : 1);
+    });
+    Art.big(ctx, B.def.sprite, 'left', gx, gy, sz, tint(S.gHit, S.fx === 'fear' ? '#aa55ff' : '#ffffff'), S.gAlpha);
+    if (B.up === 'shield') { ctx.fillStyle = 'rgba(255,255,255,.6)'; [[10, 30], [40, 40], [64, 28], [30, 8], [52, 12]].forEach(function (o) { ctx.beginPath(); ctx.arc(jx + o[0], jy + o[1], 14, 0, 6.3); ctx.fill(); }); }
     effects(ctx, pos, gx, gy, sz);
-    ctx.fillStyle = '#fff'; ctx.font = '14px sans-serif'; ctx.textAlign = 'left';
-    ctx.fillText(Game.clean(t('name_iuppiter')) + ' ' + EL.caelum, 20, 20); bar(ctx, 20, 28, S.shownT, maxHp);
-    ctx.textAlign = 'right'; ctx.fillStyle = '#fff';
-    ctx.fillText(Game.clean(t(B.def.name)) + (B.def.el ? ' ' + EL[B.def.el] : ''), 466, 20);
-    ctx.textAlign = 'left'; bar(ctx, 360, 28, S.shownE, B.maxEnemy);
+    plate(ctx, 8, 6, 160, Game.clean(t('name_iuppiter')), S.shownT, maxHp, EL.caelum);
+    plate(ctx, 176, 6, 160, Game.clean(t(B.def.name)), S.shownE, B.maxEnemy, B.def.el ? EL[B.def.el] : '');
     // what the enemy will do next
     if (!S.fx && B.active && B.enemyHp > 0) {
-      var heavy = B.pattern[B.turn % B.pattern.length] === 'heavy';
-      ctx.textAlign = 'right'; ctx.font = (heavy ? 'bold ' : '') + '13px sans-serif'; ctx.fillStyle = heavy ? '#ffd24a' : '#fff';
-      ctx.fillText((heavy ? '⚡ ' : '') + Game.clean(t(intentId())), 470, 134);
-      ctx.textAlign = 'left';
+      var heavy = B.pattern[B.turn % B.pattern.length] === 'heavy', txt = (heavy ? '⚡ ' : '') + Game.clean(t(intentId()));
+      ctx.font = (heavy ? 'bold ' : '') + '15px "Pixelify Sans", sans-serif'; ctx.textAlign = 'right';
+      var w = ctx.measureText(txt).width; ctx.fillStyle = 'rgba(20,16,36,.8)'; ctx.fillRect(474 - w - 10, 160, w + 14, 22);
+      ctx.fillStyle = heavy ? '#ffd24a' : '#fff'; ctx.fillText(txt, 470, 176); ctx.textAlign = 'left';
     }
-    if (S.spear !== null) { ctx.fillStyle = '#ddd'; ctx.fillRect(S.spear, 90, 40, 4); }
+    if (S.spear !== null) { ctx.fillStyle = '#e8e8f0'; ctx.fillRect(S.spear, 112, 40, 4); ctx.fillStyle = '#fff'; ctx.fillRect(S.spear - 6, 111, 8, 6); }
   };
 
   function effects(ctx, pos, gx, gy, sz) {
@@ -223,13 +255,13 @@ var Battle = (function () {
       ctx.strokeStyle = '#ffe94d'; ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(pts[0][0], pts[0][1]);
       for (var i = 1; i <= n; i++) ctx.lineTo(pts[i][0], pts[i][1]); ctx.stroke();
       if (p > 0.8) { ctx.fillStyle = 'rgba(255,255,200,.3)'; ctx.fillRect(0, 0, 480, 320); }
-    } else if (f === 'wave') { ctx.fillStyle = '#4ab'; ctx.fillRect(120 + p * 230, 60, 40, 80);
+    } else if (f === 'wave') { ctx.fillStyle = '#4ab'; ctx.fillRect(170 + p * 190, 76, 44, 76); ctx.fillStyle = '#9ad8e8'; ctx.fillRect(170 + p * 190, 76, 44, 8);
     } else if (f === 'hammer') { ctx.fillStyle = '#d9822b'; ctx.fillRect(gx - 40 + p * 30, gy - 30 + p * 40, 50, 24);
     } else if (f === 'rocks') { ctx.fillStyle = '#998'; for (var k = 0; k < 6; k++) ctx.fillRect(gx + (k * 13) % 60, gy - 60 + p * 60 + (k % 3) * 8, 10, 10);
     } else if (f === 'fire') { ctx.fillStyle = p % 0.2 < 0.1 ? '#f80' : '#fc3'; ctx.fillRect(gx + 6, gy + sz - 50 * p, sz - 12, 50 * p);
     } else if (f === 'cloud' || f === 'ghost' || f === 'shields') {
       ctx.fillStyle = f === 'cloud' ? 'rgba(255,255,255,.6)' : 'rgba(120,120,140,.5)';
-      ctx.beginPath(); ctx.arc(pos.iuppiter[0] + 28, pos.iuppiter[1] + 28, 20 + 30 * p, 0, 6.3); ctx.fill();
+      ctx.beginPath(); ctx.arc(pos.iuppiter[0] + 40, pos.iuppiter[1] + 40, 30 + 36 * p, 0, 6.3); ctx.fill();
     } else if (f === 'heal') {
       ctx.fillStyle = '#5f5'; Object.keys(pos).forEach(function (id) { ctx.fillRect(pos[id][0] + pos[id][2] / 2 - 2, pos[id][1] - 20 * p, 4, 12); ctx.fillRect(pos[id][0] + pos[id][2] / 2 - 6, pos[id][1] - 20 * p + 4, 12, 4); });
     } else if (f === 'advice') { ctx.fillStyle = '#ff4'; ctx.font = '28px sans-serif'; ctx.fillText('?', gx + sz / 2 - 6, gy - 8 - 10 * p);

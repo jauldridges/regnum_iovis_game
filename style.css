@@ -1,29 +1,63 @@
-html,body{margin:0;height:100%;background:#1b1b24;color:#fff;font-family:system-ui,sans-serif}
-#wrap{position:relative;max-width:960px;margin:0 auto;text-align:center}
-#title{padding-top:12vh}
-#title h1{font-size:3rem}
-button{font-size:1.4rem;padding:.6em 1.2em;margin:.3em;border-radius:8px;border:0;background:#e8c547;color:#222;cursor:pointer}
-button:disabled{background:#777;color:#ccc;cursor:default}
-canvas{width:100%;max-height:70vh;aspect-ratio:3/2;image-rendering:pixelated;background:#000}
-#msg{position:absolute;left:3%;right:3%;bottom:14%;background:#fffbe8;color:#222;border:4px solid #5b3d1b;border-radius:10px;padding:1em;text-align:left;font-size:1.5rem}
-#msg-btn{float:right}
-#msg-text{white-space:pre-line}
-#pad{display:none}
-@media (pointer:coarse){#pad{display:block}}
-#pad button{width:64px;height:64px;font-size:1.6rem}
-#bookbtn{position:absolute;top:8px;right:8px;font-size:1rem;padding:.4em .8em;z-index:2}
-#book{position:absolute;left:3%;right:3%;top:3%;bottom:3%;overflow:auto;background:#fffbe8;color:#222;border:4px solid #5b3d1b;border-radius:10px;padding:1em;text-align:left;font-size:1.3rem;z-index:3}
-#book h2{margin:.2em 0}
-#book .page{white-space:pre-line;margin:.5em 0}
-#book .ok{background:#8fd18f}
-#book .sel{outline:3px solid #2f7fd1}
-#finale{position:absolute;inset:0;background:#1b1b24;color:#fff;z-index:5;overflow:auto;padding:1em}
-#finale h1{font-size:3rem;margin:.5em 0}#finale .big{font-size:1.8rem;margin:.3em 0}#finale .sub{opacity:.8}
-#finale .rows{list-style:none;padding:0;font-size:1.2rem}#finale .confirm{margin-top:1em;font-size:1.4rem}
-#story{position:absolute;inset:0;background:#fffbe8;color:#222;z-index:4;overflow:auto;padding:1.5em;font-size:1.6rem;text-align:center;transition:background .6s}
-#story.black{background:#000}
-#story .page{white-space:pre-line;margin:1em 0}
-#msg.battle{bottom:1%;padding:.4em .8em;font-size:1.05rem}
-#msg.battle button{font-size:1rem;padding:.3em .7em;margin:.15em}
-#msg.battle #msg-text{min-height:3.6em}
-body.inbattle #bookbtn{display:none}
+/* Look: a small arcade cabinet. Pixel fonts, hard shadows, gold and ink. Colours are tokens so they can be tuned in one place. */
+:root {
+  --ink: #2a1d12; --paper: #f8efd2; --paper-2: #efe2b8; --gold: #e8c547; --gold-dark: #8a6a10; --night: #12122a; --night-2: #1d1d40;
+  --good: #8fd18f; --blue: #2f7fd1; --red: #b02a2a;
+  --font-ui: "Pixelify Sans", "Trebuchet MS", system-ui, sans-serif; --font-title: "Press Start 2P", "Courier New", monospace;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; min-height: 100%; background: var(--night); color: #fff; font-family: var(--font-ui); }
+body { background-image: radial-gradient(#2a2a5a 1px, transparent 1px), radial-gradient(#23234a 1px, transparent 1px); background-size: 28px 28px, 44px 44px; background-position: 0 0, 14px 22px; }
+#wrap { position: relative; max-width: 960px; margin: 0 auto; padding: 12px 8px 24px; text-align: center; }
+
+/* title screen */
+#title { padding-top: 3vh; }
+#titleart { width: min(86vw, 480px); image-rendering: pixelated; border: 6px solid var(--gold); outline: 4px solid var(--ink); box-shadow: 0 10px 0 rgba(0,0,0,.4); background: #000; }
+#title h1 { font: 400 clamp(1.4rem, 5vw, 2.4rem)/1.3 var(--font-title); color: var(--gold); margin: 22px 0 18px; text-shadow: 4px 4px 0 #6a1a1a, 2px 2px 0 var(--ink); letter-spacing: .03em; }
+
+/* buttons: chunky, press down */
+button { font: 600 1.25rem var(--font-ui); padding: .5em 1.1em; margin: .3em; border: 3px solid var(--ink); border-radius: 4px; background: var(--gold); color: var(--ink); cursor: pointer;
+  box-shadow: inset 0 -4px 0 rgba(0,0,0,.2), 0 4px 0 var(--ink); transition: transform .05s; }
+button:hover:not(:disabled) { background: #f2d466; }
+button:active:not(:disabled) { transform: translateY(3px); box-shadow: inset 0 -4px 0 rgba(0,0,0,.2), 0 1px 0 var(--ink); }
+button:disabled { background: #9a9aa6; color: #4a4a58; cursor: default; box-shadow: inset 0 -4px 0 rgba(0,0,0,.15), 0 4px 0 var(--ink); }
+button:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+#title button { font-size: 1.6rem; min-width: 7.5em; }
+
+/* the screen */
+canvas#game { display: block; margin: 0 auto; width: 100%; max-width: 960px; aspect-ratio: 3 / 2; max-height: 72vh; image-rendering: pixelated; background: #000;
+  border: 6px solid var(--gold); outline: 4px solid var(--ink); box-shadow: 0 10px 0 rgba(0,0,0,.45); }
+
+/* dialogue box */
+#msg { position: absolute; left: 6%; right: 6%; bottom: 14%; background: var(--paper); color: var(--ink); border: 4px solid var(--ink); border-radius: 4px;
+  box-shadow: inset 0 0 0 3px var(--gold), 0 6px 0 rgba(0,0,0,.4); padding: .9em 1.1em; text-align: left; font-size: 1.5rem; line-height: 1.3; }
+#msg-text { white-space: pre-line; }
+#msg-btn { float: right; margin-top: .3em; }
+#choices { margin-top: .3em; }
+#msg.battle { bottom: 4%; padding: .4em .8em; font-size: 1.15rem; }
+#msg.battle button { font-size: 1.02rem; padding: .25em .7em; margin: .15em; }
+#msg.battle #msg-text { min-height: 3.9em; }
+body.inbattle #bookbtn { display: none; }
+
+#bookbtn { position: absolute; top: 20px; right: 20px; font-size: 1rem; padding: .35em .8em; z-index: 2; }
+#pad { display: none; margin-top: 14px; }
+@media (pointer: coarse) { #pad { display: block; } }
+#pad button { width: 64px; height: 64px; font-size: 1.6rem; padding: 0; }
+
+/* the book, story cards and the finale */
+#book, #story { position: absolute; background: var(--paper); color: var(--ink); text-align: left; overflow: auto; font-size: 1.35rem; z-index: 3;
+  border: 4px solid var(--ink); border-radius: 4px; box-shadow: inset 0 0 0 3px var(--gold), 0 8px 0 rgba(0,0,0,.4); }
+#book { left: 4%; right: 4%; top: 4%; bottom: 4%; padding: 1em 1.2em; }
+#book h2 { margin: .2em 0 .4em; font: 400 1.05rem/1.4 var(--font-title); color: #6a1a1a; }
+#book .ok { background: var(--good); }
+#book .sel { outline: 3px solid var(--blue); }
+#book .chart { font-size: 1.6rem; margin: .6em 0; }
+#story { inset: 6px; padding: 1.6em; text-align: center; font-size: 1.7rem; transition: background .6s; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+#story.black { background: #000; }
+.page { white-space: pre-line; margin: .5em 0; }
+#story .page { max-width: 28em; }
+#finale { position: absolute; inset: 6px; background: var(--night-2); color: #fff; z-index: 5; overflow: auto; padding: 1em; border: 4px solid var(--gold); outline: 4px solid var(--ink); }
+#finale h1 { font: 400 clamp(1.4rem, 5vw, 2.2rem) var(--font-title); color: var(--gold); margin: .6em 0; text-shadow: 4px 4px 0 #6a1a1a; }
+#finale .verdict { font: 400 1.2rem var(--font-title); color: #fff; }
+#finale .big { font-size: 1.8rem; margin: .3em 0; } #finale .sub { opacity: .8; }
+#finale .rows { list-style: none; padding: 0; font-size: 1.3rem; } #finale .confirm { margin-top: 1em; font-size: 1.5rem; }
