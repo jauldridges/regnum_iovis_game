@@ -1,44 +1,33 @@
-// Chapter 3: Metis, the cup, the five siblings, an optional battle with the party, the finale.
+// Chapter 3: Metis, the cup (a scene you watch), the five siblings, the war's first battle, then Tartarus.
 (async () => {
-  const H = await require('./lib')(); const { p, assert, st, walk, act, text, cont, cmd, battleReady, pcont } = H;
+  const H = await require('./lib')(); const { p, assert, st, text, cont, pcont, cmd, battleReady } = H;
   await H.open('lang=la&drafts=1&ch=3');
   assert.equal((await st()).map, 'oceanus');
-  await walk('D1'); assert((await text()).includes('exspectat')); await cont();      // Metis first
-  await walk('U4 R1'); await act();
-  assert((await text()).includes('dea sapiēns')); await cont(); assert((await text()).includes('medicāmentum')); await cont();
+  await H.goTo(9, 11); await H.bump('D'); assert((await H.toast()).includes('exspectat'));           // Metis first
+  await H.talk('metis'); assert((await text()).includes('dea sapiēns')); await cont(); assert((await text()).includes('medicāmentum')); await cont();
   assert((await st()).flags.metis);
-  await walk('D5 D1'.replace(' D1', ''));                    // down to the south exit
-  await p.waitForFunction(() => Game.state().map === 'hall2', null, { timeout: 5000 });
-  await p.waitForFunction(() => !Game.state().trans, null, { timeout: 5000 });   // input is locked during the wipe
-  await walk('D1'); const gt = await text(); assert(gt.includes('nōndum bibit'), 'gate text: ' + gt + ' ' + JSON.stringify(await st())); await cont();   // exit shut until Saturn drinks
-  await walk('U5 L1'); await act();                          // Jupiter brings the cup to Saturn
-  await cont(); await cont();
-  assert((await text()).includes('Cui pōculum dās?')); await H.chooseLabel('Custōdī');
+  await H.goTo(9, 11); await H.bump('D');
+  await p.waitForFunction(() => Game.state().map === 'hall2', null, { timeout: 8000 }); await H.scene();
+  await H.goTo(10, 11); await H.bump('D'); assert((await H.toast()).includes('nōndum bibit'), 'the exit is shut until Saturn drinks');
+  await H.talk('saturn'); assert((await text()).includes('Saturnus pōculum poscit')); await cont();
+  assert((await text()).includes('Cui pōculum dās?')); await H.choose('Custōdī');
   assert((await text()).includes('nōn accipit')); await cont();
-  await H.chooseLabel('Saturnō');
-  const seen = [];
-  for (let i = 0; i < 9; i++) { seen.push(await text()); await cont(); }
-  assert(seen[0].includes('Iuppiter Saturnō pōculum dat'));
-  assert(seen[2].includes('saxum exit'));
-  ['Neptūnus', 'Plūtō', 'Iūnō', 'Cerēs', 'Vesta'].forEach((n, i) => assert(seen[3 + i].includes(n + ' ex Saturnō exit'), seen[3 + i]));   // reverse order
-  assert(seen[8].includes('Bellum incipit'));
-  const party = await p.evaluate(() => Book.state().party);
-  assert.deepEqual(party, ['neptunus', 'pluto', 'iuno'], 'first three siblings join the party');
-  assert((await st()).flags.cupDone);
-  // the war begins: the guard attacks at once (a required battle); the party's moves are needed
+  await H.choose('Saturnō');
+  assert(await p.evaluate(() => new Promise(r => setTimeout(() => r(Game.state().scene), 300))), 'the cup is a cutscene: Saturn drinks, turns green, and brings it all up');
+  await p.waitForFunction(() => Game.state().flags.cupDone, null, { timeout: 60000 });
+  const info = await p.evaluate(() => ({ party: Book.state().party, stone: Story.flags.stoneOut }));
+  assert.deepEqual(info.party, ['neptunus', 'pluto', 'iuno'], 'the first three siblings join the party'); assert(info.stone, 'the stone lies on the floor');
+  // the war begins: the guard attacks at once; the party's moves are needed
   assert((await text()).includes('Hostis! Iuppiter hīc est!')); await cont(); await battleReady();
   const cmds = await p.$$eval('#choices button', bs => bs.map(b => b.textContent.trim()));
   ['Tonā', 'Tridente', 'Galeam', 'Hostēs', 'Cōnsilium'].forEach(c => assert(cmds.some(x => x.includes(c)), c + ' in ' + cmds));
-  assert(await p.evaluate(() => Battle.def.pattern.join()) === 'light,light,heavy', 'the guard has a heavy attack on its pattern');
-  await cmd('Cōnsilium'); await cmd('Tridente'); await cmd('Nūbibus');   // shield up before the heavy attack
-  assert((await text()).includes('Nihil') || (await text()).includes('Hasta nihil ferit'), 'heavy attack blocked: ' + await text());
-  await cmd('Tridente');
-  await p.screenshot({ path: process.env.SHOT || '/tmp/ch3.png' });
-  await cmd('Tonā');
+  assert(await p.evaluate(() => Battle.def.pattern.join()) === 'light,light,heavy');
+  await cmd('Cōnsilium'); await cmd('Tridente'); await cmd('Nūbibus');
+  assert((await text()).includes('Hasta nihil ferit'), 'heavy attack blocked: ' + await text());
+  await cmd('Tridente'); await cmd('Tonā');
   await p.waitForFunction(() => !Battle.active);
   assert((await st()).flags.guardH);
-  // out through the door: on to Tartarus
-  await walk('D6');
+  await H.goTo(10, 11); await H.bump('D');                                                         // out through the door: on to Tartarus
   await pcont(); await pcont();
   assert.equal((await st()).map, 'tartarus');
   await H.finish('ch3');

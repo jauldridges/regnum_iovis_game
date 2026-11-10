@@ -1,13 +1,13 @@
 // Chapter 4: Tartarus. Inscription, Campe (underworld: fire is strong, sky is weak), the Cyclopes' three gifts,
 // the Hundred-Handers, then on to Chapter 5.
 (async () => {
-  const H = await require('./lib')(); const { p, assert, st, walk, act, text, cont, pcont, cmd, battleReady } = H;
+  const H = await require('./lib')(); const { p, assert, st, text, cont, pcont, cmd, battleReady } = H;
   await H.open('lang=la&drafts=1&ch=4');
   assert.equal((await st()).map, 'tartarus');
   await p.evaluate(() => Book.setParty(['vesta', 'neptunus', 'pluto']));
-  await walk('D1'); assert((await text()).includes('sociōs līberā')); await cont();       // the exit is shut
-  await walk('L4 U7 L1 U1'); await act(); assert((await text()).includes('Campē hīc custōs')); await cont();
-  await walk('R5 D2 D1'); await act();                                                    // Campe
+  await H.goTo(10, 11); await H.bump('D'); assert((await H.toast()).includes('sociōs līberā'));       // the exit is shut
+  await H.useChar('I'); assert((await H.toast()).includes('Campē hīc custōs'));
+  await H.talk('campe');
   assert((await text()).includes('Campē custōs Tartarī')); await cont(); assert((await text()).includes('Nēmō hinc exit')); await cont();
   await battleReady();
   assert.equal(await p.evaluate(() => Battle.def.el), 'inferi');
@@ -17,26 +17,26 @@
   assert.equal(await p.evaluate(() => Battle.enemyHp), 3);
   await cmd('Ignem accende');
   await p.waitForFunction(() => !Battle.active);
-  assert((await text()).includes('Claustra patent')); await cont();
+  await H.scene(); assert(!(await p.evaluate(() => MAPS.tartarus.rows.join('').includes('G'))), 'the cells are open');
   await p.screenshot({ path: process.env.SHOT || '/tmp/ch4.png' });
   // the Cyclopes: three gifts, three datives
-  await walk('D3 L5 L1'); await act();
+  await H.talk('cyclops2');
   assert((await text()).includes('Cyclōpēs līberat')); await cont();
-  assert((await text()).includes('fulmen dant?')); await H.chooseLabel('Plūtōnī');
+  assert((await text()).includes('fulmen dant?')); await H.choose('Plūtōnī');
   assert((await text()).includes('Nōn ita')); await cont();
-  await H.chooseLabel('Iovī'); assert((await text()).includes('Iovī fulmen dant')); await cont();
-  assert((await text()).includes('tridentem dant?')); await H.chooseLabel('Neptūnō');
+  await H.choose('Iovī'); assert((await text()).includes('Iovī fulmen dant')); await cont();
+  assert((await text()).includes('tridentem dant?')); await H.choose('Neptūnō');
   assert((await text()).includes('Neptūnō tridentem dant')); await cont();
-  assert((await text()).includes('galeam dant?')); await H.chooseLabel('Plūtōnī');
+  assert((await text()).includes('galeam dant?')); await H.choose('Plūtōnī');
   assert((await text()).includes('Plūtōnī galeam dant')); await cont(); await cont();
   assert((await text()).includes('Fulmen iace')); await cont();
   let f = (await st()).flags; assert(f.cyclopes && f.fulmen && f.weapons);
   // the Hundred-Handers
-  await walk('R10 R1'); await act();
+  await H.talk('cent2');
   assert((await text()).includes('Centimanī līberī')); await cont(); await cont();
   assert((await text()).includes('Via aperta')); await cont();
   assert.deepEqual((await p.evaluate(() => Book.partyInfo())).helpers.sort(), ['amalthea', 'centimani', 'curetes', 'cyclopes', 'metis']);
-  await walk('L5 D4');
+  await H.goTo(10, 11); await H.bump('D');
   await pcont(); await pcont();
   assert.equal((await st()).map, 'olympus');
   await H.finish('ch4');

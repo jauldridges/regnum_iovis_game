@@ -1,11 +1,11 @@
 // Collection book: pause, question, retry rules, party; English labels.
 (async () => {
-  const H = await require('./lib')(); const { p, assert, st, tap } = H;
+  const H = await require('./lib')(); const { p, assert, st } = H;
   await H.open('lang=la&ch=1', { pause: null });
   await p.evaluate(() => ['iuppiter', 'ops', 'saturnus'].forEach(Book.unlock));
   await p.keyboard.press('b');
   assert(await p.isVisible('#book'));
-  await tap('ArrowLeft'); assert.equal((await st()).player.x, 3, 'no walking while the book is open');
+  await p.keyboard.press('ArrowLeft'); await p.waitForTimeout(300); assert.equal((await st()).player.x, 3, 'no walking while the book is open');
   const page = n => p.click(`#book button:has-text("${n}")`), bt = () => p.textContent('#book');
   await page('Iuppiter, Iovis');
   assert(await p.isDisabled('#book button'), 'card waits 3 seconds');

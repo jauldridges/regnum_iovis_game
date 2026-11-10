@@ -58,8 +58,9 @@
   assert((await pt()).includes('in Crētam portat')); await pcont();
   assert(await p.locator('#story canvas.mapart').isVisible(), 'the title slide has a map of the Mediterranean');
   assert((await pt()).includes('Crēta')); await pcont();
-  s = await st(); assert.equal(s.map, 'ida'); assert.equal(s.ch, 2); assert(!s.flags.suspect, 'a clean run: no extra guard');
+  s = await st(); assert.equal(s.map, 'ida'); assert.equal(s.ch, 2); assert(s.flags.suspect, 'being caught once means Saturn is suspicious: an extra guard in Crete');
+  assert(await H.entPos('guard3'), 'the third guard is on the hillside');
   const bd = await p.evaluate(() => Score.breakdown().reduce((o, r) => (o[r.key] = r.pts, o), {}));
-  assert.equal(bd.choice, 50 + 50, 'keepsake 50, Chapter 1 on one try... (caught once: 50)'); assert.equal(bd.story, 25);
+  assert.equal(bd.choice, 50 + 50, 'keepsake 50 + Chapter 1 finished after being caught once 50'); assert.equal(bd.story, 25);
   await H.finish('ch1');
 })().catch(e => { console.error(e); process.exit(1); });
