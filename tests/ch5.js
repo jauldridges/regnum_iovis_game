@@ -22,8 +22,8 @@
   await H.won();
   assert((await text()).includes('Duo Titānēs')); await cont();
   // two Titans change sides; only then does Iapetus come
-  await H.talk('themis'); assert((await text()).includes('Themis quoque')); await cont();
-  await H.talk('prometheus'); assert((await text()).includes('Promētheus Titān est, sed Iovī auxilium dat')); await cont();
+  await H.talk('themis'); assert((await text()).includes('Themis quoque')); await cont(); await H.calm();
+  await H.talk('prometheus'); assert((await text()).includes('Promētheus Titān est, sed Iovī auxilium dat')); await cont(); await H.calm();
   assert((await text()).includes('Via aperta')); await cont();
   await H.talk('iapetus'); assert((await text()).includes('Hyperīōnis frāter')); await cont(); await battleReady();
   await cmd('Fulmen iace'); await cmd('Fulmen iace');
