@@ -1,10 +1,17 @@
-// Party battle. Jupiter and up to three allies each have their own hit points, moves and turn. Every round each living ally picks
+// Party battle against one to three enemies. Jupiter and up to three allies each have their own hit points, moves and turn. Every round each living ally picks
 // a move in turn (and it plays out), then the enemy acts. The enemy chooses a target and shows it, so covering, healing or
 // taunting it away is a real choice. Moves can miss or hit critically; moves rest for a few turns after use (cooldown).
 // Enemies differ: a wolf bites twice, a captain raises his shield, Hyperion heals, Atlas hides behind a mountain, Saturn rages.
 // Latin version: command buttons show Latin only. English version: English with the Latin small underneath.
 var Battle = (function () {
   var B = { active: false, history: [], picks: 0 }, log = [], busy = true, done = null, S = null, lastDraw = 0, O = null, M = null, pickResolve = null;
+  // the enemy side: a list of foes, each with its own hit points, shield, pattern and plan. B.enemyHp, B.def, B.pattern, B.plan ... mean the first foe still standing.
+  B.foes = [];
+  function standing() { return B.foes.filter(function (f) { return !f.down; }); }
+  function prime() { return standing()[0] || B.foes[0]; }
+  function foeProp(name, key) { Object.defineProperty(B, name, { get: function () { var f = prime(); return f ? f[key] : undefined; }, set: function (v) { var f = prime(); if (f) f[key] = v; }, configurable: true }); }
+  foeProp('enemyHp', 'hp'); foeProp('maxEnemy', 'max'); foeProp('shownE', 'shown'); foeProp('eGuard', 'guard'); foeProp('pattern', 'pattern');
+  foeProp('turn', 'turn'); foeProp('plan', 'plan'); foeProp('enraged', 'enraged'); foeProp('def', 'def');
   var EL = { caelum: '☁️', terra: '⛰️', mare: '🌊', ignis: '🔥', inferi: '💀' };
   var BEATS = { caelum: 'terra', terra: 'mare', mare: 'ignis', ignis: 'inferi', inferi: 'caelum' };
 
@@ -53,8 +60,8 @@ var Battle = (function () {
   Object.keys(ENEMIES).forEach(function (k) {
     var e = ENEMIES[k]; e.key = k; e.size = 16 * e.scale; e.win = e.win || 'win_' + k; e.blocked = e.blocked || 'battle_blocked_g';
   });
-  function eid(kind, type) {
-    var d = B.def; if (d.ids && d.ids[kind]) return d.ids[kind][type];
+  function eid(kind, type, def) {
+    var d = def || B.def; if (d.ids && d.ids[kind]) return d.ids[kind][type];
     return (type ? 'battle_' : 'intent_') + d.key + '_' + kind;
   }
 
@@ -80,11 +87,18 @@ var Battle = (function () {
     return { acc: m.acc === undefined ? 1 : Math.min(0.98, m.acc + Prog.accBonus()), crit: m.crit === undefined ? 0 : Math.min(0.5, m.crit + Prog.critBonus()) };
   }
   B.chance = function (id) { return M ? chance(id) : null; };
-  B.xpOf = function (key) { return ENEMIES[key || 'guard'].xp; };
+  B.xpOf = function (key) { var ks = [].concat(key || 'guard'); return ks.reduce(function (n, k) { return n + ENEMIES[k].xp; }, 0); };      // one enemy or a list of them
 
   // ---- the team
   function member(id) { return B.team.filter(function (m) { return m.id === id; })[0]; }
   function alive() { return B.team.filter(function (m) { return !m.down; }); }
+  // where each enemy stands: one big one, or two or three smaller ones in a row at the right
+  function foeHome(f) {
+    var n = B.foes.length, i = B.foes.indexOf(f), d = f.def;
+    if (n === 1) return { x: 410 - d.size, y: 150 - d.size, s: d.size };
+    var s = Math.min(d.size, n === 2 ? [92, 72][i] : [80, 60, 60][i]), right = n === 2 ? [474, 376][i] : [474, 396, 330][i];       // the main enemy is the biggest
+    return { x: right - s, y: 150 - s + (i === 1 ? 14 : 0), s: s };
+  }
   function slotOf(m) {                                                       // Jupiter big on the right of the team, the others behind him
     var i = B.team.indexOf(m); return i === 0 ? { x: 172, y: 76, s: 80 } : [null, { x: 114, y: 54, s: 48 }, { x: 58, y: 86, s: 48 }, { x: 114, y: 122, s: 48 }][i];
   }
@@ -96,17 +110,29 @@ var Battle = (function () {
   B.maxOf = function (id) { var m = member(id); return m ? m.max : null; };
   B.cdOf = function (id, mv) { var m = member(id); return m ? m.cd[mv] || 0 : null; };
 
-  function intentKind() { return B.pattern[B.turn % B.pattern.length]; }
-  function intentId() { return eid(B.plan.kind, 0); }
+  function intentKind(f) { return f.pattern[f.turn % f.pattern.length]; }
+  function intentId(f) { return eid(f.plan.kind, 0, f.def); }
   // which moves answer what the enemy is about to do
   var HINTS = { heavy: ['shield', 'dodge', 'stun', 'taunt', 'slow', 'defend'], double: ['shield', 'dodge', 'stun', 'taunt', 'slow', 'defend'], heal: ['stun'], guard: ['weak', 'fire', 'rally'] };
 
   function render() {
     var box = document.getElementById('msg-text'), holder = document.getElementById('choices'); holder.innerHTML = '';
     var m = B.turnOf ? member(B.turnOf) : null;
-    box.textContent = (m ? '▶ ' + Game.clean(nameOfId(m.id)) + '\n' : '') + log.slice(m ? -2 : -3).join('\n');
+    box.textContent = (m ? '▶ ' + Game.clean(nameOfId(m.id)) + (B.choosing ? '  → ' + Game.clean(t('battle_target')) : '') + '\n' : '') + log.slice(m ? -2 : -3).join('\n');
     if (!m) return;
-    var hints = HINTS[B.plan.kind] || [], made = [], hurt = alive().some(function (x) { return x.hp <= x.max * 0.4; });
+    var made = [];
+    if (B.choosing) {                                                      // which enemy? (only when there is more than one)
+      standing().forEach(function (f) {
+        var b = document.createElement('button'); b.appendChild(document.createTextNode((f.def.el ? EL[f.def.el] + ' ' : '') + Game.clean(t(f.def.name)) + '  ' + Math.ceil(f.hp) + '/' + f.max));
+        b.onclick = function () { if (pickResolve) { var r = pickResolve; pickResolve = null; r(f); } };
+        holder.appendChild(b); made.push(b);
+      });
+      var back = document.createElement('button'); back.textContent = Game.clean(t('ui_back'));
+      back.onclick = function () { if (pickResolve) { var r = pickResolve; pickResolve = null; r('back'); } };
+      holder.appendChild(back); made.push(back); Game.numberButtons(made); return;
+    }
+    var hints = [], hurt = alive().some(function (x) { return x.hp <= x.max * 0.4; });
+    standing().forEach(function (f) { if (f.plan) (HINTS[f.plan.kind] || []).forEach(function (h) { if (hints.indexOf(h) < 0) hints.push(h); }); });
     movesOf(m).forEach(function (id) {
       var b = document.createElement('button'), tr = t('cmd_' + id), mv = M[id], left = m.cd[id] || 0, ch = chance(id), glyph = mv.el ? EL[mv.el] + ' ' : '';
       if (LANG === 'en') {
@@ -127,17 +153,18 @@ var Battle = (function () {
     B.active = false; B.turnOf = null; document.getElementById('msg').classList.remove('battle'); document.body.classList.remove('inbattle');
     Game.endBattle();
     if (result === 'won') Score.add('battles', Score.CFG.battle);
-    if (done) done(result, B.enemyHp, B.maxEnemy);
+    if (done) done(result, B.foes[0].hp, B.foes[0].max);
   }
 
   async function effect(name, ms) { S.fx = name; await tween(ms, function (p) { S.fxp = p; }); S.fx = null; }
-  function pop(txt, col, who) { S.pops.push({ txt: txt, col: col, who: who || 'e', t0: performance.now() }); }
+  function pop(txt, col, who) { S.pops.push({ txt: txt, col: col, who: who || 'e', f: S.cur, t0: performance.now() }); }
 
-  // ---- one move by one ally
-  async function doMove(m, id) {
-    var mv = M[id], ch = chance(id), name = nameOfId(m.id);
+  // ---- one move by one ally (tgt = the enemy it is aimed at)
+  var AIMED = { dmg: 1, stun: 1, slow: 1 };
+  async function doMove(m, id, tgt) {
+    var mv = M[id], ch = chance(id), name = nameOfId(m.id); tgt = tgt || prime();
     busy = true; B.turnOf = null; render();
-    S.actor = m.id;
+    S.actor = m.id; S.cur = tgt;
     await tween(300, function (p) { S.ax[m.id] = 50 * ease(p); });
     await effect(mv.fx, 550);
     say(id === 'defend' ? withName('battle_defend', name) : t('battle_' + id));
@@ -147,16 +174,19 @@ var Battle = (function () {
       Sound.play('miss'); sayId('eff_miss'); pop('✖', '#ff8a8a');
       await Promise.all([back, tween(450, function (p) { S.gx = 30 * Math.sin(p * Math.PI); })]); S.gx = 0;
     } else if (mv.kind === 'dmg') {
-      var el = B.fire ? 'ignis' : mv.el, de = B.def.el, mult = 1;
+      var el = B.fire ? 'ignis' : mv.el, de = tgt.def.el, mult = 1;
       if (el && de) mult = BEATS[el] === de ? 2 : BEATS[de] === el ? 0.5 : 1;
       var base = Math.max(1, Math.ceil(mv.amt * mult)) + (B.weak ? 2 : 0) + (B.fire ? 2 : 0) + (B.rally ? 2 : 0) + B.power + (m.id === 'iuppiter' ? Prog.boons.vis : 0);
       var dmg = crit ? base * 2 : base;
-      if (B.eGuard) { if (!crit) { dmg = Math.max(1, Math.ceil(dmg / 2)); sayId('eff_guarded'); } B.eGuard = false; }          // the shield holds, or a critical blow breaks it
-      B.weak = false; B.fire = false; B.rally = false; B.enemyHp = Math.max(0, B.enemyHp - dmg);
+      if (tgt.guard) { if (!crit) { dmg = Math.max(1, Math.ceil(dmg / 2)); sayId('eff_guarded'); } tgt.guard = false; }          // the shield holds, or a critical blow breaks it
+      B.weak = false; B.fire = false; B.rally = false; tgt.hp = Math.max(0, tgt.hp - dmg);
       if (mult === 2) sayId('eff_super'); else if (mult === 0.5) sayId('eff_weak');
       if (crit) { sayId('eff_crit'); S.critHit = true; }
       Sound.play(crit ? 'crit' : 'hit'); pop('-' + dmg + (crit ? ' ×2' : ''), crit ? '#ffd24a' : '#ffffff');
       await Promise.all([back, tween(crit ? 800 : 550, function (p) { S.gHit = p; })]); S.gHit = 0; S.critHit = false;
+      if (tgt.hp <= 0 && standing().filter(function (f) { return f.hp > 0; }).length > 0) {            // one of several falls: it drops out of the fight
+        await tween(500, function (p) { tgt.alpha = 1 - p; }); tgt.down = true;
+      }
     } else if (mv.kind === 'healall' || mv.kind === 'healone' || mv.kind === 'healj') {
       var who = mv.kind === 'healall' ? alive() : mv.kind === 'healj' ? [member('iuppiter')].filter(function (x) { return !x.down; })
               : [alive().sort(function (a, b) { return a.hp / a.max - b.hp / b.max; })[0]];
@@ -167,8 +197,8 @@ var Battle = (function () {
     } else if (mv.kind === 'dodge') { m.st.dodge = true; await back;
     } else if (mv.kind === 'defend') { m.st.defend = true; await back;
     } else if (mv.kind === 'taunt') { m.st.defend = true; B.taunt = m.id; await back;
-    } else if (mv.kind === 'slow') { B.slow = true; await Promise.all([back, tween(500, function (p) { S.gHit = p * 0.5; })]); S.gHit = 0;
-    } else if (mv.kind === 'stun') { B.stun = true; await Promise.all([back, tween(550, function (p) { S.gHit = p; })]); S.gHit = 0;
+    } else if (mv.kind === 'slow') { tgt.slow = true; await Promise.all([back, tween(500, function (p) { S.gHit = p * 0.5; })]); S.gHit = 0;
+    } else if (mv.kind === 'stun') { tgt.stun = true; await Promise.all([back, tween(550, function (p) { S.gHit = p; })]); S.gHit = 0;
     } else if (mv.kind === 'rally') { B.rally = true; await back;
     } else if (mv.kind === 'weak') { B.weak = true; await back;
     } else if (mv.kind === 'fire') { B.fire = true; await back;
@@ -178,35 +208,45 @@ var Battle = (function () {
     await wait(450);
   }
 
-  // ---- the enemy plans (and shows) what it will do and to whom, then does it
+  // ---- the enemies plan (and show) what each will do and to whom, then do it, one after another
   function pickTarget() {
     var al = alive(), t = B.taunt && member(B.taunt); if (t && !t.down) return t;
     return al[Math.floor(R() * al.length)];
   }
   function planEnemy() {
-    if (B.def.pattern2 && !B.enraged && B.enemyHp <= B.maxEnemy / 2) { B.enraged = true; B.pattern = B.def.pattern2; B.turn = 0; sayId('battle_rage'); S.rageUntil = performance.now() + 900; }
-    B.plan = { kind: intentKind(), target: pickTarget().id };
+    standing().forEach(function (f) {
+      if (f.def.pattern2 && !f.enraged && f.hp <= f.max / 2) { f.enraged = true; f.pattern = f.def.pattern2; f.turn = 0; sayId('battle_rage'); f.rageUntil = performance.now() + 900; }
+      f.plan = { kind: intentKind(f), target: pickTarget().id };
+    });
   }
   async function enemyPhase() {
-    var kind = B.plan.kind, d = B.def; B.turn++;
-    if (B.stun) { B.stun = false; sayId('battle_frozen'); await wait(1000); }
-    else if (kind === 'guard') { say(t(eid(kind, 1))); B.eGuard = true; await tween(700, function (p) { S.gGuard = p; }); await wait(500); }
+    var list = standing().filter(function (f) { return f.hp > 0; });
+    for (var fi = 0; fi < list.length; fi++) {
+      if (!alive().length) break;
+      await foeAct(list[fi]);
+    }
+    B.team.forEach(function (m) { m.st = {}; }); B.taunt = null;                                         // cover lasts one enemy action
+  }
+  async function foeAct(f) {
+    var kind = f.plan.kind, d = f.def, home = foeHome(f); f.turn++; S.cur = f; S.actor = null;
+    if (f.stun) { f.stun = false; sayId('battle_frozen'); await wait(1000); }
+    else if (kind === 'guard') { say(t(eid(kind, 1, d))); f.guard = true; await tween(700, function (p) { S.gGuard = p; }); await wait(500); }
     else if (kind === 'heal') {
-      say(t(eid(kind, 1))); var gain = Math.min(B.maxEnemy, B.enemyHp + Math.ceil(B.maxEnemy / 4)) - B.enemyHp; B.enemyHp += gain; pop('+' + gain, '#7aff9a', 'e');
+      say(t(eid(kind, 1, d))); var gain = Math.min(f.max, f.hp + Math.ceil(f.max / 4)) - f.hp; f.hp += gain; pop('+' + gain, '#7aff9a', 'e');
       await tween(700, function (p) { S.healGlow = Math.sin(p * Math.PI); }); S.healGlow = 0; await wait(400);
     } else {
-      var hits = kind === 'double' ? 2 : 1, per = kind === 'heavy' ? 2 * d.atk : d.atk, said = false, arc = kind === 'heavy' ? 44 : 30, slowed = B.slow; B.slow = false;
+      var hits = kind === 'double' ? 2 : 1, per = kind === 'heavy' ? 2 * d.atk : d.atk, said = false, arc = kind === 'heavy' ? 44 : 30, slowed = f.slow; f.slow = false;
       if (slowed) per = Math.max(1, per - 1);
       if (!d.melee) await tween(350, function (p) { S.gx = -50 * ease(p); });                      // a wind-up for throwers
       for (var h = 0; h < hits; h++) {
-        var tg = member(B.plan.target); if (tg.down) tg = pickTarget(); if (!tg) break; B.plan.target = tg.id;
-        var sl = slotOf(tg), dist = 410 - d.size - (sl.x + sl.s) + 10;
+        var tg = member(f.plan.target); if (tg.down) tg = pickTarget(); if (!tg) break; f.plan.target = tg.id;
+        var sl = slotOf(tg), dist = home.x - (sl.x + sl.s) + 10;
         if (d.melee) await tween(h ? 220 : kind === 'heavy' ? 440 : 330, function (p) { S.gx = -dist * ease(p); S.gy = -arc * Math.sin(p * Math.PI); });   // leaps at its target
-        else { S.spearY = sl.y + sl.s / 2; await tween(550, function (p) { S.spear = 360 - (360 - sl.x - sl.s) * p; }); S.spear = null; }
+        else { S.spearY = sl.y + sl.s / 2; var x0 = home.x + home.s / 2; await tween(550, function (p) { S.spear = x0 - (x0 - sl.x - sl.s) * p; }); S.spear = null; }
         if (tg.st.dodge) { if (!said) { say(t(d.blocked)); said = true; } Sound.play('miss'); pop('✖', '#9ad0ff', tg.id); await wait(250); }
         else if (tg.st.shield) { tg.st.shield = false; if (!said) { say(t(d.blocked)); said = true; } Sound.play('block'); await wait(250); }
         else {
-          if (!said) { say(t(eid(kind, 1))); said = true; }
+          if (!said) { say(t(eid(kind, 1, d))); said = true; }
           if (kind !== 'heavy' && R() >= 0.88) { Sound.play('miss'); pop('✖', '#ff8a8a', tg.id); sayId('eff_miss'); await wait(300); }       // light attacks can miss; heavy blows do not
           else {
             var dm = tg.st.defend ? Math.max(1, Math.ceil(per / 2)) : per; tg.hp = Math.max(0, tg.hp - dm); Sound.play('hurt'); pop('-' + dm, '#ff8a8a', tg.id);
@@ -220,20 +260,29 @@ var Battle = (function () {
       if (!d.melee) await tween(350, function (p) { S.gx = -50 * (1 - ease(p)); });
       await wait(450);
     }
-    B.team.forEach(function (m) { m.st = {}; }); B.taunt = null;                                         // cover lasts one enemy action
   }
 
-  // ---- the battle: rounds of (each ally's turn, then the enemy's)
+  // ---- the battle: rounds of (each ally's turn, then each enemy's)
+  function pickFrom() { return new Promise(function (res) { pickResolve = res; }); }
+  function allDown() { return B.foes.every(function (f) { return f.hp <= 0; }); }
   async function runBattle() {
     while (true) {
       planEnemy();
       for (var i = 0; i < B.team.length; i++) {
         var m = B.team[i]; if (m.down) continue;
-        B.turnOf = m.id; busy = false; render();
-        var mv = await new Promise(function (res) { pickResolve = res; });
-        await doMove(m, mv); B.picks++;
+        var mv, tgt;
+        while (true) {
+          B.choosing = null; B.turnOf = m.id; busy = false; render();
+          mv = await pickFrom(); tgt = standing()[0];
+          if (AIMED[M[mv].kind] && standing().length > 1) {                                          // several enemies: choose which one
+            B.choosing = mv; render(); var r = await pickFrom(); B.choosing = null;
+            if (r === 'back') continue; tgt = r;
+          }
+          break;
+        }
+        await doMove(m, mv, tgt); B.picks++;
         Object.keys(m.cd).forEach(function (k) { if (k !== mv && m.cd[k] > 0) m.cd[k]--; });     // rests tick down on this ally's own turns
-        if (B.enemyHp <= 0) return win();
+        if (allDown()) return win();
       }
       B.turnOf = null; busy = true; render();
       await enemyPhase();
@@ -241,8 +290,10 @@ var Battle = (function () {
     }
   }
   async function win() {
-    B.turnOf = null; busy = true; render(); sayId(B.def.win);
-    if (B.def.flee) await tween(800, function (p) { S.gx = 260 * ease(p); S.gAlpha = 1 - p; });   // the guard runs away
+    B.turnOf = null; busy = true; render();
+    var last = B.foes.filter(function (f) { return !f.down; })[0] || B.foes[0]; S.cur = last;
+    sayId(B.foes[0].def.win);
+    if (last.def.flee) await tween(800, function (p) { S.gx = 260 * ease(p); S.gAlpha = 1 - p; });   // the guard runs away
     else await tween(900, function (p) { S.gy = 40 * ease(p); S.gAlpha = 1 - p; });                // a boss falls
     await wait(300); sayId('battle_win_2'); await wait(1400);
     end('won');
@@ -251,15 +302,18 @@ var Battle = (function () {
   // opts: { enemy, hp (optional), max, final (Victory available), team (optional list of ids) }. onEnd(result, enemyHp, enemyMax): 'won' | 'lost'.
   // Called under the screen wipe: the box appears once the battle scene is revealed.
   B.start = function (opts, onEnd) {
-    O = opts || {}; B.def = ENEMIES[O.enemy || 'guard']; B.pattern = B.def.pattern; B.turn = 0;
+    O = opts || {};
+    var keys = [O.enemy || 'guard'].concat(O.extra || []).slice(0, 3);                 // the main enemy and up to two more
+    B.foes = keys.map(function (k, i) { var df = ENEMIES[k], hp = i === 0 ? (O.hp || df.hp) : df.hp;      // O.hp is lower than O.max on a retry: the main enemy stays hurt
+      return { key: k, def: df, hp: hp, max: i === 0 ? (O.max || df.hp) : df.hp, shown: hp, down: false, alpha: 1, guard: false, stun: false, slow: false, enraged: false, rageUntil: 0, pattern: df.pattern, turn: 0, plan: null }; });
     M = JSON.parse(JSON.stringify(MOVES));
     if (Story.flags.weapons) { M.neptunus.amt = 4; M.pluto.cd = 1; }                  // the Cyclopes' weapons
     var item = Story.flags.item;                                                      // the keepsake Ops took from the storeroom
     if (item === 'scutum') M.nubes.cd = 1; if (item === 'mel') { M.amalthea.amt = 4; M.amalthea.cd = 1; }
     var ids = O.team || Team.chosen(!!O.final);
     B.team = ids.map(function (id) { var mx = maxHpOf(id); return { id: id, hp: mx, max: mx, shown: mx, down: false, cd: {}, st: {}, alpha: 1 }; });
-    B.plan = null; B.active = true; B.enemyHp = O.hp || B.def.hp; B.maxEnemy = O.max || B.def.hp;     // O.hp is lower than O.max on a retry: the enemy stays hurt
-    B.shownE = B.enemyHp; B.weak = B.fire = B.stun = B.rally = B.slow = B.eGuard = B.enraged = false; B.taunt = null; B.power = 0; B.turnOf = null;
+    B.active = true; B.choosing = null;
+    B.weak = B.fire = B.rally = false; B.taunt = null; B.power = 0; B.turnOf = null;
     log = []; B.history = []; B.picks = 0; busy = true; done = onEnd; S = fresh(); Game.setBusy(true);
     wait(700).then(function () {
       var box = document.getElementById('msg'); box.hidden = false; box.classList.add('battle'); document.body.classList.add('inbattle');
@@ -269,7 +323,7 @@ var Battle = (function () {
   };
   function fresh() {
     var th = THEME[Game.state().map] || THEME['default'];
-    return { ax: {}, hit: {}, gx: 0, gy: 0, gHit: 0, fx: null, fxp: 0, spear: null, spearY: 112, gAlpha: 1, pops: [], gGuard: 0, healGlow: 0, critHit: false, slash: 0, actor: null,
+    return { ax: {}, hit: {}, gx: 0, gy: 0, gHit: 0, fx: null, fxp: 0, spear: null, spearY: 112, gAlpha: 1, pops: [], gGuard: 0, healGlow: 0, critHit: false, slash: 0, actor: null, cur: null,
              bg: backdrop(Game.state().map), pad: th.pad, interior: !!th.interior, clouds: !THEME[Game.state().map], rageUntil: 0 };
   }
 
@@ -316,14 +370,15 @@ var Battle = (function () {
   B.draw = function (ctx) {
     var now = performance.now(), dt = lastDraw ? (now - lastDraw) / 1000 : 0; lastDraw = now;
     B.team.forEach(function (m) { m.shown += Math.max(-3 * dt, Math.min(3 * dt, m.hp - m.shown)); });          // bars move 3 points a second
-    B.shownE += Math.max(-4 * dt, Math.min(4 * dt, B.enemyHp - B.shownE));
+    B.foes.forEach(function (f) { f.shown += Math.max(-4 * dt, Math.min(4 * dt, f.hp - f.shown)); });
     ctx.imageSmoothingEnabled = false;
     ctx.clearRect(0, 0, 480, 312); ctx.drawImage(S.bg, 0, 0);
     if (S.clouds) { ctx.fillStyle = 'rgba(255,255,255,.55)'; [[40, 20, 70], [220, 34, 90], [370, 14, 60]].forEach(function (c) { var cx = (c[0] + now / 90) % 560 - 60; ctx.fillRect(cx, c[1], c[2], 14); ctx.fillRect(cx + 12, c[1] - 8, c[2] - 30, 10); }); }
-    var d = B.def, sz = d.size, gx = 410 - sz + S.gx + shake(S.gHit) * (S.critHit ? 2 : 1), gy = 150 - sz + S.gy;
+    var cur = S.cur || prime(), ch0 = foeHome(cur), sz = ch0.s, gx = ch0.x + S.gx + shake(S.gHit) * (S.critHit ? 2 : 1), gy = ch0.y + S.gy;      // the enemy that is acting or being hit
     // platforms
     ctx.fillStyle = S.pad;
-    ctx.beginPath(); ctx.ellipse(212, 156, 56, 10, 0, 0, 6.3); ctx.fill(); ctx.beginPath(); ctx.ellipse(410 - sz / 2, 154, sz / 2 + 14, 10, 0, 0, 6.3); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(212, 156, 56, 10, 0, 0, 6.3); ctx.fill();
+    B.foes.forEach(function (f) { if (f.down) return; var q = foeHome(f); ctx.beginPath(); ctx.ellipse(q.x + q.s / 2, q.y + q.s + 4, q.s / 2 + 14, 10, 0, 0, 6.3); ctx.fill(); });
     [[1], [2], [3]].forEach(function (k) { if (B.team[k[0]]) { var q = slotOf(B.team[k[0]]); ctx.beginPath(); ctx.ellipse(q.x + q.s / 2, q.y + q.s, q.s / 2 + 4, 6, 0, 0, 6.3); ctx.fill(); } });
     // the team: each ally with their own hit points
     var targetId = B.plan && !B.turnOf ? B.plan.target : (B.plan ? B.plan.target : null);
@@ -336,30 +391,44 @@ var Battle = (function () {
       if (m.st.defend) { ctx.strokeStyle = 'rgba(160,200,255,.9)'; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(x + sl.s / 2, sl.y + sl.s / 2, sl.s / 2 + 2, 0, 6.3); ctx.stroke(); }
       bar(ctx, sl.x, sl.y + sl.s + 4, m.shown, m.max, sl.s, 5);
       if (B.turnOf === m.id) { var by = sl.y - 12 + Math.sin(now / 160) * 2; ctx.fillStyle = '#ffe94d'; ctx.beginPath(); ctx.moveTo(sl.x + sl.s / 2 - 6, by - 8); ctx.lineTo(sl.x + sl.s / 2 + 6, by - 8); ctx.lineTo(sl.x + sl.s / 2, by); ctx.fill(); }
-      if (B.plan && B.plan.target === m.id && !m.down && !(S.actor === m.id && false)) { ctx.font = '16px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('🎯', sl.x + sl.s / 2, sl.y - 14); ctx.textAlign = 'left'; }
+      if (!m.down && standing().some(function (f) { return f.plan && f.plan.target === m.id; })) { ctx.font = '16px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('🎯', sl.x + sl.s / 2, sl.y - 14); ctx.textAlign = 'left'; }
     });
-    // the enemy
-    var et = tint(S.gHit, S.critHit ? '#ffd24a' : S.fx === 'fear' ? '#aa55ff' : '#ffffff');
-    if (!et && S.healGlow > 0) et = { c: '#55ff88', a: 0.55 * S.healGlow };
-    if (!et && (B.enraged || now < S.rageUntil)) et = { c: '#ff2a2a', a: 0.3 };
-    if (!et && B.eGuard) et = { c: '#6aa8ff', a: 0.16 };
-    Art.big(ctx, d.sprite, 'left', gx, gy, sz, et, S.gAlpha);
-    if (B.eGuard) { ctx.fillStyle = 'rgba(120,180,255,.45)'; ctx.strokeStyle = 'rgba(210,230,255,.95)'; ctx.lineWidth = 3; ctx.beginPath(); ctx.ellipse(gx + 6, gy + sz / 2, 12, sz * 0.52, 0, 0, 6.3); ctx.fill(); ctx.stroke(); }
+    // the enemies (the one in front last)
+    B.foes.slice().reverse().forEach(function (f) {
+      if (f.down && f.alpha <= 0.01) return;
+      var q = foeHome(f), isCur = f === cur, fx = q.x + (isCur ? S.gx + shake(S.gHit) * (S.critHit ? 2 : 1) : 0), fy = q.y + (isCur ? S.gy : 0);
+      var et = isCur ? tint(S.gHit, S.critHit ? '#ffd24a' : S.fx === 'fear' ? '#aa55ff' : '#ffffff') : null;
+      if (!et && isCur && S.healGlow > 0) et = { c: '#55ff88', a: 0.55 * S.healGlow };
+      if (!et && (f.enraged || now < f.rageUntil)) et = { c: '#ff2a2a', a: 0.3 };
+      if (!et && f.guard) et = { c: '#6aa8ff', a: 0.16 };
+      Art.big(ctx, f.def.sprite, 'left', fx, fy, q.s, et, f.alpha * (isCur ? S.gAlpha : 1));
+      if (f.guard) { ctx.fillStyle = 'rgba(120,180,255,.45)'; ctx.strokeStyle = 'rgba(210,230,255,.95)'; ctx.lineWidth = 3; ctx.beginPath(); ctx.ellipse(fx + 6, fy + q.s / 2, 12, q.s * 0.52, 0, 0, 6.3); ctx.fill(); ctx.stroke(); }
+      if (B.foes.length > 1 && !f.down) {
+        bar(ctx, q.x + 4, q.y + q.s + 10, f.shown, f.max, q.s - 8, 5);                                  // a small bar under each enemy
+        var tn = standing().indexOf(f);
+        if (B.choosing && tn >= 0) { ctx.font = '22px "Jersey 10", sans-serif'; ctx.textAlign = 'center'; ctx.lineWidth = 4; ctx.strokeStyle = '#1c1624'; ctx.strokeText(String(tn + 1), q.x + q.s / 2, q.y - 6); ctx.fillStyle = '#ffe94d'; ctx.fillText(String(tn + 1), q.x + q.s / 2, q.y - 6); ctx.textAlign = 'left'; }
+        else if (!S.fx && B.active && f.hp > 0 && f.plan && member(f.plan.target) && !B.choosing) {            // the plan, small, above each enemy
+          var k2 = f.plan.kind, small = { light: '🗡️', heavy: '⚡', double: '⚔️', guard: '🛡️', heal: '💚' }[k2] + (k2 === 'guard' || k2 === 'heal' ? '' : ' ' + Game.clean(nameOfId(f.plan.target)));
+          ctx.font = '15px "Jersey 10", sans-serif'; ctx.textAlign = 'center'; var w2 = ctx.measureText(small).width; ctx.fillStyle = 'rgba(20,16,36,.8)'; ctx.fillRect(q.x + q.s / 2 - w2 / 2 - 4, q.y - 20, w2 + 8, 18);
+          ctx.fillStyle = k2 === 'heal' ? '#7aff9a' : k2 === 'guard' ? '#9ac8ff' : (k2 === 'heavy' || k2 === 'double') ? '#ffd24a' : '#fff'; ctx.fillText(small, q.x + q.s / 2, q.y - 7); ctx.textAlign = 'left';
+        }
+      }
+    });
     effects(ctx, gx, gy, sz);
     // plates: whose turn it is (or who is being attacked), and the enemy
     var focus = member(B.turnOf || (B.plan && B.plan.target) || 'iuppiter') || B.team[0];
     plate(ctx, 8, 6, 160, Game.clean(nameOfId(focus.id)), focus.shown, focus.max, '');
-    plate(ctx, 176, 6, 160, Game.clean(t(d.name)), B.shownE, B.maxEnemy, d.el ? EL[d.el] : '');
+    plate(ctx, 176, 6, 160, Game.clean(t(cur.def.name)), cur.shown, cur.max, cur.def.el ? EL[cur.def.el] : '');
     // what the enemy will do next, and to whom
-    if (!S.fx && B.active && B.enemyHp > 0 && B.plan && member(B.plan.target)) {
+    if (B.foes.length === 1 && !S.fx && B.active && B.enemyHp > 0 && B.plan && member(B.plan.target)) {
       var ik = B.plan.kind, heavy = ik === 'heavy' || ik === 'double', tg = member(B.plan.target);
-      var txt = KIND_GLYPH[ik] + Game.clean(t(intentId())) + (ik === 'guard' || ik === 'heal' ? '' : '  → ' + Game.clean(nameOfId(tg.id)));
+      var txt = KIND_GLYPH[ik] + Game.clean(t(intentId(B.foes[0]))) + (ik === 'guard' || ik === 'heal' ? '' : '  → ' + Game.clean(nameOfId(tg.id)));
       ctx.font = '18px "Jersey 10", sans-serif'; ctx.textAlign = 'right';
       var w = ctx.measureText(txt).width; ctx.fillStyle = 'rgba(20,16,36,.8)'; ctx.fillRect(474 - w - 10, 160, w + 14, 22);
       ctx.fillStyle = ik === 'heal' ? '#7aff9a' : ik === 'guard' ? '#9ac8ff' : heavy ? '#ffd24a' : '#fff'; ctx.fillText(txt, 470, 176); ctx.textAlign = 'left';
     }
     if (S.spear !== null) {
-      var pr = d.proj || 'spear', sy = S.spearY;
+      var pr = cur.def.proj || 'spear', sy = S.spearY;
       if (pr === 'orb') { ctx.fillStyle = 'rgba(255,230,90,.45)'; ctx.beginPath(); ctx.arc(S.spear, sy, 16, 0, 6.3); ctx.fill(); ctx.fillStyle = '#fff6a0'; ctx.beginPath(); ctx.arc(S.spear, sy, 9, 0, 6.3); ctx.fill(); }
       else if (pr === 'rock') { ctx.fillStyle = '#6a6a76'; ctx.fillRect(S.spear - 8, sy - 10, 22, 20); ctx.fillStyle = '#9a9aa8'; ctx.fillRect(S.spear - 8, sy - 10, 22, 6); }
       else { ctx.fillStyle = '#e8e8f0'; ctx.fillRect(S.spear, sy - 2, 40, 4); ctx.fillStyle = '#fff'; ctx.fillRect(S.spear - 6, sy - 3, 8, 6); }
@@ -368,7 +437,7 @@ var Battle = (function () {
     // floating numbers: damage, healing, misses
     S.pops = S.pops.filter(function (q) { return now - q.t0 < 1100; });
     S.pops.forEach(function (q) {
-      var a = (now - q.t0) / 1100, sl = q.who === 'e' ? null : slotOf(member(q.who)), x = sl ? sl.x + sl.s / 2 : gx + sz / 2, y = (sl ? sl.y : gy) + 6 - 34 * a;
+      var a = (now - q.t0) / 1100, sl = q.who === 'e' ? null : slotOf(member(q.who)), hm = q.f ? foeHome(q.f) : ch0, x = sl ? sl.x + sl.s / 2 : hm.x + hm.s / 2, y = (sl ? sl.y : hm.y) + 6 - 34 * a;
       ctx.globalAlpha = 1 - a * a; ctx.font = '26px "Jersey 10", sans-serif'; ctx.textAlign = 'center'; ctx.lineWidth = 4; ctx.strokeStyle = '#1c1624'; ctx.strokeText(q.txt, x, y); ctx.fillStyle = q.col; ctx.fillText(q.txt, x, y);
     });
     ctx.globalAlpha = 1; ctx.textAlign = 'left';

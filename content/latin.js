@@ -3657,5 +3657,23 @@ window.CONTENT = [
   "nle_category": "mythology",
   "spec_node_id": "",
   "review_status": "draft"
+ },
+ {
+  "id": "battle_target",
+  "latin": "Quem petis?",
+  "english": "Whom do you attack?",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "ui_back",
+  "latin": "Redī!",
+  "english": "Go back!",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
  }
 ];

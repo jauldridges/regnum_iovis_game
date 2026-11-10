@@ -80,13 +80,22 @@ module.exports = async function setup() {
   H.buttons = () => p.$$eval('#choices button', bs => bs.map(b => b.textContent + (b.disabled ? ' [off]' : '')));
   const picks = () => p.evaluate(() => Battle.picks);
   // play one turn: the named move if it is ready, otherwise cover (Sē tege); waits until the turn has been played
-  H.act = async latin => {
+  // after a move is chosen against several enemies, pick whom to attack (the named one, or the first)
+  const aim = async (n, foe) => {
+    await p.waitForFunction(n => !Battle.active || Battle.picks > n || Battle.choosing, n, { timeout: 15000 });
+    if (await p.evaluate(() => Battle.active && Battle.choosing)) {
+      const f = foe ? `#choices button:has-text("${foe}")` : '#choices button:first-child';
+      await p.click(f);
+      await p.waitForFunction(n => !Battle.active || Battle.picks > n, n, { timeout: 15000 });
+    }
+  };
+  H.act = async (latin, foe) => {
     await H.turnReady();
     const n = await picks(), who = await p.evaluate(() => Battle.turnOf);
     let sel = `#choices button:not([disabled]):has-text("${latin}")`;
     if (!(await p.locator(sel).count())) sel = '#choices button:not([disabled]):has-text("Sē tege")';
     await p.click(sel);
-    await p.waitForFunction(n => !Battle.active || Battle.picks > n, n, { timeout: 15000 });
+    await aim(n, foe);
     return who;
   };
   H.cmd = H.act;
@@ -100,7 +109,7 @@ module.exports = async function setup() {
       for (const pr of prefs) { const s2 = `#choices button:not([disabled]):has-text("${pr}")`; if (await p.locator(s2).count()) { sel = s2; break; } }
       if (!sel) sel = '#choices button:not([disabled])';
       await p.click(sel);
-      await p.waitForFunction(n => !Battle.active || Battle.picks > n, n, { timeout: 15000 });
+      await aim(n);
     }
     throw new Error('battle did not end');
   };

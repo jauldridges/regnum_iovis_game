@@ -347,12 +347,12 @@ var Story = (function () {
     if (id.indexOf('cyclops') === 0) return cyclopes();
     if (id.indexOf('cent') === 0) return centimani();
     if (id === 'styx' || id === 'victoria') return styx();
-    if (id === 'hyperion') return fight('hyperion', ['hyp_1'], { enemy: 'hyperion' }, function () { Book.unlock('hyperion'); say(['prom_arr']); });
+    if (id === 'hyperion') return fight('hyperion', ['hyp_1'], { enemy: 'hyperion', extra: ['guard'] }, function () { Book.unlock('hyperion'); say(['prom_arr']); });
     if (id === 'prometheus') return titan('prom', 'prometheus', 'prom_1');
     if (id === 'themis') return titan('them', 'themis', 'them_1');
-    if (id === 'iapetus') return fight('iapetus', ['iap_1'], { enemy: 'iapetus' }, function () { Book.unlock('iapetus'); });
-    if (id === 'atlas') return fight('atlas', ['atl_1'], { enemy: 'atlas' }, function () { Book.unlock('atlas'); });
-    if (id === 'saturn_boss') return fight('saturnBoss', ['sat_1'], { enemy: 'saturnus', final: true }, epilogue);
+    if (id === 'iapetus') return fight('iapetus', ['iap_1'], { enemy: 'iapetus', extra: ['guard'] }, function () { Book.unlock('iapetus'); });
+    if (id === 'atlas') return fight('atlas', ['atl_1'], { enemy: 'atlas', extra: ['guard', 'guard'] }, function () { Book.unlock('atlas'); });
+    if (id === 'saturn_boss') return fight('saturnBoss', ['sat_1'], { enemy: 'saturnus', extra: ['guard', 'guard'], final: true }, epilogue);
   };
 
   // A choice with one right answer (the buttons come in random order). Wrong answers have a small story
@@ -402,7 +402,7 @@ var Story = (function () {
   function cup() {
     say(['cup_2'], function () {
       choice('cup_choice', 'opt_saturno', 'opt_custodi', ['cup_wrong'], function () {
-        Game.scene(cupScene, function () { fight('guardH', [], { enemy: 'dux' }, guardsFlee); });   // the first battle of the war: the guards Saturn sent in
+        Game.scene(cupScene, function () { fight('guardH', [], { enemy: 'dux', extra: ['guard', 'guard'] }, guardsFlee); });   // the first battle of the war: the guards Saturn sent in
       });
     });
   }
@@ -480,7 +480,7 @@ var Story = (function () {
     function run() { Game.transition(function () { Battle.start(opts, result); }); }              // the same team again after a loss
     function begin() { Team.pick(!!opts.final, run); }                                           // choose who fights (only when there is a choice)
     function result(res, hpLeft, hpMax) {
-      if (res === 'won') { F[entId] = true; reward(opts.enemy, function () { if (after) after(); else checkReady(); }); }
+      if (res === 'won') { F[entId] = true; reward([opts.enemy].concat(opts.extra || []), function () { if (after) after(); else checkReady(); }); }
       else if (res === 'lost') { opts.max = hpMax; opts.hp = Math.max(1, hpLeft); lose(run, entId); }   // the enemy stays hurt for the next try
     }
     say(pre, begin);
