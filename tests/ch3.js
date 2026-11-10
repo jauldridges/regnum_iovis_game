@@ -15,15 +15,17 @@
   await H.choose('Saturnō');
   assert(await p.evaluate(() => new Promise(r => setTimeout(() => r(Game.state().scene), 300))), 'the cup is a cutscene: Saturn drinks, turns green, and brings it all up');
   await p.waitForFunction(() => Game.state().flags.cupWar, null, { timeout: 60000 });
+  const await_members = await p.evaluate(() => Book.members());
   const info = await p.evaluate(() => ({ party: Book.state().party, stone: Story.flags.stoneOut }));
-  assert.deepEqual(info.party, ['neptunus', 'pluto', 'iuno'], 'the first three siblings join the party'); assert(info.stone, 'the stone lies on the floor');
+  ['neptunus', 'pluto', 'iuno'].forEach(id => assert((await_members).includes(id), id + ' joined')); assert(info.stone, 'the stone lies on the floor');
   // the war begins with something you see: Saturn orders the guards in, they storm the hall, then the fight starts (no lone guard, no text)
+  await H.pickTeam(['Neptūn', 'Plūt', 'Iūn']);                                                    // seven could fight: choose three
   await battleReady();
-  const cmds = await p.$$eval('#choices button', bs => bs.map(b => b.textContent.trim()));
-  ['Tonā', 'Tridente', 'Galeam', 'Hostēs', 'Cōnsilium'].forEach(c => assert(cmds.some(x => x.includes(c)), c + ' in ' + cmds));
+  assert.deepEqual(await p.evaluate(() => Battle.team.map(m => m.id)), ['iuppiter', 'neptunus', 'pluto', 'iuno'], 'Jupiter and the three picked gods fight, one after another');
+  assert((await H.buttons()).some(c => c.includes('Tonā')));
   assert.equal(await p.evaluate(() => Battle.def.key), 'dux', 'the guards\' captain, not another guard');
   assert.equal(await p.evaluate(() => Battle.def.pattern.join()), 'light,guard,heavy');
-  await cmd('Cōnsilium'); await cmd('Tridente'); await cmd('Tridente');                              // a critical blow breaks even a raised shield
+  await H.autoPlay(['Tridente', 'Tonā']);
   await H.won();
   assert((await st()).flags.guardH); await H.scene();                                              // the guards run for the doors
   assert.equal(await p.evaluate(() => Story.flags.guardsGone), true);

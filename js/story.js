@@ -475,15 +475,15 @@ var Story = (function () {
   }
 
   // ---- battles: the speaker says why we fight, the screen wipes, then the battle
-  var held = [];                                              // siblings an enemy has seized, freed when the battle is won
   var ALIAS = { guardH: 'gH2', saturnBoss: 'saturn_boss' };
   function fight(entId, pre, opts, after) {
-    function run() { Game.transition(function () { Battle.start(opts, result); }); }
+    function run() { Game.transition(function () { Battle.start(opts, result); }); }              // the same team again after a loss
+    function begin() { Team.pick(!!opts.final, run); }                                           // choose who fights (only when there is a choice)
     function result(res, hpLeft, hpMax) {
-      if (res === 'won') { F[entId] = true; reward(opts.enemy, function () { freeHeld(function () { if (after) after(); else checkReady(); }); }); }
+      if (res === 'won') { F[entId] = true; reward(opts.enemy, function () { if (after) after(); else checkReady(); }); }
       else if (res === 'lost') { opts.max = hpMax; opts.hp = Math.max(1, hpLeft); lose(run, entId); }   // the enemy stays hurt for the next try
     }
-    say(pre, run);
+    say(pre, begin);
   }
   // A celebration: the screen dims, the new ally (or power) grows into view under a banner, stars burst, and a fanfare plays
   var celebrated = [];
@@ -522,29 +522,13 @@ var Story = (function () {
     Game.showChoice(Game.line('lvl_choice'), opts, true);
   }
   function enemyPos(c, entId) { return c.pos(ALIAS[entId] || entId); }   // where the enemy stands (the player's place if it is not on the map)
-  // Losing changes the story: before chapter 3 the guards find the cave; after, the enemy seizes your latest sibling (you see it)
-  // and the battle starts again without them. Win, and they are freed.
+  // Losing changes the story: before chapter 3 the guards find the cave; after, the allies fall (you see it) and you try again;
+  // the enemy stays hurt for the next try. Fallen allies are back for the next attempt.
   function lose(again, entId) {
-    var sib = ch >= 3 ? Book.lastSibling() : null;
-    if (!sib) return Game.scene(async function (c) { c.caption('lose_ch2_1', 1800); await c.wait(1900); c.caption('lose_ch2_2', 1800); await c.wait(1900); }, again);
-    Book.hold(sib); held.push(sib);
+    if (ch < 3) return Game.scene(async function (c) { c.caption('lose_ch2_1', 1800); await c.wait(1900); c.caption('lose_ch2_2', 1800); await c.wait(1900); }, again);
     Game.scene(async function (c) {
-      var p = c.player(), at = enemyPos(c, entId);
-      c.actor('sib', sib, p[0], p[1], { size: 24 }); await c.move('sib', at[0], at[1], 600, 1); c.remove('sib');
-      await c.burst(at[0], at[1] - 0.3, '🔗', 5); await c.shake(300, 2);
-      var t = fill('lose_seize', Game.line('acc_' + sib)); if (t) { Game.toast(t.raw, 2000); } await c.wait(1900);
+      var at = enemyPos(c, entId); await c.flash('#ff2020', 350); await c.shake(500, 3); await c.burst(at[0], at[1] - 0.3, '💫', 6); c.caption('lose_all', 1800); await c.wait(1900);
     }, again);
-  }
-  function freeHeld(done) {
-    if (!held.length) return done();
-    var list = held.slice(); held = [];
-    Game.scene(async function (c) {
-      for (var i = 0; i < list.length; i++) {
-        var sib = list[i], p = c.player();
-        c.actor('sib', sib, p[0] + 1 + i, p[1] - 1, { size: 24 }); await c.burst(p[0] + 1 + i, p[1] - 1, '✨', 6); Book.release(sib);
-        var t = fill('freed', Book.nameNom(sib)); if (t) Game.toast(t.raw, 1500); await c.wait(1400); c.remove('sib');
-      }
-    }, done);
   }
   S.lose = lose; S.startCh1 = startCh1; S.reward = reward;   // also used by the tests
   return S;

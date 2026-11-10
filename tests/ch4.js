@@ -9,13 +9,14 @@
   await H.useChar('I'); assert((await H.toast()).includes('Campē hīc custōs'));
   await H.talk('campe');
   assert((await text()).includes('Campē custōs Tartarī')); await cont(); assert((await text()).includes('Nēmō hinc exit')); await cont();
+  await H.pickTeam(['Vest', 'Neptūn', 'Plūt']);
   await battleReady();
   assert.equal(await p.evaluate(() => Battle.def.el), 'inferi');
-  assert.equal(await p.evaluate(() => Battle.teamHp), 5, 'the team is a little tougher in chapter 4');
-  await cmd('Tonā'); assert((await text()).includes('Parvum vulnus'), 'sky is weak against the underworld');
-  await cmd('Ignem accende'); assert((await text()).includes('Magnum vulnus'), 'fire beats the underworld');
-  assert.equal(await p.evaluate(() => Battle.enemyHp), 3);
-  await cmd('Ignem accende');
+  assert.equal(await p.evaluate(() => Battle.maxOf('iuppiter')), 7, 'Jupiter is a little tougher in chapter 4');
+  await H.act('Tonā');                                                                              // Jupiter: sky is weak against the underworld
+  assert((await p.evaluate(() => Battle.history.join(' | '))).includes('Parvum vulnus'), 'sky is weak against the underworld');
+  await H.act('Ignem');                                                                            // Vesta's fire beats the underworld (wait for the fire move)
+  await H.autoPlay(['Ignem', 'Tonā']);
   await H.won(); await H.scene(); assert(!(await p.evaluate(() => MAPS.tartarus.rows.join('').includes('G'))), 'the cells are open');
   await p.screenshot({ path: process.env.SHOT || '/tmp/ch4.png' });
   // the Cyclopes: three gifts, three datives
@@ -34,7 +35,8 @@
   await H.talk('cent2');
   assert((await text()).includes('Centimanī līberī')); await cont(); await cont(); await H.calm();
   assert((await text()).includes('Via aperta')); await cont();
-  assert.deepEqual((await p.evaluate(() => Book.partyInfo())).helpers.sort(), ['amalthea', 'centimani', 'curetes', 'cyclopes', 'metis']);
+  const mem = await p.evaluate(() => Book.members());
+  ['amalthea', 'centimani', 'curetes', 'cyclopes', 'metis'].forEach(id => assert(mem.includes(id), id + ' is a member'));
   await H.goTo(10, 11); await H.bump('D');
   await pcont(); await pcont();
   assert.equal((await st()).map, 'olympus');

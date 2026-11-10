@@ -36,8 +36,7 @@
   await p.click('#book button:has-text("Claudāmus")'); assert(!(await st()).msgOpen, 'book closes');
   await p.keyboard.press('b');
   assert.deepEqual((await p.evaluate(() => Book.state())).party, ['neptunus']);
-  await p.click('#book button.pty');
-  assert.deepEqual((await p.evaluate(() => Book.state())).party, []);
+  assert.deepEqual(await p.evaluate(() => Book.members()), ['neptunus'], 'a new ally joins the crew by himself');
 
   await H.open('lang=en&ch=1');
   await p.evaluate(() => { Battle.start({ hp: 3 }); });

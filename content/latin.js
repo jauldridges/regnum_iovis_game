@@ -3227,24 +3227,6 @@ window.CONTENT = [
   "review_status": "approved"
  },
  {
-  "id": "lose_seize",
-  "latin": "Hostis {x} capit!",
-  "english": "The enemy seizes {x}!",
-  "type": "message",
-  "nle_category": "mythology",
-  "spec_node_id": "",
-  "review_status": "approved"
- },
- {
-  "id": "freed",
-  "latin": "{x} līber est!",
-  "english": "{x} is free!",
-  "type": "message",
-  "nle_category": "mythology",
-  "spec_node_id": "",
-  "review_status": "approved"
- },
- {
   "id": "name_lupus",
   "latin": "Lupus",
   "english": "Wolf",
@@ -3531,5 +3513,149 @@ window.CONTENT = [
   "nle_category": "",
   "spec_node_id": "",
   "review_status": "approved"
+ },
+ {
+  "id": "cmd_unda",
+  "latin": "Undās excitā!",
+  "english": "Raise the waves!",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "battle_unda",
+  "latin": "Undae hostem verrunt.",
+  "english": "Waves sweep over the enemy.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "cmd_umbrae",
+  "latin": "Umbrās vocā!",
+  "english": "Call the shades!",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "battle_umbrae",
+  "latin": "Umbrae hostem tardant.",
+  "english": "Shades slow the enemy.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "cmd_regina",
+  "latin": "Rēgīnae pārē!",
+  "english": "Obey the queen!",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "battle_regina",
+  "latin": "Sociī fortiōrēs sunt.",
+  "english": "The allies grow stronger.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "cmd_flamma",
+  "latin": "Flammā fovē!",
+  "english": "Warm them with fire!",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "battle_flamma",
+  "latin": "Flamma Vestae sociōs fovet.",
+  "english": "Vesta's flame warms the allies.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "cmd_scuta",
+  "latin": "Scūta pulsā!",
+  "english": "Clash the shields!",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "battle_scuta",
+  "latin": "Cūrētēs scūta pulsant.",
+  "english": "The Curetes clash their shields.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "cmd_defend",
+  "latin": "Sē tege!",
+  "english": "Cover yourself!",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "battle_defend",
+  "latin": "{x} sē tegit.",
+  "english": "{x} takes cover.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "battle_down",
+  "latin": "{x} cadit!",
+  "english": "{x} falls!",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "team_title",
+  "latin": "Quī pugnant?",
+  "english": "Who fights?",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "team_go",
+  "latin": "Pugnāmus!",
+  "english": "To battle!",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "lose_all",
+  "latin": "Sociī cadunt!",
+  "english": "The allies fall!",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
  }
 ];

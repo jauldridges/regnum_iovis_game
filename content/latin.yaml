@@ -1,158 +1,156 @@
-# All Latin (and English) text lives here, never in code.
-# Students see only review_status: approved. Add ?drafts=1 to the URL to see drafts marked [draft].
 - id: ch1_servant_warn
-  latin: "Saturnus venit! Cēlā īnfantem!"
-  english: "Saturn is coming! Hide the baby!"
+  latin: Saturnus venit! Cēlā īnfantem!
+  english: Saturn is coming! Hide the baby!
   type: message
   nle_category: mythology
-  spec_node_id: ""
+  spec_node_id: ''
   review_status: approved
 - id: ui_continue
-  latin: "Perge"
-  english: "Continue"
+  latin: Perge
+  english: Continue
   type: ui_label
-  nle_category: ""
-  spec_node_id: ""
+  nle_category: ''
+  spec_node_id: ''
   review_status: approved
 - id: ui_title_latin
-  latin: "Latīnē"
-  english: "Latin"
+  latin: Latīnē
+  english: Latin
   type: ui_label
-  nle_category: ""
-  spec_node_id: ""
+  nle_category: ''
+  spec_node_id: ''
   review_status: approved
 - id: obj_throne
-  latin: "Haec est sella Saturnī."
-  english: "This is Saturn's throne."
+  latin: Haec est sella Saturnī.
+  english: This is Saturn's throne.
   type: message
   nle_category: mythology
-  spec_node_id: ""
+  spec_node_id: ''
   review_status: approved
 - id: obj_sickle
-  latin: "Haec est falx Saturnī."
-  english: "This is Saturn's sickle."
+  latin: Haec est falx Saturnī.
+  english: This is Saturn's sickle.
   type: message
   nle_category: mythology
-  spec_node_id: ""
+  spec_node_id: ''
   review_status: approved
 - id: obj_cradle
-  latin: "Hīc dormit Iuppiter."
-  english: "Jupiter sleeps here."
+  latin: Hīc dormit Iuppiter.
+  english: Jupiter sleeps here.
   type: message
   nle_category: mythology
-  spec_node_id: ""
+  spec_node_id: ''
   review_status: approved
 - id: ch1_saturn_comes
-  latin: "Saturnus venit. Īnfantem poscit."
-  english: "Saturn comes. He demands the baby."
+  latin: Saturnus venit. Īnfantem poscit.
+  english: Saturn comes. He demands the baby.
   type: message
   nle_category: mythology
-  spec_node_id: ""
+  spec_node_id: ''
   review_status: approved
 - id: ch1_choice_prompt
-  latin: "Quid Ops Saturnō dat?"
-  english: "What does Ops give to Saturn?"
+  latin: Quid Ops Saturnō dat?
+  english: What does Ops give to Saturn?
   type: message
   nle_category: mythology
-  spec_node_id: ""
+  spec_node_id: ''
   review_status: approved
 - id: ch1_choice_stone
-  latin: "Saxum"
-  english: "The stone"
+  latin: Saxum
+  english: The stone
   type: ui_label
-  nle_category: 
-  spec_node_id: ""
+  nle_category: null
+  spec_node_id: ''
   review_status: approved
 - id: ch1_choice_baby
-  latin: "Īnfantem"
-  english: "The baby"
+  latin: Īnfantem
+  english: The baby
   type: ui_label
-  nle_category: 
-  spec_node_id: ""
+  nle_category: null
+  spec_node_id: ''
   review_status: approved
 - id: ch1_wrong
-  latin: "Saturnus īnfantem capit. Ops īnfantem retrahit!"
-  english: "Saturn grabs the baby. Ops pulls him back!"
+  latin: Saturnus īnfantem capit. Ops īnfantem retrahit!
+  english: Saturn grabs the baby. Ops pulls him back!
   type: message
   nle_category: mythology
-  spec_node_id: ""
+  spec_node_id: ''
   review_status: approved
 - id: ch1_right_1
-  latin: "Ops saxum Saturnō dat."
-  english: "Ops gives the stone to Saturn."
+  latin: Ops saxum Saturnō dat.
+  english: Ops gives the stone to Saturn.
   type: message
   nle_category: mythology
-  spec_node_id: ""
+  spec_node_id: ''
   review_status: approved
 - id: ch1_right_2
-  latin: "Saturnus saxum dēvorat!"
-  english: "Saturn swallows the stone!"
+  latin: Saturnus saxum dēvorat!
+  english: Saturn swallows the stone!
   type: message
   nle_category: mythology
-  spec_node_id: ""
+  spec_node_id: ''
   review_status: approved
 - id: ch1_right_3
-  latin: "Iuppiter salvus est."
-  english: "Jupiter is safe."
+  latin: Iuppiter salvus est.
+  english: Jupiter is safe.
   type: message
   nle_category: mythology
-  spec_node_id: ""
+  spec_node_id: ''
   review_status: approved
 - id: battle_intro
-  latin: "Iuppiter sē dēfendit!"
-  english: "Jupiter defends himself!"
+  latin: Iuppiter sē dēfendit!
+  english: Jupiter defends himself!
   type: message
   nle_category: mythology
-  spec_node_id: ""
+  spec_node_id: ''
   review_status: approved
 - id: cmd_tona
-  latin: "Tonā!"
-  english: "Thunder!"
+  latin: Tonā!
+  english: Thunder!
   type: ui_label
-  nle_category: 
-  spec_node_id: ""
+  nle_category: null
+  spec_node_id: ''
   review_status: approved
 - id: battle_tona
-  latin: "Tonitrus Iovis hostem terret."
-  english: "Jupiter's thunder frightens the enemy."
+  latin: Tonitrus Iovis hostem terret.
+  english: Jupiter's thunder frightens the enemy.
   type: message
   nle_category: mythology
-  spec_node_id: ""
+  spec_node_id: ''
   review_status: approved
 - id: battle_enemy_spear
-  latin: "Custōs hastam iacit."
-  english: "The guard throws a spear."
+  latin: Custōs hastam iacit.
+  english: The guard throws a spear.
   type: message
   nle_category: mythology
-  spec_node_id: ""
+  spec_node_id: ''
   review_status: approved
 - id: battle_win_1
-  latin: "Custōs fugit!"
-  english: "The guard runs away!"
+  latin: Custōs fugit!
+  english: The guard runs away!
   type: message
   nle_category: mythology
-  spec_node_id: ""
+  spec_node_id: ''
   review_status: approved
 - id: battle_win_2
-  latin: "Iuppiter vincit."
-  english: "Jupiter wins."
+  latin: Iuppiter vincit.
+  english: Jupiter wins.
   type: message
   nle_category: mythology
-  spec_node_id: ""
+  spec_node_id: ''
   review_status: approved
 - id: name_iuppiter
-  latin: "Iuppiter"
-  english: "Jupiter"
+  latin: Iuppiter
+  english: Jupiter
   type: ui_label
-  nle_category: 
-  spec_node_id: ""
+  nle_category: null
+  spec_node_id: ''
   review_status: approved
 - id: name_custos
-  latin: "Custōs"
-  english: "Guard"
+  latin: Custōs
+  english: Guard
   type: ui_label
-  nle_category: 
-  spec_node_id: ""
+  nle_category: null
+  spec_node_id: ''
   review_status: approved
 - id: lib_title
   latin: Liber Deōrum
@@ -1028,8 +1026,8 @@
   spec_node_id: ''
   review_status: approved
 - id: battle_neptunus
-  latin: "Tridēns Neptūnī hostem ferit."
-  english: "Neptune's trident strikes the enemy."
+  latin: Tridēns Neptūnī hostem ferit.
+  english: Neptune's trident strikes the enemy.
   type: message
   nle_category: mythology
   spec_node_id: ''
@@ -1056,8 +1054,8 @@
   spec_node_id: ''
   review_status: approved
 - id: battle_iuno
-  latin: "Iūnō hostem terret."
-  english: "Juno frightens the enemy."
+  latin: Iūnō hostem terret.
+  english: Juno frightens the enemy.
   type: message
   nle_category: mythology
   spec_node_id: ''
@@ -1084,8 +1082,8 @@
   spec_node_id: ''
   review_status: approved
 - id: battle_vesta
-  latin: "Ignis Vestae hostem urit."
-  english: "Vesta's fire burns the enemy."
+  latin: Ignis Vestae hostem urit.
+  english: Vesta's fire burns the enemy.
   type: message
   nle_category: mythology
   spec_node_id: ''
@@ -2901,20 +2899,6 @@
   nle_category: mythology
   spec_node_id: ''
   review_status: approved
-- id: lose_seize
-  latin: Hostis {x} capit!
-  english: The enemy seizes {x}!
-  type: message
-  nle_category: mythology
-  spec_node_id: ''
-  review_status: approved
-- id: freed
-  latin: '{x} līber est!'
-  english: '{x} is free!'
-  type: message
-  nle_category: mythology
-  spec_node_id: ''
-  review_status: approved
 - id: name_lupus
   latin: Lupus
   english: Wolf
@@ -3139,3 +3123,115 @@
   nle_category: ''
   spec_node_id: ''
   review_status: approved
+- id: cmd_unda
+  latin: Undās excitā!
+  english: Raise the waves!
+  type: ui_label
+  nle_category: ''
+  spec_node_id: ''
+  review_status: draft
+- id: battle_unda
+  latin: Undae hostem verrunt.
+  english: Waves sweep over the enemy.
+  type: message
+  nle_category: mythology
+  spec_node_id: ''
+  review_status: draft
+- id: cmd_umbrae
+  latin: Umbrās vocā!
+  english: Call the shades!
+  type: ui_label
+  nle_category: ''
+  spec_node_id: ''
+  review_status: draft
+- id: battle_umbrae
+  latin: Umbrae hostem tardant.
+  english: Shades slow the enemy.
+  type: message
+  nle_category: mythology
+  spec_node_id: ''
+  review_status: draft
+- id: cmd_regina
+  latin: Rēgīnae pārē!
+  english: Obey the queen!
+  type: ui_label
+  nle_category: ''
+  spec_node_id: ''
+  review_status: draft
+- id: battle_regina
+  latin: Sociī fortiōrēs sunt.
+  english: The allies grow stronger.
+  type: message
+  nle_category: mythology
+  spec_node_id: ''
+  review_status: draft
+- id: cmd_flamma
+  latin: Flammā fovē!
+  english: Warm them with fire!
+  type: ui_label
+  nle_category: ''
+  spec_node_id: ''
+  review_status: draft
+- id: battle_flamma
+  latin: Flamma Vestae sociōs fovet.
+  english: Vesta's flame warms the allies.
+  type: message
+  nle_category: mythology
+  spec_node_id: ''
+  review_status: draft
+- id: cmd_scuta
+  latin: Scūta pulsā!
+  english: Clash the shields!
+  type: ui_label
+  nle_category: ''
+  spec_node_id: ''
+  review_status: draft
+- id: battle_scuta
+  latin: Cūrētēs scūta pulsant.
+  english: The Curetes clash their shields.
+  type: message
+  nle_category: mythology
+  spec_node_id: ''
+  review_status: draft
+- id: cmd_defend
+  latin: Sē tege!
+  english: Cover yourself!
+  type: ui_label
+  nle_category: ''
+  spec_node_id: ''
+  review_status: draft
+- id: battle_defend
+  latin: '{x} sē tegit.'
+  english: '{x} takes cover.'
+  type: message
+  nle_category: mythology
+  spec_node_id: ''
+  review_status: draft
+- id: battle_down
+  latin: '{x} cadit!'
+  english: '{x} falls!'
+  type: message
+  nle_category: mythology
+  spec_node_id: ''
+  review_status: draft
+- id: team_title
+  latin: Quī pugnant?
+  english: Who fights?
+  type: ui_label
+  nle_category: ''
+  spec_node_id: ''
+  review_status: draft
+- id: team_go
+  latin: Pugnāmus!
+  english: To battle!
+  type: ui_label
+  nle_category: ''
+  spec_node_id: ''
+  review_status: draft
+- id: lose_all
+  latin: Sociī cadunt!
+  english: The allies fall!
+  type: message
+  nle_category: mythology
+  spec_node_id: ''
+  review_status: draft

@@ -15,10 +15,12 @@
   assert.equal(await p.evaluate(() => Story.canExit('ida_east')), false, 'the gate stays shut');
   await p.evaluate(() => { Story.flags.guard3 = true; }); assert.equal(await p.evaluate(() => Story.canExit('ida_east')), true);
   // the keepsake in battle
-  const probe = async item => p.evaluate(item => { Story.flags.item = item; Battle.start({ enemy: 'guard', hp: 3 }, () => {}); return { hp: Battle.teamHp, nubes: Battle.uses.nubes, amal: Battle.uses.amalthea }; }, item);
-  assert.deepEqual(await probe(null), { hp: 4, nubes: 2, amal: 2 });
-  assert.deepEqual(await probe('pallium'), { hp: 5, nubes: 2, amal: 2 }, 'the cloak: one more hit point');
-  assert.deepEqual(await probe('scutum'), { hp: 4, nubes: 3, amal: 2 }, 'the shield: one more cloud');
-  assert.deepEqual(await probe('mel'), { hp: 4, nubes: 2, amal: 3 }, 'the honey: Amalthea heals more often');
+  const begin = async (item, team) => { await H.open('lang=la&drafts=1&ch=2'); await p.evaluate(([item, team]) => { Story.flags.item = item; Story.flags.nubes = true; Battle.start({ enemy: 'dux', team }, () => {}); }, [item, team]); await H.turnReady(); };
+  await begin(null, ['iuppiter']); assert.equal(await p.evaluate(() => Battle.maxOf('iuppiter')), 6);
+  await begin('pallium', ['iuppiter']); assert.equal(await p.evaluate(() => Battle.maxOf('iuppiter')), 7, 'the cloak: one more hit point');
+  await begin(null, ['iuppiter']); await H.act('Nūbibus'); assert.equal(await p.evaluate(() => Battle.cdOf('iuppiter', 'nubes')), 2);
+  await begin('scutum', ['iuppiter']); await H.act('Nūbibus'); assert.equal(await p.evaluate(() => Battle.cdOf('iuppiter', 'nubes')), 1, 'the shield: the cloud rests less');
+  await begin(null, ['iuppiter', 'amalthea']); await H.act('Sē tege'); await H.act('Iovī lac'); assert.equal(await p.evaluate(() => Battle.cdOf('amalthea', 'amalthea')), 2);
+  await begin('mel', ['iuppiter', 'amalthea']); await H.act('Sē tege'); await H.act('Iovī lac'); assert.equal(await p.evaluate(() => Battle.cdOf('amalthea', 'amalthea')), 1, 'the honey: Amalthea heals more often');
   await H.finish('boons');
 })().catch(e => { console.error(e); process.exit(1); });

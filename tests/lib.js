@@ -6,13 +6,14 @@ const KEY = { U: 'ArrowUp', D: 'ArrowDown', L: 'ArrowLeft', R: 'ArrowRight' };
 module.exports = async function setup() {
   const b = await chromium.launch(), p = await b.newPage({ viewport: { width: 1366, height: 768 } });
   const errs = [];
-  p.on('pageerror', e => errs.push(e.message));
+  p.on('pageerror', e => errs.push(e.message + (process.env.STACK ? ' ' + e.stack : '')));
   const H = { b, p, assert, errs };
   H.st = () => p.evaluate(() => Game.state());
   // pause=0.2 shortens the 3-second reading pause and the cutscenes so the tests are quick; pass pause:null for the real 3 seconds
   H.open = async (q, o = {}) => {
     const pause = o.pause === null ? '' : '&pause=' + (o.pause || 0.2);
-    await p.goto(url + '?' + q + pause + '&mute=1&luck=' + (o.luck || 'hit'));   // luck: hit (no misses or crits), crit (every hit is critical), miss; real dice if the page is opened without it await p.waitForFunction(() => window.Game && window.Story && Game.state().map !== undefined);
+    await p.goto(url + '?' + q + pause + '&mute=1&luck=' + (o.luck || 'hit'));   // luck: hit (no misses or crits), crit (every hit is critical), miss; real dice if the page is opened without it
+    await p.waitForFunction(() => window.Game && window.Story && Game.state().map !== undefined);
   };
   H.text = () => p.textContent('#msg-text');
   const enabled = async sel => { await p.waitForSelector(sel + ':not([disabled])', { timeout: 10000 }); };
@@ -70,15 +71,50 @@ module.exports = async function setup() {
       const s = await H.st(); calm = (s.scene || s.trans) ? 0 : calm + 1;
     }
   };
-  H.battleReady = async () => {
+  // a god's turn has begun (a button can be pressed) -- or the battle is over
+  H.turnReady = async () => {
     await p.waitForFunction(() => Battle.active, null, { timeout: 10000 });
-    await p.waitForSelector('#choices button:not([disabled])', { timeout: 10000 });
+    await p.waitForFunction(() => Battle.turnOf && document.querySelector('#choices button:not([disabled])'), null, { timeout: 20000 });
   };
-  // press a battle command by its Latin text and wait for the turn to finish (or the battle to end)
-  H.cmd = async latin => {
-    await p.click(`#choices button:has-text("${latin}")`);
-    await p.waitForFunction(() => !Battle.active || !document.querySelector('#choices button').disabled, null, { timeout: 15000 });
-    await p.waitForTimeout(100);
+  H.battleReady = H.turnReady;
+  H.buttons = () => p.$$eval('#choices button', bs => bs.map(b => b.textContent + (b.disabled ? ' [off]' : '')));
+  const picks = () => p.evaluate(() => Battle.picks);
+  // play one turn: the named move if it is ready, otherwise cover (Sē tege); waits until the turn has been played
+  H.act = async latin => {
+    await H.turnReady();
+    const n = await picks(), who = await p.evaluate(() => Battle.turnOf);
+    let sel = `#choices button:not([disabled]):has-text("${latin}")`;
+    if (!(await p.locator(sel).count())) sel = '#choices button:not([disabled]):has-text("Sē tege")';
+    await p.click(sel);
+    await p.waitForFunction(n => !Battle.active || Battle.picks > n, n, { timeout: 15000 });
+    return who;
+  };
+  H.cmd = H.act;
+  // keep playing, preferring the named moves in order, until the battle ends
+  H.autoPlay = async (prefs = ['Fulmen', 'Tonā', 'Unda']) => {
+    for (let k = 0; k < 80; k++) {
+      if (!(await p.evaluate(() => Battle.active))) return;
+      try { await H.turnReady(); } catch (e) { if (!(await p.evaluate(() => Battle.active))) return; throw e; }
+      const n = await picks();
+      let sel = null;
+      for (const pr of prefs) { const s2 = `#choices button:not([disabled]):has-text("${pr}")`; if (await p.locator(s2).count()) { sel = s2; break; } }
+      if (!sel) sel = '#choices button:not([disabled])';
+      await p.click(sel);
+      await p.waitForFunction(n => !Battle.active || Battle.picks > n, n, { timeout: 15000 });
+    }
+    throw new Error('battle did not end');
+  };
+  // after a fight starts: accept the remembered team on the pick screen if it appears (or choose names), then wait for the first turn
+  H.enter = async names => {
+    await p.waitForFunction(() => Battle.active || !document.getElementById('teampick').hidden, null, { timeout: 15000 });
+    if (!(await p.evaluate(() => document.getElementById('teampick').hidden))) { if (names) await H.pickTeam(names); else await p.click('#teampick .go'); }
+    await H.turnReady();
+  };
+  H.pickTeam = async names => {
+    await p.waitForSelector('#teampick:not([hidden])', { timeout: 10000 });
+    for (const t of await p.$$('#teampick .tile.sel:not(.fixed)')) await t.click();         // clear the remembered picks
+    for (const n of names) await p.click(`#teampick .tile:has-text("${n}")`);
+    await p.click('#teampick .go');
   };
   return H;
 };

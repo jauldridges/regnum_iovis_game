@@ -10,7 +10,7 @@
   assert((await text()).includes('saxum nōn ēdit')); await cont();
   await H.choose('Herbam'); assert((await text()).includes('herbam ēdit')); await cont(); await cont();
   assert((await st()).flags.amalthea);
-  assert.deepEqual((await p.evaluate(() => Book.partyInfo())).helpers, ['amalthea']);
+  assert.deepEqual(await p.evaluate(() => Book.members()), ['amalthea']);
   await H.talk('curetes1'); assert((await text()).includes('adsunt')); await cont();
   await H.choose('Dormiunt'); assert((await text()).includes('propius veniunt')); await cont();
   await H.choose('Scūta pulsant'); assert((await text()).includes('nihil audiunt')); await cont();
@@ -24,16 +24,19 @@
   assert((await text()).includes('Saturnō dō')); assert(!(await p.evaluate(() => Battle.active))); await cont();
   assert((await st()).msgOpen, 'locked during the wipe');
   await battleReady();
-  const cmds = await p.$$eval('#choices button', bs => bs.map(b => b.textContent));
-  assert(cmds.some(c => c.includes('Tonā')) && cmds.some(c => c.includes('Nūbibus')) && cmds.some(c => c.includes('Iovī lac')), 'party commands: ' + cmds);
-  assert(!cmds.some(c => c.includes('Scūta pulsā')), 'the escape move is gone');
-  await cmd('Nūbibus'); assert((await text()).includes('Hasta nihil ferit')); assert.equal(await p.evaluate(() => Battle.teamHp), 4);
-  await cmd('Tonā'); await cmd('Tonā');                                                          // two critical hits
+  const cmds = await H.buttons();
+  assert(cmds.some(c => c.includes('Tonā')) && cmds.some(c => c.includes('Nūbibus')), 'Jupiter\'s moves: ' + cmds);
+  assert.equal(await p.evaluate(() => Battle.turnOf), 'iuppiter', 'Jupiter goes first');
+  assert.deepEqual(await p.evaluate(() => Battle.team.map(m => m.id)), ['iuppiter', 'amalthea', 'curetes'], 'the whole crew is in the fight');
+  await H.act('Nūbibus');
+  assert.equal(await p.evaluate(() => Battle.turnOf), 'amalthea', 'then the next god gets a turn');
+  assert((await H.buttons()).some(c => c.includes('Iovī lac')), 'Amalthea has her own move');
+  await H.autoPlay(['Tonā']);
   await H.won();
   assert((await st()).flags.guard1, 'guard 1 beaten');
   await H.talk('wolf'); assert((await text()).includes('Lupus fremit')); await cont(); await battleReady();
   assert.equal(await p.evaluate(() => Battle.def.pattern.join()), 'double,light,double', 'a wolf bites twice');
-  await cmd('Tonā'); await cmd('Tonā');
+  await H.autoPlay(['Tonā']);
   await H.won();                                                                                    // 25 + 30 xp: level 2, choose a boon
   assert.equal(await p.evaluate(() => Prog.level), 2); assert.equal(await p.evaluate(() => Prog.boons.vita), 1, 'the boon was chosen');
   assert((await text()).includes('Via aperta')); await cont();

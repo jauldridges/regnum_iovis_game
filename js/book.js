@@ -1,13 +1,15 @@
 // Party and the collection book (Liber Deōrum). Each page waits 3 seconds, then asks one question.
 var Book = (function () {
-  var B = {}, MAXSIB = 3;
+  var B = {}, MAXTEAM = 3;     // the team is Jupiter and up to three others
   // Story data only; all text lives in content/latin.yaml (lib_<id>, lib_<id>_q).
   var CH = { iuppiter: {}, ops: {}, saturnus: {}, saxum: {},
              amalthea: { helper: true }, curetes: { helper: true }, metis: { helper: true },
              cyclopes: { helper: true }, centimani: { helper: true }, prometheus: { helper: true }, themis: { helper: true }, victoria: { helper: true },
              styx: {}, campe: {}, hyperion: {}, iapetus: {}, atlas: {},
              neptunus: { sibling: true }, pluto: { sibling: true }, iuno: { sibling: true }, ceres: { sibling: true }, vesta: { sibling: true } };
-  var unlocked = {}, recruited = {}, party = [], root, open = false;
+  // who can fight (they have moves): in the order they joined
+  var MEMBERS = ['neptunus', 'pluto', 'iuno', 'ceres', 'vesta', 'amalthea', 'curetes', 'metis', 'cyclopes', 'centimani', 'prometheus', 'themis', 'victoria'];
+  var unlocked = {}, recruited = {}, party = [], order = [], root, open = false;
 
   function L(id) { return Game.line(id) || ''; }
   function C(id) { return Game.clean(L(id)); }
@@ -20,13 +22,10 @@ var Book = (function () {
   B.recruit = function (id, silent) {
     if (!recruited[id] && !silent) Score.add('allies', Score.CFG.ally);
     recruited[id] = true; unlocked[id] = true;
-    if (CH[id].sibling && party.indexOf(id) < 0 && party.length < MAXSIB) party.push(id);
+    if (MEMBERS.indexOf(id) >= 0 && order.indexOf(id) < 0) { order.push(id); if (id !== 'victoria' && party.length < MAXTEAM) party.push(id); }
   };
-  B.partyInfo = function () { return { siblings: party.slice(), helpers: ids(function (i) { return CH[i].helper && recruited[i]; }) }; };
-  B.setParty = function (list) { party = list.slice(0, MAXSIB); };   // used by tests and chapter select
-  B.hold = function (id) { var i = party.indexOf(id); if (i >= 0) party.splice(i, 1); };      // taken by an enemy for now
-  B.release = function (id) { if (party.indexOf(id) < 0) party.push(id); };
-  B.lastSibling = function () { return party[party.length - 1] || null; };
+  B.members = function () { return order.slice(); };                                       // everyone who can fight
+  B.setParty = function (list) { party = list.slice(0, MAXTEAM); };                         // the remembered team (chosen before battles)
   B.nameNom = function (id) { return nameOf(id).split(',')[0]; };
 
   function el(tag, text, cls) { var e = document.createElement(tag); if (text) e.textContent = text; if (cls) e.className = cls; return e; }
@@ -40,17 +39,8 @@ var Book = (function () {
       root.appendChild(btn(nameOf(id) + (done ? ' ✓' : ''), function () { Quiz.run(root, 'lib_' + id, 'lib_' + id + '_q', id, home); }, done ? 'ok' : ''));
     });
     root.appendChild(el('h2', C('ui_party')));
-    root.appendChild(el('div', unlocked.iuppiter ? nameOf('iuppiter') : '', 'page'));
-    ids(function (id) { return CH[id].helper && recruited[id] && ready(id); }).forEach(function (id) {
-      root.appendChild(el('div', nameOf(id), 'page'));
-    });
-    ids(function (id) { return CH[id].sibling && recruited[id] && ready(id); }).forEach(function (id) {
-      var inP = party.indexOf(id) >= 0;
-      root.appendChild(btn(nameOf(id) + (inP ? ' ✓' : ''), function () {
-        if (inP) party.splice(party.indexOf(id), 1); else if (party.length < MAXSIB) party.push(id);
-        home();
-      }, 'pty' + (inP ? ' sel' : '')));
-    });
+    root.appendChild(el('div', unlocked.iuppiter ? nameOf('iuppiter') + ' ✓' : '', 'page'));
+    order.filter(function (id) { return ready(id); }).forEach(function (id) { root.appendChild(el('div', nameOf(id) + (party.indexOf(id) >= 0 ? ' ✓' : ''), 'page')); });
     // the type chart, icons only: each power beats the next (sky > earth > sea > fire > underworld > sky)
     root.appendChild(el('div', '☁️ → ⛰️ → 🌊 → 🔥 → 💀 → ☁️', 'page chart'));
     root.appendChild(btn(C('ui_close'), close));

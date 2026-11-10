@@ -12,33 +12,37 @@
   await p.waitForFunction(() => Game.state().map === 'othrys', null, { timeout: 5000 });
   await p.waitForFunction(() => !Game.state().trans, null, { timeout: 5000 });
   // Hyperion first (earth: the sky is strong)
-  await H.talk('hyperion'); assert((await text()).includes('Hyperīōn prīmus')); await cont(); await battleReady();
-  assert.equal(await p.evaluate(() => Battle.teamHp), 6);
-  const cmds = await p.$$eval('#choices button', bs => bs.map(b => b.textContent));
+  await H.talk('hyperion'); assert((await text()).includes('Hyperīōn prīmus')); await cont(); await H.enter();
+  assert.equal(await p.evaluate(() => Battle.maxOf('iuppiter')), 8, 'Jupiter at level 5');
+  const cmds = await H.buttons();
   assert(cmds.some(c => c.includes('Fulmen iace')), 'Fulmen iace is available');
-  assert(!cmds.some(c => c.includes('Iovī victōriam')), 'Victory only helps in the final battle');
-  await cmd('Fulmen iace'); assert((await text()).includes('Magnum vulnus'));
-  await cmd('Tonā');
+  assert(!(await p.evaluate(() => Battle.team.some(m => m.id === 'victoria'))), 'Victory only helps in the final battle');
+  await H.act('Fulmen iace'); assert((await p.evaluate(() => Battle.history.join('|'))).includes('Magnum vulnus'));
+  await H.autoPlay();
   await H.won();
   assert((await text()).includes('Duo Titānēs')); await cont();
   // two Titans change sides; only then does Iapetus come
   await H.talk('themis'); assert((await text()).includes('Themis quoque')); await cont(); await H.calm();
   await H.talk('prometheus'); assert((await text()).includes('Promētheus Titān est, sed Iovī auxilium dat')); await cont(); await H.calm();
   assert((await text()).includes('Via aperta')); await cont();
-  await H.talk('iapetus'); assert((await text()).includes('Hyperīōnis frāter')); await cont(); await battleReady();
-  await cmd('Fulmen iace'); await cmd('Fulmen iace');
+  await H.talk('iapetus'); assert((await text()).includes('Hyperīōnis frāter')); await cont(); await H.enter();
+  await H.autoPlay();
   await H.won();
-  await H.talk('atlas'); assert((await text()).includes('Titānum dux')); await cont(); await battleReady();
-  await cmd('Fulmen iace'); await cmd('Fulmen iace');
+  await H.talk('atlas'); assert((await text()).includes('Titānum dux')); await cont(); await H.enter();
+  await H.autoPlay();
   await H.won();
-  await H.talk('saturn_boss'); assert((await text()).includes('Saturnus ipse venit')); await cont(); await battleReady();
-  const sc = await p.$$eval('#choices button', bs => bs.map(b => b.textContent));
-  assert(sc.some(c => c.includes('Iovī victōriam')), 'Victory is offered in the final battle');
-  await cmd('Iovī victōriam');
+  await H.talk('saturn_boss'); assert((await text()).includes('Saturnus ipse venit')); await cont();
+  await H.pickTeam(['Victōri', 'Neptūn', 'Plūt']);                                                 // Victory only helps in the final battle
+  await H.turnReady();
+  assert(await p.evaluate(() => Battle.team.some(m => m.id === 'victoria')), 'Victory can be on the team in the final battle');
   await p.screenshot({ path: process.env.SHOT || '/tmp/ch5.png' });
-  await cmd('Fulmen iace'); await cmd('Fulmen iace');
+  await H.autoPlay();
   await p.waitForFunction(() => !Battle.active, null, { timeout: 20000 });
-  await p.waitForFunction(() => Game.state().trans || Game.state().scene, null, { timeout: 15000 });   // the epilogue film begins right after Saturn falls (the last level is already reached)
+  for (let k = 0; k < 40; k++) {                                                                    // a level-up boon choice may come first
+    if (await p.locator('#choices button:has-text("Vīta")').count()) await p.click('#choices button:has-text("Vīta")');
+    if ((await H.st()).map !== 'olympus') break; await p.waitForTimeout(250);
+  }
+  assert.notEqual((await H.st()).map, 'olympus', 'the epilogue film begins after Saturn falls (it leaves the throne room)');
   const bd = await p.evaluate(() => Score.breakdown().reduce((o, r) => (o[r.key] = r.pts, o), {}));
   assert.equal(bd.battles, 600, 'four boss battles');
   await H.finish('ch5');
