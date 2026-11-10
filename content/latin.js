@@ -2864,7 +2864,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "baby_take",
@@ -2873,7 +2873,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cradle_empty",
@@ -2882,7 +2882,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cradle_have",
@@ -2891,7 +2891,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "fam_idle",
@@ -2900,7 +2900,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "fam_offer",
@@ -2909,7 +2909,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "fam_choice",
@@ -2918,7 +2918,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "opt_famulae",
@@ -2927,7 +2927,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "opt_neminī",
@@ -2936,7 +2936,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "fam_take",
@@ -2945,7 +2945,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "fam_no",
@@ -2954,7 +2954,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "stone_take",
@@ -2963,7 +2963,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "stone_have",
@@ -2972,7 +2972,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "obj_saxa",
@@ -2981,7 +2981,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "obj_mel",
@@ -2990,7 +2990,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "obj_scutum",
@@ -2999,7 +2999,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "obj_pallium",
@@ -3008,7 +3008,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "opt_tolle",
@@ -3017,7 +3017,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "opt_relinque",
@@ -3026,7 +3026,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "item_mel",
@@ -3035,7 +3035,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "item_scutum",
@@ -3044,7 +3044,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "item_pallium",
@@ -3053,7 +3053,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "item_full",
@@ -3062,7 +3062,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "gate_garden",
@@ -3071,7 +3071,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "baby_out",
@@ -3080,7 +3080,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "caught_1",
@@ -3089,7 +3089,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "caught_2",
@@ -3098,7 +3098,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "ch2_extra",
@@ -3107,7 +3107,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "amal_mel",
@@ -3116,7 +3116,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cur_scutum",
@@ -3125,7 +3125,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "map_crete",
@@ -3134,7 +3134,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "map_italia",
@@ -3143,7 +3143,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "map_graecia",
@@ -3152,7 +3152,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "map_aegyptus",
@@ -3161,7 +3161,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "map_asia",
@@ -3170,7 +3170,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "map_africa",
@@ -3179,7 +3179,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "ch1_open_1",
@@ -3188,7 +3188,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "ch1_open_2",
@@ -3197,7 +3197,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "ch1_open_3",
@@ -3206,7 +3206,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cup_order",
@@ -3215,7 +3215,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cup_flee",
@@ -3224,7 +3224,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "lose_seize",
@@ -3233,7 +3233,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "freed",
@@ -3242,7 +3242,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "name_lupus",
@@ -3251,7 +3251,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "name_dux",
@@ -3260,7 +3260,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "wolf_1",
@@ -3269,7 +3269,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "intent_lupus_light",
@@ -3278,7 +3278,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_lupus_light",
@@ -3287,7 +3287,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "intent_lupus_double",
@@ -3296,7 +3296,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_lupus_double",
@@ -3305,7 +3305,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "win_lupus",
@@ -3314,7 +3314,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "intent_dux_light",
@@ -3323,7 +3323,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_dux_light",
@@ -3332,7 +3332,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "intent_dux_guard",
@@ -3341,7 +3341,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_dux_guard",
@@ -3350,7 +3350,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "intent_dux_heavy",
@@ -3359,7 +3359,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_dux_heavy",
@@ -3368,7 +3368,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "win_dux",
@@ -3377,7 +3377,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "intent_hyperion_heal",
@@ -3386,7 +3386,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_hyperion_heal",
@@ -3395,7 +3395,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "intent_atlas_guard",
@@ -3404,7 +3404,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_atlas_guard",
@@ -3413,7 +3413,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_rage",
@@ -3422,7 +3422,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "eff_miss",
@@ -3431,7 +3431,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "eff_crit",
@@ -3440,7 +3440,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "eff_guarded",
@@ -3449,7 +3449,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "lvl_up",
@@ -3458,7 +3458,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "lvl_choice",
@@ -3467,7 +3467,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "opt_vita",
@@ -3476,7 +3476,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "opt_vis",
@@ -3485,7 +3485,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "opt_fortuna",
@@ -3494,7 +3494,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "opt_copia",
@@ -3503,7 +3503,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "map_latium",
@@ -3512,7 +3512,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "new_ally",
@@ -3521,7 +3521,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "new_power",
@@ -3530,6 +3530,6 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  }
 ];
