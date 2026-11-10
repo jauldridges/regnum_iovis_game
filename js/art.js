@@ -78,6 +78,11 @@ var Art = (function () {
     atlas:    H({ skin: '#c8a888', hair: '#3a3a44', cloth: '#5a5a6a', trim: '#9a9aa8', boots: '#3a3a44', extra: beard('#3a3a44') }),
     cyclops:  H({ skin: '#d9a066', hair: '#4a2a1a', cloth: '#d9822b', trim: '#7a4a1a', extra: both(cyclopsEye, hammer) }),
     centimanus: H({ skin: '#c8b8a0', hair: '#6a6a7a', cloth: '#7a7a9a', trim: '#b0b0d0', extra: manyArms }),
+    baby:     { kind: 'baby' },
+    stone:    { kind: 'stone' },
+    orb:      { kind: 'orb' },
+    terra:    H({ hair: '#3a6a2a', cloth: '#4a8a4a', trim: '#d8f0b8', robe: true }),
+    cup:      { kind: 'cup' },
     goat:     { kind: 'goat' },
     campe:    { kind: 'snake' }
   };
@@ -114,6 +119,15 @@ var Art = (function () {
     b.p(5, 8, sh); b.p(8, 9, sh); b.p(10, 8, sh);
     return b;
   }
+  function baby() {
+    var b = new Buf();
+    b.r(5, 7, 10, 13, '#f4f0e0'); b.r(5, 12, 10, 13, '#d8d0b8'); b.r(7, 8, 8, 12, '#e8c0d0');       // wrapped in a blanket
+    b.r(5, 2, 10, 7, '#f2c9a0'); b.r(5, 2, 10, 3, '#e8c850'); b.p(6, 5, OUT); b.p(9, 5, OUT); b.p(7, 6, '#e8a0a0'); b.p(8, 6, '#e8a0a0');
+    return b;
+  }
+  function orb() { var b = new Buf(); b.r(6, 6, 9, 9, '#fff6a0'); b.r(5, 7, 10, 8, '#ffe040'); b.r(7, 5, 8, 10, '#ffe040'); b.r(7, 7, 8, 8, '#ffffff'); return b; }
+  function stone() { var b = new Buf(); b.r(4, 6, 11, 12, '#8a8a96'); b.r(5, 5, 10, 5, '#8a8a96'); b.r(5, 6, 9, 7, '#b0b0bc'); b.r(5, 12, 10, 13, '#555560'); b.r(10, 8, 11, 11, '#6a6a76'); return b; }
+  function cup() { var b = new Buf(); b.r(5, 5, 10, 9, '#e8c040'); b.r(6, 4, 9, 4, '#f0d060'); b.r(7, 10, 8, 12, '#c9a227'); b.r(5, 13, 10, 13, '#a07a10'); b.r(6, 6, 9, 7, '#8a2a3a'); b.r(11, 6, 12, 8, '#c9a227'); return b; }
   function snake() {
     var b = new Buf(), c = '#7a2a7a', l = '#b05ab0', d = '#4a1a4a';
     b.r(9, 2, 13, 5, c); b.r(10, 1, 10, 1, d); b.r(12, 1, 12, 1, d); b.p(12, 3, '#ffe040'); b.p(11, 3, '#ffe040'); b.r(14, 4, 15, 4, '#e03030'); b.r(9, 5, 13, 5, l);   // head
@@ -129,11 +143,9 @@ var Art = (function () {
     var key = name + '|' + dir + '|' + fr; if (cache[key]) return cache[key];
     var P = SPR[name] || SPR.servant, b;
     var left = dir === 'left';
-    if (P.kind === 'goat') b = goat(dir, fr); else if (P.kind === 'snake') b = snake(); else b = human(P, left ? 'right' : dir, fr);
-    if (left && P.kind !== 'human') b.mirror();
-    if (left && P.kind === 'human') b.mirror();
-    if (P.kind === 'goat' && !left) { /* goat faces right by default */ }
-    b.outline(OUT);
+    if (P.kind === 'goat') b = goat(dir, fr); else if (P.kind === 'snake') b = snake(); else if (P.kind === 'baby') b = baby(); else if (P.kind === 'orb') b = orb(); else if (P.kind === 'stone') b = stone(); else if (P.kind === 'cup') b = cup(); else b = human(P, left ? 'right' : dir, fr);
+    if (left) b.mirror();
+    if (P.kind !== 'orb') b.outline(OUT);
     return (cache[key] = b.canvas(1));
   };
 
@@ -145,15 +157,20 @@ var Art = (function () {
     if (id.indexOf('cyclops') === 0) return 'cyclops';
     if (id.indexOf('cent') === 0) return 'centimanus';
     if (id === 'amalthea') return 'goat';
+    if (id === 'famula') return 'servant';
+    if (id.indexOf('patrol') === 0) return 'guard';
     return SPR[id] ? id : 'servant';
   };
   A.allySprite = function (id) { return { iuppiter: 'jupiter', amalthea: 'goat', curetes: 'curete', cyclopes: 'cyclops', centimani: 'centimanus' }[id] || id; };
 
-  // 32px map sprite with a soft shadow and a gentle idle bob
-  A.char = function (ctx, name, px, py, dir, fr, t, seed) {
-    var bob = fr === 0 && Math.sin(t / 320 + seed) > 0.4 ? 1 : 0;
-    ctx.fillStyle = 'rgba(0,0,0,.28)'; ctx.beginPath(); ctx.ellipse(px + 16, py + 29, 10, 4, 0, 0, 6.3); ctx.fill();
-    ctx.drawImage(A.sprite(name, dir, fr), 0, 0, 16, 16, px, py - 2 * bob - 2, 32, 32);
+  // map sprite (24px by default) with a soft shadow and a slight, slow idle bob
+  A.char = function (ctx, name, px, py, dir, fr, t, seed, size, tint) {
+    size = size || 24;
+    var bob = fr === 0 && Math.sin(t / 700 + seed) > 0.75 ? 1 : 0, k = size / 24;
+    ctx.fillStyle = 'rgba(0,0,0,.26)'; ctx.beginPath(); ctx.ellipse(px + 12, py + 22 + (24 - size) * 0.5, 7.5 * k + 1, 3 * k + 0.5, 0, 0, 6.3); ctx.fill();
+    var dx = px + (24 - size) / 2, dy = py + (24 - size) - bob - 1;
+    if (tint && tint.a > 0) { A.big(ctx, name, dir, dx, dy, size, tint); return; }
+    ctx.drawImage(A.sprite(name, dir, fr), 0, 0, 16, 16, dx, dy, size, size);
   };
   // large sprite (battles): x, y top-left, size in px; tint flashes the sprite a colour
   var tmp = null;
@@ -226,6 +243,10 @@ var Art = (function () {
     G: function (b, r) { PAINT.d(b, r); b.r(0, 1, 15, 2, '#6a6a7a'); b.r(0, 13, 15, 14, '#6a6a7a'); [2, 6, 10, 14].forEach(function (x) { b.r(x, 1, x, 14, '#9a9aac'); b.r(x + 1, 1, x + 1, 14, '#55556a'); }); },
     I: function (b, r) { PAINT.dungeon(b, r); b.r(3, 3, 12, 11, '#2a2938'); [[4, 5, 6, 5], [5, 5, 5, 8], [8, 5, 11, 5], [9, 5, 9, 9], [4, 10, 11, 10], [6, 7, 7, 7]].forEach(function (s) { b.r(s[0], s[1], s[2], s[3], '#b8b0d8'); }); },
     K: function (b, r) { PAINT.d(b, r); for (var y = 0; y < 14; y += 3) { b.r(7, y, 8, y + 1, '#a0a0b0'); b.p(6, y + 2, '#707080'); b.p(9, y + 2, '#707080'); } b.r(4, 12, 11, 14, '#707080'); b.r(5, 12, 10, 12, '#a0a0b0'); },
+    N: function (b, r) { PAINT['.'](b, r); [[2, 8, 7, 14], [6, 5, 12, 11], [9, 9, 14, 14]].forEach(function (q, i) { b.r(q[0], q[1], q[2], q[3], i === 1 ? '#8a8a96' : '#767682'); b.r(q[0], q[1], q[2], q[1], '#b0b0bc'); b.r(q[0], q[3], q[2], q[3], '#555560'); }); },
+    M: function (b, r) { PAINT.brick(b, r); b.r(1, 8, 14, 9, '#6a4a2a'); b.r(4, 3, 11, 8, '#d99a2a'); b.r(4, 3, 11, 4, '#f0c050'); b.r(5, 2, 10, 2, '#7a5a2a'); b.r(6, 5, 9, 7, '#fff0b0'); b.r(2, 14, 13, 14, '#4a3018'); },
+    W: function (b, r) { PAINT.brick(b, r); b.r(1, 12, 14, 13, '#6a4a2a'); b.r(3, 2, 12, 11, '#b0873a'); b.r(4, 3, 11, 10, '#c9a24a'); b.r(7, 3, 8, 10, '#8a6a2a'); b.r(4, 6, 11, 7, '#8a6a2a'); b.r(7, 6, 8, 7, '#e8d060'); },
+    Y: function (b, r) { PAINT.brick(b, r); b.r(2, 1, 13, 2, '#5a3a1a'); b.r(4, 3, 11, 13, '#3a5fa0'); b.r(4, 3, 11, 4, '#5a82c8'); b.r(6, 5, 6, 13, '#2a4a8a'); b.r(9, 5, 9, 13, '#2a4a8a'); b.r(7, 3, 8, 5, '#e8c040'); },
     J: function (b, r) { PAINT.I(b, r); },
     Q: function (b, r) { PAINT.crag(b, r); b.r(5, 2, 10, 11, '#8a2a3a'); b.r(5, 2, 10, 3, '#b03a4a'); b.p(7, 12, '#8a2a3a'); b.p(8, 13, '#8a2a3a'); b.r(7, 5, 8, 8, '#e8c040'); },
     P: function (b, r) { fillAll(b, '#e8e8f4'); [3, 7, 11].forEach(function (x) { b.r(x, 3, x + 1, 13, '#c8c8dc'); b.r(x, 3, x, 13, '#fff'); }); b.r(0, 0, 15, 2, '#d0d0e4'); b.r(0, 14, 15, 15, '#b0b0c8'); b.r(0, 2, 15, 2, '#fff'); }
@@ -238,7 +259,7 @@ var Art = (function () {
     var b = new Buf(), r = rng(hash(kind + mapId) + v * 977);
     (PAINT[kind] || PAINT['.'])(b, r, f, nb);
     // a little light from above on every tile
-    return (cache[key] = b.canvas(2));
+    return (cache[key] = b.canvas(3));
   };
 
   // ---- lighting: a tint per place and a soft vignette
@@ -246,8 +267,8 @@ var Art = (function () {
                tartarus: 'rgba(40,20,80,.38)', olympus: 'rgba(255,255,255,.10)', othrys: 'rgba(120,30,40,.22)' };
   var vig = null;
   A.light = function (ctx, mapId) {
-    if (TINT[mapId]) { ctx.fillStyle = TINT[mapId]; ctx.fillRect(0, 0, 480, 320); }
-    if (!vig) { var c = mk(480, 320), x = c.getContext('2d'), g = x.createRadialGradient(240, 160, 130, 240, 160, 330); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,.42)'); x.fillStyle = g; x.fillRect(0, 0, 480, 320); vig = c; }
+    if (TINT[mapId]) { ctx.fillStyle = TINT[mapId]; ctx.fillRect(0, 0, 480, 312); }
+    if (!vig) { var c = mk(480, 312), x = c.getContext('2d'), g = x.createRadialGradient(240, 156, 130, 240, 156, 330); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,.42)'); x.fillStyle = g; x.fillRect(0, 0, 480, 312); vig = c; }
     ctx.drawImage(vig, 0, 0);
   };
   // the title picture: Jupiter on a hill under a storm sky, lightning now and then
@@ -266,6 +287,58 @@ var Art = (function () {
     ctx.drawImage(A.sprite('jupiter', 'down', 0), 0, 0, 16, 16, 64, 36 - bob, 112, 112);
     ctx.drawImage(A.sprite('saturn', 'down', 0), 0, 0, 16, 16, 8, 78, 48, 48);
     ctx.drawImage(A.sprite('goat', 'right', 0), 0, 0, 16, 16, 196, 100, 40, 40);
+  };
+  // ---- the Mediterranean, 120 x 80 pixels of land and sea, with Crete picked out
+  var medMap = null;
+  var LAND = [  // [colour, polygon points]
+    ['n', [[0, 0], [120, 0], [120, 14], [112, 15], [104, 13], [96, 15], [90, 13], [84, 14], [76, 14], [66, 15], [56, 14], [48, 15], [40, 14], [32, 15], [24, 16], [18, 16], [14, 13], [0, 13]]],  // Europe, north
+    ['n', [[0, 12], [17, 13], [19, 22], [15, 34], [7, 37], [0, 31]]],                                                                  // Iberia
+    ['n', [[29, 14], [38, 15], [40, 21], [45, 27], [52, 37], [55, 44], [51, 45], [49, 41], [41, 33], [35, 25], [29, 19]]],              // Italy
+    ['n', [[47, 14], [78, 14], [78, 22], [70, 24], [66, 28], [64, 34], [66, 42], [68, 50], [65, 49], [62, 44], [58, 36], [55, 28], [52, 22], [47, 19]]], // Balkans and Greece
+    ['n', [[78, 13], [120, 13], [120, 36], [104, 37], [94, 36], [86, 33], [80, 28], [78, 20]]],                                         // Anatolia
+    ['s', [[0, 62], [12, 60], [28, 58], [42, 60], [54, 58], [64, 61], [76, 60], [90, 62], [100, 58], [108, 54], [120, 54], [120, 80], [0, 80]]], // Africa
+    ['n', [[47, 49], [54, 49], [56, 54], [49, 55]]], ['n', [[29, 33], [33, 33], [33, 43], [29, 43]]], ['n', [[100, 45], [109, 44], [107, 48], [100, 48]]]  // Sicily, Sardinia, Cyprus
+  ];
+  var CRETE = [[66, 56], [71, 55], [79, 55], [81, 56], [77, 58], [68, 58]];
+  function buildMed() {
+    var c = mk(120, 80), x = c.getContext('2d'), out = mk(120, 80), o = out.getContext('2d');
+    ['n', 's', 'c'].forEach(function (kind) {
+      x.clearRect(0, 0, 120, 80); x.fillStyle = '#000';
+      LAND.concat([['c', CRETE]]).forEach(function (l) { if (l[0] !== kind) return; x.beginPath(); l[1].forEach(function (p, i) { i ? x.lineTo(p[0], p[1]) : x.moveTo(p[0], p[1]); }); x.closePath(); x.fill(); });
+      var d = x.getImageData(0, 0, 120, 80).data;
+      for (var i = 0; i < 9600; i++) if (d[i * 4 + 3] > 110) { o.fillStyle = kind === 's' ? '#d9c38a' : kind === 'c' ? '#6fbf4a' : '#7bb35a'; o.fillRect(i % 120, Math.floor(i / 120), 1, 1); }
+    });
+    var img = o.getImageData(0, 0, 120, 80), px = img.data, res = o.createImageData(120, 80), r = res.data;
+    function land(x, y) { return x >= 0 && y >= 0 && x < 120 && y < 80 && px[(y * 120 + x) * 4 + 3] > 0; }
+    for (var y = 0; y < 80; y++) for (var xx = 0; xx < 120; xx++) {
+      var i = (y * 120 + xx) * 4, near = land(xx - 1, y) || land(xx + 1, y) || land(xx, y - 1) || land(xx, y + 1);
+      var col;
+      if (land(xx, y)) col = near && !(land(xx - 1, y) && land(xx + 1, y) && land(xx, y - 1) && land(xx, y + 1)) ? [79, 143, 58] : [px[i], px[i + 1], px[i + 2]];
+      else col = near ? [74, 143, 208] : null;
+      if (col) { r[i] = col[0]; r[i + 1] = col[1]; r[i + 2] = col[2]; r[i + 3] = 255; }
+    }
+    o.putImageData(res, 0, 0); return out;
+  }
+  // t in ms since the slide appeared. The view starts on the whole sea, then settles on Crete.
+  A.med = function (ctx, t, labels) {
+    ctx.imageSmoothingEnabled = false;
+    if (!medMap) medMap = buildMed();
+    var e = 1 + 0.85 * Math.min(1, Math.max(0, (t - 1100) / 1500)), cx = 73.5, cy = 56.5, sx = cx * 2, sy = cy * 2;
+    ctx.save(); ctx.fillStyle = '#2f6ab5'; ctx.fillRect(0, 0, 240, 160);
+    ctx.fillStyle = '#3a7bc8'; for (var wy = 0; wy < 160; wy += 8) for (var wx = (wy / 8 % 2) * 12; wx < 240; wx += 24) ctx.fillRect(wx + ((t / 400 + wy) % 3) * 2, wy, 8, 2);
+    var ox = 120 - sx * e, oy = 75 - sy * e; ox = Math.min(0, Math.max(240 - 240 * e, ox)); oy = Math.min(0, Math.max(160 - 160 * e, oy));
+    ctx.translate(ox, oy); ctx.scale(e, e);
+    ctx.drawImage(medMap, 0, 0, 120, 80, 0, 0, 240, 160);
+    if (labels) { ctx.fillStyle = '#2a1d12'; ctx.font = '10px "Jersey 10", "Pixelify Sans", sans-serif'; ctx.textAlign = 'center';
+      labels.forEach(function (l) { ctx.lineWidth = 2.5; ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.strokeText(l.text, l.x * 2, l.y * 2); ctx.fillText(l.text, l.x * 2, l.y * 2); }); }
+    // Crete: a pulsing ring and a bouncing arrow
+    var px = cx * 2, py = 56.5 * 2, k = (t % 1400) / 1400, appear = Math.min(1, Math.max(0, (t - 700) / 400));
+    ctx.strokeStyle = 'rgba(255,230,90,' + (1 - k) * appear + ')'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(px, py, 5 + 26 * k, 0, 6.3); ctx.stroke();
+    ctx.strokeStyle = 'rgba(255,255,255,' + appear + ')'; ctx.beginPath(); ctx.arc(px, py, 7, 0, 6.3); ctx.stroke();
+    var by = py - 26 - Math.abs(Math.sin(t / 220)) * 6;
+    ctx.globalAlpha = appear; ctx.fillStyle = '#ffe94d'; ctx.strokeStyle = '#2a1d12'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(px, by + 12); ctx.lineTo(px - 8, by); ctx.lineTo(px - 3, by); ctx.lineTo(px - 3, by - 10); ctx.lineTo(px + 3, by - 10); ctx.lineTo(px + 3, by); ctx.lineTo(px + 8, by); ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.globalAlpha = 1; ctx.restore();
   };
   A.shade = shade;
   return A;

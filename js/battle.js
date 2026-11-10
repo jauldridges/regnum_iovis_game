@@ -19,7 +19,6 @@ var Battle = (function () {
     ceres:     { kind: 'heal', amt: 2, uses: 2, fx: 'heal' },
     vesta:     { kind: 'dmg', amt: 2, el: 'ignis', uses: 2, fx: 'fire' },
     amalthea:  { kind: 'heal', amt: 1, uses: 2, fx: 'heal' },
-    curetes:   { kind: 'escape', uses: 1, fx: 'shields' },
     metis:     { kind: 'weak', uses: 1, fx: 'advice' },
     cyclopes:  { kind: 'dmg', amt: 3, uses: 1, fx: 'hammer' },
     centimani: { kind: 'dmg', amt: 3, el: 'terra', uses: 1, fx: 'rocks' },
@@ -28,7 +27,7 @@ var Battle = (function () {
     victoria:  { kind: 'power', uses: 1, fx: 'heal' }
   };
   var COLORS = { iuppiter: '#2f7fd1', neptunus: '#2aa6c9', pluto: '#555', iuno: '#c9a2e8', ceres: '#e0b84a', vesta: '#e0622e',
-                 amalthea: '#f0f0f0', curetes: '#8a8a99', metis: '#5ac8c8', cyclopes: '#d9822b', centimani: '#c0c0e0',
+                 amalthea: '#f0f0f0', metis: '#5ac8c8', cyclopes: '#d9822b', centimani: '#c0c0e0',
                  prometheus: '#f08030', themis: '#b070d0', victoria: '#f5d76e' };
   // Enemies: element, hit points, the cycle of intended actions, and their lines (content ids).
   var ENEMIES = {
@@ -126,7 +125,7 @@ var Battle = (function () {
     } else if (m.kind === 'weak') { B.weak = true; await back;
     } else if (m.kind === 'fire') { B.fire = true; await back;
     } else if (m.kind === 'power') { B.power += 1; await back;
-    } else if (m.kind === 'escape') { await back; await wait(900); return end('escaped'); }
+    }
     await wait(550);
     if (B.enemyHp <= 0) {
       say(B.def.win);
@@ -162,7 +161,9 @@ var Battle = (function () {
     O = opts || {}; B.def = ENEMIES[O.enemy || 'guard']; B.pattern = B.def.pattern; B.turn = 0;
     M = JSON.parse(JSON.stringify(MOVES, function (k, v) { return v === Infinity ? 'inf' : v; }), function (k, v) { return v === 'inf' ? Infinity : v; });
     if (Story.flags.weapons) { M.neptunus.amt = 3; M.pluto.uses = 3; }       // the Cyclopes' weapons
-    maxHp = 4 + Math.max(0, Story.ch() - 3);
+    var item = Story.flags.item;                                             // the keepsake Ops took from the storeroom
+    if (item === 'scutum') M.nubes.uses += 1; if (item === 'mel') { M.amalthea.amt = 2; M.amalthea.uses = 3; }
+    maxHp = 4 + Math.max(0, Story.ch() - 3) + (Story.flags.item === 'pallium' ? 1 : 0);
     B.active = true; B.teamHp = maxHp; B.enemyHp = O.hp || B.def.hp; B.maxEnemy = B.enemyHp;
     B.weak = false; B.fire = false; B.stun = false; B.up = null; B.power = 0;
     B.uses = {}; Object.keys(M).forEach(function (k) { B.uses[k] = M[k].uses; });
@@ -184,8 +185,8 @@ var Battle = (function () {
     var th = THEME[mapId] || THEME['default'], c = document.createElement('canvas'); c.width = 480; c.height = 320; var x = c.getContext('2d');
     x.imageSmoothingEnabled = false;
     if (th.interior) {
-      for (var ty = 0; ty < 5; ty++) for (var tx = 0; tx < 15; tx++) x.drawImage(Art.tile('#', mapId, 0, (tx + ty) % 4), tx * 32, ty * 32);
-      for (var fy = 5; fy < 10; fy++) for (var fx = 0; fx < 15; fx++) x.drawImage(Art.tile('.', mapId, 0, (fx * 7 + fy * 3) % 4), fx * 32, fy * 32);
+      for (var ty = 0; ty < 7; ty++) for (var tx = 0; tx < 20; tx++) x.drawImage(Art.tile('#', mapId, 0, (tx + ty) % 4), tx * 24, ty * 24, 24, 24);
+      for (var fy = 7; fy < 13; fy++) for (var fx = 0; fx < 20; fx++) x.drawImage(Art.tile('.', mapId, 0, (fx * 7 + fy * 3) % 4), fx * 24, fy * 24, 24, 24);
       x.fillStyle = 'rgba(0,0,0,.25)'; x.fillRect(0, 0, 480, 160);
     } else {
       var n = 10, a = th.sky[0], b = th.sky[1];
@@ -202,7 +203,7 @@ var Battle = (function () {
   }
   function plate(ctx, x, y, w, name, shown, max, glyph, right) {
     ctx.fillStyle = '#1c1830'; ctx.fillRect(x, y, w, 44); ctx.strokeStyle = '#e8c547'; ctx.lineWidth = 2; ctx.strokeRect(x + 1, y + 1, w - 2, 42);
-    ctx.fillStyle = '#fff'; ctx.font = '15px "Pixelify Sans", sans-serif'; ctx.textAlign = 'left'; ctx.fillText(name + (glyph ? ' ' + glyph : ''), x + 8, y + 19);
+    ctx.fillStyle = '#fff'; ctx.font = '18px "Jersey 10", sans-serif'; ctx.textAlign = 'left'; ctx.fillText(name + (glyph ? ' ' + glyph : ''), x + 8, y + 19);
     bar(ctx, x + 8, y + 26, shown, max, w - 20);
   }
   function bar(ctx, x, y, shown, max, w) {
@@ -218,7 +219,7 @@ var Battle = (function () {
     S.shownT += Math.max(-2 * dt, Math.min(2 * dt, B.teamHp - S.shownT));   // bars move 2 points a second
     S.shownE += Math.max(-2 * dt, Math.min(2 * dt, B.enemyHp - S.shownE));
     ctx.imageSmoothingEnabled = false;
-    ctx.drawImage(S.bg, 0, 0);
+    ctx.clearRect(0, 0, 480, 312); ctx.drawImage(S.bg, 0, 0);
     if (S.clouds) { ctx.fillStyle = 'rgba(255,255,255,.55)'; [[40, 20, 70], [220, 34, 90], [370, 14, 60]].forEach(function (c) { var cx = (c[0] + now / 90) % 560 - 60; ctx.fillRect(cx, c[1], c[2], 14); ctx.fillRect(cx + 12, c[1] - 8, c[2] - 30, 10); }); }
     // allies: Jupiter big, the others small behind him
     var others = allies(), pos = {}, sz = B.def.size;
@@ -241,7 +242,7 @@ var Battle = (function () {
     // what the enemy will do next
     if (!S.fx && B.active && B.enemyHp > 0) {
       var heavy = B.pattern[B.turn % B.pattern.length] === 'heavy', txt = (heavy ? '⚡ ' : '') + Game.clean(t(intentId()));
-      ctx.font = (heavy ? 'bold ' : '') + '15px "Pixelify Sans", sans-serif'; ctx.textAlign = 'right';
+      ctx.font = '18px "Jersey 10", sans-serif'; ctx.textAlign = 'right';
       var w = ctx.measureText(txt).width; ctx.fillStyle = 'rgba(20,16,36,.8)'; ctx.fillRect(474 - w - 10, 160, w + 14, 22);
       ctx.fillStyle = heavy ? '#ffd24a' : '#fff'; ctx.fillText(txt, 470, 176); ctx.textAlign = 'left';
     }

@@ -139,7 +139,6 @@ Commands are short Latin imperatives. The animation shows what each one means.
 | Cyclōpēs | *Malleō percute!* | Hammer blow (once per battle) |
 | Centimanī | *Centum saxa iace!* | Hundred-rock barrage (once per battle) |
 | Amalthēa | *Iovī lac dā!* | Heals Jupiter |
-| Cūrētēs | *Scūta pulsā!* | Clash shields; escape a battle |
 | Mētis | *Cōnsilium dā!* | Reveals the enemy's weakness |
 | Promētheus | *Ignem fer!* | Gives an ally fire power |
 | Themis | *Lēgem dīc!* | Cancels the enemy's next move |

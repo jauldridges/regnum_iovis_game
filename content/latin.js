@@ -1230,24 +1230,6 @@ window.CONTENT = [
   "review_status": "approved"
  },
  {
-  "id": "cmd_curetes",
-  "latin": "Scūta pulsā!",
-  "english": "Clash the shields!",
-  "type": "ui_label",
-  "nle_category": "",
-  "spec_node_id": "",
-  "review_status": "approved"
- },
- {
-  "id": "battle_curetes",
-  "latin": "Cūrētēs scūta pulsant. Iuppiter effugit.",
-  "english": "The Curetes clash their shields. Jupiter escapes.",
-  "type": "message",
-  "nle_category": "mythology",
-  "spec_node_id": "",
-  "review_status": "approved"
- },
- {
   "id": "cmd_metis",
   "latin": "Cōnsilium dā!",
   "english": "Give advice!",
@@ -2910,5 +2892,356 @@ window.CONTENT = [
    "the sea",
    "the earth"
   ]
+ },
+ {
+  "id": "ch1_start",
+  "latin": "Saturnus mox venit.",
+  "english": "Saturn is coming soon.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "baby_take",
+  "latin": "Ops īnfantem tollit.",
+  "english": "Ops picks up the baby.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "cradle_empty",
+  "latin": "Cūnae vacuae sunt.",
+  "english": "The cradle is empty.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "cradle_have",
+  "latin": "Īnfāns tēcum est.",
+  "english": "The baby is with you.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "fam_idle",
+  "latin": "Custōdēs vigilant!",
+  "english": "The guards are watching!",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "fam_offer",
+  "latin": "Īnfantem mihi dā!",
+  "english": "Give the baby to me!",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "fam_choice",
+  "latin": "Cui īnfantem dās?",
+  "english": "To whom do you give the baby?",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "opt_famulae",
+  "latin": "Famulae",
+  "english": "To the servant",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "opt_neminī",
+  "latin": "Nēminī",
+  "english": "To no one",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "fam_take",
+  "latin": "Famula īnfantem portat.",
+  "english": "The servant carries the baby.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "fam_no",
+  "latin": "Ops īnfantem tenet.",
+  "english": "Ops keeps the baby.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "stone_take",
+  "latin": "Ops saxum tollit.",
+  "english": "Ops picks up a stone.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "stone_have",
+  "latin": "Saxum habēs.",
+  "english": "You have the stone.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "obj_saxa",
+  "latin": "Haec saxa gravia sunt.",
+  "english": "These stones are heavy.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "obj_mel",
+  "latin": "Hoc mel dulce est.",
+  "english": "This honey is sweet.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "obj_scutum",
+  "latin": "Hoc scūtum parvum est.",
+  "english": "This shield is small.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "obj_pallium",
+  "latin": "Hoc pallium bonum est.",
+  "english": "This cloak is good.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "opt_tolle",
+  "latin": "Tolle",
+  "english": "Take it",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "opt_relinque",
+  "latin": "Relinque",
+  "english": "Leave it",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "item_mel",
+  "latin": "Ops mel tollit.",
+  "english": "Ops takes the honey.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "item_scutum",
+  "latin": "Ops scūtum tollit.",
+  "english": "Ops takes the shield.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "item_pallium",
+  "latin": "Ops pallium tollit.",
+  "english": "Ops takes the cloak.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "item_full",
+  "latin": "Sacculus plēnus est.",
+  "english": "The bag is full.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "gate_garden",
+  "latin": "Prīmum īnfantem tolle!",
+  "english": "First pick up the baby!",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "baby_out",
+  "latin": "Terra īnfantem accipit.",
+  "english": "Terra receives the baby.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "caught_1",
+  "latin": "Custōs īnfantem vidēt!",
+  "english": "The guard sees the baby!",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "caught_2",
+  "latin": "Ops īnfantem in cūnās redūcit.",
+  "english": "Ops puts the baby back in the cradle.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "ch2_extra",
+  "latin": "Etiam tertius custōs adest!",
+  "english": "Even a third guard is here!",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "amal_mel",
+  "latin": "Capella mel amat!",
+  "english": "The goat loves honey!",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "cur_scutum",
+  "latin": "Cūrētēs scūtum laudant!",
+  "english": "The Curetes admire the shield!",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "map_crete",
+  "latin": "Crēta",
+  "english": "Crete",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "map_italia",
+  "latin": "Ītalia",
+  "english": "Italy",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "map_graecia",
+  "latin": "Graecia",
+  "english": "Greece",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "map_aegyptus",
+  "latin": "Aegyptus",
+  "english": "Egypt",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "map_asia",
+  "latin": "Asia",
+  "english": "Asia",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "map_africa",
+  "latin": "Āfrica",
+  "english": "Africa",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "ch1_open_1",
+  "latin": "Saturnus līberōs dēvorat!",
+  "english": "Saturn devours his children!",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "ch1_open_2",
+  "latin": "Quīnque līberī in Saturnō sunt.",
+  "english": "Five children are inside Saturn.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "ch1_open_3",
+  "latin": "Nunc Iuppiter nātus est.",
+  "english": "Now Jupiter is born.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
  }
 ];

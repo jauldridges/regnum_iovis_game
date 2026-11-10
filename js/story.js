@@ -1,5 +1,6 @@
 // The story script: prologue, chapters 1-5 and the epilogue. Decides who says what, what is recruited,
 // and when scenes change. All text comes from content/latin.yaml through Game.line(); missing lines are skipped.
+// Big moments are cutscenes (Game.scene): things you watch happen, with as few words as possible.
 var Story = (function () {
   var S = { flags: {} }, ch = 0, F = S.flags;
   var OBJ_SEEN = {};
@@ -11,21 +12,40 @@ var Story = (function () {
   function shuffle(a) {
     a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a;
   }
+  var ICON = { mel: '🍯', scutum: '🛡️', pallium: '🧥' };
 
   S.ch = function () { return ch; };
   S.playerSprite = function () { return ch <= 1 ? 'ops' : 'jupiter'; };   // Ops, then Jupiter
+  S.watching = function () { return ch === 1 && F.baby === 'carried' && !!F.patrolOn; };   // guards only care while Ops carries the baby
 
-  // Full-screen story cards: [textId, questionId|null] pairs, or 'fade' for a fade to black.
+  // Full-screen story cards: [textId, questionId|null] pairs, ['map', titleId], or 'fade' for a fade to black.
   async function panels(list, done) {
     var root = document.getElementById('story'); root.hidden = false; root.className = ''; Game.setBusy(true);
     for (var i = 0; i < list.length; i++) {
       var e = list[i];
       if (e === 'fade') { root.classList.add('black'); root.innerHTML = ''; await wait(1300); root.classList.remove('black'); continue; }
+      if (e[0] === 'map') { await mapPanel(root, e[1]); continue; }
       if (!Game.line(e[0])) continue;
       var q = e[1] && Game.qline(e[1]) ? e[1] : null;
       await new Promise(function (res) { Quiz.run(root, e[0], q, e[0], res, 'story'); });
     }
     root.hidden = true; Game.setBusy(false); if (done) done();
+  }
+  // A map of the Mediterranean that picks out Crete, under the chapter title
+  function mapPanel(root, titleId) {
+    return new Promise(function (res) {
+      root.innerHTML = '';
+      var cv = document.createElement('canvas'); cv.width = 480; cv.height = 320; cv.className = 'mapart'; root.appendChild(cv);
+      var h = document.createElement('div'); h.className = 'page maptitle'; h.textContent = Game.clean(Game.line(titleId) || ''); root.appendChild(h);
+      var btn = document.createElement('button'); root.appendChild(btn);
+      var cx = cv.getContext('2d'); cx.scale(2, 2);
+      var L = function (id) { return Game.clean(Game.line(id) || ''); };
+      var labels = [{ text: L('map_italia'), x: 43, y: 31 }, { text: L('map_graecia'), x: 63, y: 21 }, { text: L('map_asia'), x: 100, y: 23 }, { text: L('map_africa'), x: 56, y: 72 }, { text: L('map_crete'), x: 74, y: 52 }];
+      var t0 = performance.now(), stop = false;
+      (function lp() { if (stop) return; Art.med(cx, performance.now() - t0, labels); requestAnimationFrame(lp); })();
+      Game.pauseButtons([btn], [L('ui_continue')]);
+      btn.onclick = function () { stop = true; res(); };
+    });
   }
 
   // ---- beginning, and chapter select for testing (?ch=N)
@@ -53,11 +73,132 @@ var Story = (function () {
   function setupCh5() { F.styx = F.hyperion = F.prom = F.them = F.iapetus = F.atlas = true; ['styx', 'victoria', 'prometheus', 'themis'].forEach(function (k) { Book.recruit(k, true); }); }
   function unlockCh1Pages() { ['iuppiter', 'ops', 'saturnus'].forEach(Book.unlock); }
 
-  function startCh1(direct) { ch = 1; Game.loadMap('hall'); if (!direct) panels([['ch1_title']]); }
+  // ============ Chapter 1: Saturn's hall ============
+  function hud() {
+    if (ch !== 1 || F.ch1Done || F.intro) return Game.setHud(null);
+    Game.setHud([{ i: '👶', s: F.baby === 'hidden' ? 'done' : F.baby === 'carried' ? 'on' : 'off' }, { i: '🪨', s: F.stone ? 'on' : 'off' },
+                 { i: ICON[F.item] || '🎒', s: F.item ? 'on' : 'off' }]);
+  }
+  function startCh1(direct) {
+    ch = 1; F.baby = direct ? 'cradle' : 'none'; F.stone = false; F.item = null; F.famula = null; F.caught = 0; F.patrolOn = true; F.saturnIn = false; F.ch1Done = false; F.intro = !direct; F.patrolOn = direct;
+    Game.loadMap('hall'); hud();
+    if (direct) return Game.toast(Game.line('ch1_start'));
+    panels([['ch1_title']], introScene);
+  }
+  // The opening: Saturn takes each newborn from Ops and swallows it (a cartoon gulp: the child lights up inside him). Then Jupiter is born.
+  function introScene() {
+    Game.scene(async function (c) {
+      c.actor('sat', 'saturn', 10, 3, { dir: 'down', size: 32 }); c.face('right');
+      var slots = [[0.17, 0.5], [0.5, 0.5], [0.17, 0.72], [0.5, 0.72], [0.33, 0.61]];
+      await c.flash('#ffffff', 350); await c.shake(500, 2); await c.wait(500);
+      for (var i = 0; i < 5; i++) {
+        var f = [1, 1, 0.85, 0.72, 0.62][i];
+        c.actor('b' + i, 'baby', 3, 5, { size: 16 }); await c.burst(3, 4.3, '✨', 5);
+        await c.wait(500 * f);
+        await c.path('sat', [[10, 6], [7, 6], [5.2, 6], [4.1, 5]], 1500 * f);
+        c.set('sat', { dir: 'left' }); await c.wait(220 * f);
+        await c.move('b' + i, 4.2, 4.7, 330 * f, 0.5); c.remove('b' + i);
+        await c.burst(4.2, 4.4, '💨', 7);
+        if (i === 0) c.caption('ch1_open_1', 2000);
+        c.set('sat', { tint: { c: '#66dd66', a: 0.55 } }); await c.shake(380, 3); c.set('sat', { tint: null });
+        c.actor('orb' + i, 'orb', 0, 0, { size: 10, follow: { id: 'sat', dx: 0.5 + (slots[i][0] - 0.5) * 1.33, dy: 0.1 + (slots[i][1]) * 1.2 }, pulse: i + 1 });
+        await c.path('sat', [[5.2, 6], [7, 6], [10, 5], [10, 3]], 1400 * f); c.set('sat', { dir: 'down' }); await c.wait(300 * f);
+      }
+      c.caption('ch1_open_2', 2400); await c.wait(2700);
+      F.baby = 'cradle'; hud(); await c.burst(2, 1.6, '✨', 8); c.caption('ch1_open_3', 2000); await c.wait(2000);   // Jupiter is born
+      await c.shake(500, 3); await c.path('sat', [[10, 6], [10, 11.8]], 1800); c.remove('sat');
+      c.caption('ch1_start', 2000); await c.wait(300);
+    }, function () { F.intro = false; F.patrolOn = true; Game.resetPatrols(); hud(); });
+  }
+
+  // inspecting objects: a short caption that does not stop the game; glōria once per object
+  S.inspect = function (id) {
+    if (ch === 1 && id === 'obj_cradle') return cradle();
+    if (id === 'obj_saxa') return takeStone();
+    if (id === 'obj_mel' || id === 'obj_scutum' || id === 'obj_pallium') return keepsake(id);
+    if (!Game.line(id)) return;
+    if (!OBJ_SEEN[id]) { OBJ_SEEN[id] = true; Score.add('objects', Score.CFG.object); }
+    if (id === 'obj_herba' && !F.herb) F.herb = true;
+    Game.toast(Game.line(id));
+  };
+  function cradle() {
+    if (F.baby === 'cradle') { F.baby = 'carried'; Game.setFollower('baby'); hud(); Game.toast(Game.line('baby_take')); }
+    else Game.toast(Game.line(F.baby === 'carried' ? 'cradle_have' : 'cradle_empty'));
+  }
+  function takeStone() {
+    if (F.stone) return Game.toast(Game.line('stone_have'));
+    F.stone = true; hud(); Game.toast(Game.line('stone_take')); checkSaturn();
+  }
+  // one keepsake for Jupiter: it changes battles later (honey: Amalthea heals more; shield: more clouds; cloak: more hit points)
+  function keepsake(id) {
+    var key = { obj_mel: 'mel', obj_scutum: 'scutum', obj_pallium: 'pallium' }[id];
+    if (F.item) return Game.toast(Game.line('item_full'));
+    Game.showChoice(Game.line(id), [{ label: ICON[key] + ' ' + Game.line('opt_tolle'), fn: function () { F.item = key; hud(); Game.toast(Game.line('item_' + key)); Score.add('choice', 50); } },
+                                   { label: Game.line('opt_relinque'), fn: function () {} }], true);
+  }
+  // the servant offers to carry the baby: safe now, but Saturn's guards will know
+  function famula() {
+    if (ch !== 1 || F.famulaGone) return;
+    if (F.baby === 'carried' && !F.famula) {
+      say(['fam_offer'], function () {
+        Game.showChoice(Game.line('fam_choice'), shuffle([{ label: Game.line('opt_famulae'), fn: trustFamula }, { label: Game.line('opt_neminī'), fn: function () { F.famula = 'alone'; Game.toast(Game.line('fam_no')); } }]));
+      });
+    } else Game.toast(Game.line('fam_idle'));
+  }
+  function trustFamula() {
+    F.famula = 'trust'; F.famulaGone = true; F.baby = 'hidden'; F.patrolOn = false; Game.setFollower(null); hud();
+    Game.scene(async function (c) {
+      var p = c.player(); c.actor('fam', 'servant', 8, 10, { dir: 'up' }); c.actor('baby', 'baby', p[0], p[1], { size: 16 });
+      await c.move('baby', 8.2, 10, 500, 0.6); c.set('baby', { follow: { id: 'fam', dx: 0.3, dy: 0.2 } }); c.caption('fam_take', 1800);
+      await c.path('fam', [[8, 7], [14, 7], [18, 9.6], [18.6, 10]], 3600);
+      await terraTakes(c, 'fam');
+    }, checkSaturn);
+  }
+  // Terra, waiting at the garden door, takes the baby
+  async function terraTakes(c, carrier) {
+    c.actor('terra', 'terra', 19, 9, { dir: 'left' }); await c.burst(19, 8.6, '🌿', 6); await c.wait(300); c.caption('baby_out', 2000);
+    await c.move('baby', 19.1, 9.4, 450, 0.5); c.remove('baby'); if (carrier) c.remove(carrier);
+    await c.burst(19, 8.8, '✨', 8); await c.wait(900); c.remove('terra');
+  }
+  // seen by a guard while carrying the baby: the baby goes back to the cradle and Ops is sent back too
+  S.caught = function (e) {
+    if (F.baby !== 'carried') return;
+    F.caught = (F.caught || 0) + 1; F.baby = 'cradle'; Game.setFollower(null); hud();
+    Game.scene(async function (c) {
+      var p = c.player(); await c.burst(e.x, e.y - 0.4, '❗', 1, { size: 20 }); await c.shake(350, 3); c.caption('caught_1', 1400);
+      c.actor('baby', 'baby', p[0], p[1], { size: 16 }); await c.move('baby', 2.1, 2.4, 800, 1.4); c.remove('baby'); c.caption('caught_2', 1600); await c.wait(1500);
+      Game.teleport(3, 5); Game.resetPatrols();
+    });
+  };
+  // the baby is out and the stone is in hand: Saturn comes
+  function checkSaturn() {
+    if (ch !== 1 || F.baby !== 'hidden' || !F.stone || F.saturnIn || F.ch1Done) return;
+    F.saturnIn = true; F.saturnReady = false;
+    Game.scene(async function (c) {
+      await c.flash('#ffffff', 300); await c.shake(500, 3); c.caption('ch1_saturn_comes', 2200);
+      await c.walk('saturn_in', [[10, 11], [10, 8]], 2.3); F.saturnReady = true;
+    });
+  }
+  // Ops gives Saturn the stone. He swallows it. The baby is safe.
+  function giveStone() {
+    if (!F.saturnReady) return; F.saturnReady = false;
+    Game.scene(async function (c) {
+      var s = c.pos('saturn_in'), p = c.player();
+      c.caption('ch1_right_1', 1500); c.actor('stone', 'stone', p[0], p[1], { size: 16 }); await c.move('stone', s[0] + 0.1, s[1] - 0.1, 500, 0.8); c.remove('stone');
+      await c.burst(s[0], s[1] - 0.2, '💨', 7); await Promise.all([c.shake(450, 3), c.tint('saturn_in', '#66dd66', 0, 0.55, 200)]);
+      c.caption('ch1_right_2', 1600); await c.tint('saturn_in', '#66dd66', 0.55, 0, 600); await c.wait(900);
+      await c.walk('saturn_in', [[10, 8], [10, 11]], 2.3); c.caption('ch1_right_3', 1800); await c.wait(1800);
+    }, function () {
+      Score.add('choice', F.caught ? Score.CFG.choiceRetry : Score.CFG.choice);
+      F.suspect = F.famula === 'trust' || F.caught > 0; F.saturnIn = false; F.ch1Done = true; hud(); startCh2();
+    });
+  }
+
+  // ============ later chapters ============
   function startCh2(direct) {
     ch = 2; unlockCh1Pages();
-    var go = function () { Game.loadMap('ida'); };
-    if (direct) go(); else panels([['ch1_end'], ['ch2_title']], go);
+    var go = function () { Game.loadMap('ida'); if (F.suspect) Game.toast(Game.line('ch2_extra'), 3200); };
+    if (direct) go(); else panels([['ch1_end'], ['map', 'ch2_title']], go);
   }
   function startCh3(direct) {
     ch = 3; unlockCh1Pages();
@@ -81,17 +222,10 @@ var Story = (function () {
             ['epi_3'], ['epi_4'], ['epi_5'], 'fade'], function () { Game.finish(); });
   }
 
-  // ---- inspecting objects: a Latin description, glōria once per object
-  S.inspect = function (id) {
-    if (!Game.line(id)) return;
-    if (!OBJ_SEEN[id]) { OBJ_SEEN[id] = true; Score.add('objects', Score.CFG.object); }
-    if (id === 'obj_herba' && !F.herb) F.herb = true;
-    say([id]);
-  };
-
-  // ---- exits
+  // ---- exits (a blocked exit shows a short hint)
   S.canExit = function (id) {
-    if (id === 'ida_east') return !!(F.amalthea && F.curetes && F.guard1 && F.guard2);
+    if (id === 'garden') return F.baby === 'carried';
+    if (id === 'ida_east') return !!(F.amalthea && F.curetes && F.guard1 && F.guard2 && (!F.suspect || F.guard3));
     if (id === 'ocean_south') return !!F.metis;
     if (id === 'hall2_exit') return !!(F.cupDone && F.guardH);
     if (id === 'tart_exit') return !!(F.campe && F.cyclopes && F.centimani);
@@ -99,11 +233,14 @@ var Story = (function () {
     return true;
   };
   S.exitBlocked = function (id) {
-    say([{ ida_east: 'gate_ch2', ocean_south: 'gate_ch3a', hall2_exit: F.cupDone ? 'gate_ch3c' : 'gate_ch3b',
-           tart_exit: 'gate_ch4', olympus_east: 'gate_ch5a' }[id]]);
+    Game.toast(Game.line({ garden: 'gate_garden', ida_east: 'gate_ch2', ocean_south: 'gate_ch3a', hall2_exit: F.cupDone ? 'gate_ch3c' : 'gate_ch3b',
+                           tart_exit: 'gate_ch4', olympus_east: 'gate_ch5a' }[id]), 3000);
   };
   S.exit = function (id) {
-    if (id === 'ida_east') startCh3();
+    if (id === 'garden') {
+      F.baby = 'hidden'; F.patrolOn = false; Game.setFollower(null); hud();
+      Game.scene(async function (c) { var p = c.player(); c.actor('baby', 'baby', p[0] - 0.4, p[1], { size: 16 }); await terraTakes(c, null); }, checkSaturn);
+    } else if (id === 'ida_east') startCh3();
     else if (id === 'ocean_south') { ch = 3; F.cupDone = false; Game.transition(function () { Game.loadMap('hall2'); }, true); }
     else if (id === 'hall2_exit') startCh4();
     else if (id === 'tart_exit') startCh5();
@@ -112,15 +249,21 @@ var Story = (function () {
 
   // ---- talking
   S.talk = function (id) {
-    if (id === 'servant') return servant();
+    if (id === 'famula') return famula();
+    if (id === 'saturn_in') return giveStone();
     if (id === 'amalthea') return amalthea();
     if (id.indexOf('curetes') === 0) return curetes();
     if (id === 'guard1' || id === 'guard2') return fight(id, ['guard_1', 'guard_2'], { enemy: 'guard', hp: 3 });
+    if (id === 'guard3') return fight('guard3', ['ch2_extra', 'guard_1'], { enemy: 'guard', hp: 3 });
     if (id === 'metis') return metis();
     if (id === 'saturn') return cup();
     if (id === 'guardH') return fight('guardH', ['guard_hall'], { enemy: 'guard', hp: 6 });
     if (id === 'campe') return fight('campe', ['campe_1', 'campe_2'], { enemy: 'campe' }, function () {
-      Book.unlock('campe'); openGates(); say(['campe_down']);
+      Book.unlock('campe');
+      Game.scene(async function (c) {                       // the cells burst open
+        await c.flash('#ffffff', 350); await c.shake(600, 3);
+        [[3, 6], [3, 7], [3, 8], [16, 6], [16, 7], [16, 8]].forEach(function (g) { c.burst(g[0], g[1], '✨', 4); }); openGates(); c.caption('campe_down', 1600); await c.wait(1700);
+      });
     });
     if (id.indexOf('cyclops') === 0) return cyclopes();
     if (id.indexOf('cent') === 0) return centimani();
@@ -132,25 +275,6 @@ var Story = (function () {
     if (id === 'atlas') return fight('atlas', ['atl_1'], { enemy: 'atlas' }, function () { Book.unlock('atlas'); });
     if (id === 'saturn_boss') return fight('saturnBoss', ['sat_1'], { enemy: 'saturnus', final: true }, epilogue);
   };
-
-  // Chapter 1: the servant warns Ops, Saturn comes, Ops must give him the stone (not the baby)
-  function servant() {
-    say(['ch1_servant_warn'], function () { if (!F.ch1Done && !F.saturnIn) saturnScene(); });
-  }
-  function saturnScene() {
-    var missed = false;
-    F.saturnIn = true;
-    say(['ch1_saturn_comes'], ask);
-    function ask() {
-      Game.showChoice(Game.line('ch1_choice_prompt'), shuffle([
-        { label: Game.line('ch1_choice_stone'), fn: function () {
-          Score.add('choice', missed ? Score.CFG.choiceRetry : Score.CFG.choice);
-          say(['ch1_right_1', 'ch1_right_2', 'ch1_right_3'], function () { F.saturnIn = false; F.ch1Done = true; startCh2(); });
-        } },
-        { label: Game.line('ch1_choice_baby'), fn: function () { missed = true; say(['ch1_wrong'], ask); } }
-      ]));
-    }
-  }
 
   // A choice with one right answer (the buttons come in random order). Wrong answers have a small story
   // consequence and the choice repeats.
@@ -164,9 +288,10 @@ var Story = (function () {
     })();
   }
 
-  // Chapter 2
+  // Chapter 2: the keepsake from Chapter 1 can shortcut an ally; a servant or a guard's sighting adds a guard
   function amalthea() {
     if (F.amalDone) return say(['amal_done']);
+    if (F.item === 'mel') { F.amalthea = F.amalDone = true; Book.recruit('amalthea'); return say(['amal_mel', 'amal_join'], checkReady); }
     if (!F.herb) return say(['amal_hungry']);
     choice('amal_choice', 'opt_herba', 'ch1_choice_stone', ['amal_wrong'], function () {
       F.amalthea = F.amalDone = true; Book.recruit('amalthea');
@@ -175,9 +300,10 @@ var Story = (function () {
   }
   function curetes() {
     if (F.curDone) return say(['cur_done']);
+    if (F.item === 'scutum') { F.curetes = F.curDone = F.nubes = true; Book.recruit('curetes'); return say(['cur_scutum', 'learn_nubes'], checkReady); }
     say(['cur_warn'], function () {
       choice('cur_choice', 'cur_opt_shields', 'cur_opt_sleep', ['cur_wrong'], function () {
-        F.curetes = F.curDone = true; F.nubes = true; Book.recruit('curetes');
+        F.curetes = F.curDone = F.nubes = true; Book.recruit('curetes');
         say(['cur_ok', 'learn_nubes'], checkReady);
       });
     });
@@ -188,28 +314,34 @@ var Story = (function () {
     if (ch === 5 && F.prom && F.them && !F.ready5) { F.ready5 = true; say(['ch2_ready']); }
   }
 
-  // Chapter 3
+  // Chapter 3: Metis, then the cup. Jupiter gives it to Saturn, who drinks, turns green and brings it all up.
   function metis() {
     if (F.metis) return say(['metis_2']);
     say(['metis_1', 'metis_2'], function () { F.metis = true; Book.recruit('metis'); });
   }
-  // Jupiter as cupbearer: give the cup to Saturn; he brings up the stone and the five siblings; the war begins
   function cup() {
-    say(['cup_1', 'cup_2'], function () {
+    say(['cup_2'], function () {
       choice('cup_choice', 'opt_saturno', 'opt_custodi', ['cup_wrong'], function () {
-        say(['cup_right', 'cup_drink', 'out_saxum'], function () {
-          Book.unlock('saxum');
-          var order = ['neptunus', 'pluto', 'iuno', 'ceres', 'vesta'];
-          (function next(i) {
-            if (i >= order.length) return say(['cup_end'], function () {
-              F.cupDone = true;
-              fight('guardH', ['guard_hall'], { enemy: 'guard', hp: 6 });      // the first battle of the war
-            });
-            say(['out_' + order[i]], function () { Book.recruit(order[i]); next(i + 1); });
-          })(0);
-        });
+        Game.scene(cupScene, function () { F.cupDone = true; fight('guardH', ['guard_hall'], { enemy: 'guard', hp: 6 }); });   // the first battle of the war
       });
     });
+  }
+  async function cupScene(c) {
+    var s = c.pos('saturn'), p = c.player(), order = ['neptunus', 'pluto', 'iuno', 'ceres', 'vesta'], i;
+    c.caption('cup_right', 1500); c.actor('cup', 'cup', p[0], p[1], { size: 16 }); await c.move('cup', s[0] + 0.1, s[1] + 0.3, 500, 0.7);
+    await c.wait(600); c.remove('cup'); await c.burst(s[0], s[1], '💧', 5); c.caption('cup_drink', 1800);
+    await c.tint('saturn', '#55dd55', 0, 0.6, 1000); await c.shake(900, 2); await c.burst(s[0], s[1] - 0.3, '🤢', 3);
+    c.actor('stone', 'stone', s[0], s[1] + 0.4, { size: 16 }); await c.move('stone', 13, 6, 800, 2.4);       // the stone comes up first
+    c.remove('stone'); F.stoneOut = true; Book.unlock('saxum'); await c.burst(13, 6, '✨', 6); c.caption('out_saxum', 1500); await c.wait(1200);
+    for (i = 0; i < order.length; i++) {                                                                      // then the five, in reverse order
+      var k = order[i], x = 4 + 3 * i;
+      await Promise.all([c.shake(300, 2), c.burst(s[0], s[1] + 0.3, '💦', 5)]);
+      c.actor(k, k, s[0], s[1] + 0.4, { size: 24 }); await c.move(k, x, 7, 650, 1.4); await c.burst(x, 7, '✨', 5);
+      c.caption('out_' + k, 1400); Book.recruit(k); await c.wait(900);
+    }
+    c.tint('saturn', '#ff3030', 0.2, 0.55, 300); await c.flash('#ff0000', 350); await c.shake(800, 3); c.caption('cup_end', 1900); await c.wait(1800);
+    order.forEach(function (k) { c.burst(4 + 3 * order.indexOf(k), 7, '✨', 4); c.remove(k); });                // they join the party
+    c.untint('saturn'); await c.wait(500);
   }
 
   // Chapter 4: Campe's cells. Gates open when Campe falls.
@@ -247,8 +379,7 @@ var Story = (function () {
     if (F.styx) return say(['styx_done']);
     say(['styx_1', 'styx_2'], function () { F.styx = true; Book.recruit('styx'); Book.recruit('victoria'); });
   }
-  // Two Titans switch sides
-  function titan(flag, book, lineId) {
+  function titan(flag, book, lineId) {                       // two Titans switch sides
     if (F[flag]) return say([lineId]);
     say([lineId], function () { F[flag] = true; Book.recruit(book); checkReady(); });
   }
@@ -272,6 +403,6 @@ var Story = (function () {
       });
     });
   }
-  S.lose = lose;   // also used by the tests
+  S.lose = lose; S.startCh1 = startCh1;   // also used by the tests
   return S;
 })();
