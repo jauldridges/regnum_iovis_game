@@ -37,8 +37,8 @@
   await cmd('Iovī victōriam');
   await p.screenshot({ path: process.env.SHOT || '/tmp/ch5.png' });
   await cmd('Fulmen iace'); await cmd('Fulmen iace');
-  await H.won();
-  await p.waitForFunction(() => Game.state().trans || Game.state().scene, null, { timeout: 15000 });   // the epilogue film begins after Saturn falls
+  await p.waitForFunction(() => !Battle.active, null, { timeout: 20000 });
+  await p.waitForFunction(() => Game.state().trans || Game.state().scene, null, { timeout: 15000 });   // the epilogue film begins right after Saturn falls (the last level is already reached)
   const bd = await p.evaluate(() => Score.breakdown().reduce((o, r) => (o[r.key] = r.pts, o), {}));
   assert.equal(bd.battles, 600, 'four boss battles');
   await H.finish('ch5');
