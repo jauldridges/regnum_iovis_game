@@ -66,5 +66,31 @@
   await p.waitForFunction(() => window.cb === 1, null, { timeout: 5000 });
   assert.equal(await p.evaluate(() => Prog.boons.fortuna), 1); assert.equal(await p.evaluate(() => Prog.level), 2);
   assert((await p.textContent('#lvl')).includes('2'), 'the level shows on the map');
+  // keyboard: every command has a key; pressing 1 plays the first command (thunder) with no clicking
+  await H.open('lang=la&drafts=1&ch=5', { luck: 'hit' });
+  await start({ enemy: 'dux' }); await battleReady();
+  const labels = await p.$$eval('#choices button .kbd', ks => ks.map(k => k.textContent));
+  assert.deepEqual(labels.slice(0, 5), ['1', '2', '3', '4', '5'], 'commands are numbered');
+  assert(labels.length >= 10 && labels[9] === '0', 'the tenth command is 0');
+  const before = (await state()).e; await p.keyboard.press('1'); await p.waitForFunction(() => document.querySelector('#choices button').disabled, null, { timeout: 3000 });
+  await p.waitForFunction(() => !document.querySelector('#choices button').disabled, null, { timeout: 15000 });
+  assert((await state()).e < before, 'the 1 key played the first command');
+  assert.deepEqual(await p.evaluate(() => Sound.log.filter(n => n === 'hit' || n === 'crit' || n === 'miss').length > 0), true, 'a sound effect played');
+
+  // the command box never covers the picture: it sits below the screen, even with a full party (the most buttons)
+  await p.evaluate(() => { ['prometheus', 'themis', 'victoria'].forEach(k => Book.recruit(k, true)); });   // the full final-battle party
+  await p.evaluate(() => { Battle.start({ enemy: 'saturnus', final: true }, () => {}); });
+  await p.waitForFunction(() => document.querySelectorAll('#choices button').length >= 13, null, { timeout: 10000 });   // the new battle's own buttons
+  for (const [w, h] of [[1366, 768], [1280, 720], [1024, 700]]) {
+    await p.setViewportSize({ width: w, height: h }); await p.waitForTimeout(250);
+    const r = await p.evaluate(() => { const c = document.getElementById('game').getBoundingClientRect(), m = document.getElementById('msg').getBoundingClientRect(); return { canvasBottom: c.bottom, msgTop: m.top, msgBottom: m.bottom, n: document.querySelectorAll('#choices button').length }; });
+    assert(r.msgTop >= r.canvasBottom - 1, `box overlaps the picture at ${w}x${h}: box top ${r.msgTop} < picture bottom ${r.canvasBottom}`);
+    assert(r.n >= 13, 'a full party has many commands: ' + r.n);
+  }
+
+  // captions last long enough to read: more than 4 seconds for a long sentence, never under 1.8
+  assert.equal(await p.evaluate(() => Game.captionMs('x'.repeat(8))), 2180 > 1800 ? 2180 : 1800);
+  assert(await p.evaluate(() => Game.captionMs('Titānēs in Tartarum dēscendunt. Centimanī eōs custōdiunt.') >= 6000), 'the long epilogue sentence gets about 6 seconds');
+  assert.equal(await p.evaluate(() => Game.captionMs('', 3000)), 3000, 'an explicit longer time still wins');
   await H.finish('combat');
 })().catch(e => { console.error(e); process.exit(1); });

@@ -35,13 +35,13 @@ var Battle = (function () {
   var ENEMIES = {
     guard:    { name: 'name_custos', sprite: 'guard', scale: 4, el: null, hp: 3, xp: 25, pattern: ['light', 'light', 'heavy'], flee: true,
                 ids: { light: ['intent_guard_light', 'battle_enemy_spear'], heavy: ['intent_guard_heavy', 'battle_guard_heavy'] }, win: 'battle_win_1', blocked: 'battle_blocked' },
-    lupus:    { name: 'name_lupus', sprite: 'lupus', scale: 4, el: null, hp: 4, xp: 30, pattern: ['double', 'light', 'double'], flee: true },
-    dux:      { name: 'name_dux', sprite: 'dux', scale: 5, el: null, hp: 7, xp: 45, pattern: ['light', 'guard', 'heavy'], flee: true },
-    campe:    { name: 'name_campe', sprite: 'campe', scale: 5, el: 'inferi', hp: 8, xp: 90, pattern: ['light', 'heavy'] },
-    hyperion: { name: 'name_hyperion', sprite: 'hyperion', scale: 5, el: 'terra', hp: 8, xp: 110, pattern: ['light', 'heal', 'heavy'] },
+    lupus:    { name: 'name_lupus', sprite: 'lupus', melee: true, scale: 4, el: null, hp: 4, xp: 30, pattern: ['double', 'light', 'double'], flee: true },
+    dux:      { name: 'name_dux', sprite: 'dux', melee: true, slash: true, scale: 5, el: null, hp: 7, xp: 45, pattern: ['light', 'guard', 'heavy'], flee: true },
+    campe:    { name: 'name_campe', sprite: 'campe', melee: true, scale: 5, el: 'inferi', hp: 8, xp: 90, pattern: ['light', 'heavy'] },
+    hyperion: { name: 'name_hyperion', sprite: 'hyperion', proj: 'orb', scale: 5, el: 'terra', hp: 8, xp: 110, pattern: ['light', 'heal', 'heavy'] },
     iapetus:  { name: 'name_iapetus', sprite: 'iapetus', scale: 5, el: 'terra', hp: 9, xp: 130, pattern: ['light', 'heavy', 'light'] },
-    atlas:    { name: 'name_atlas', sprite: 'atlas', scale: 6, el: 'terra', hp: 10, xp: 150, pattern: ['light', 'guard', 'heavy'] },
-    saturnus: { name: 'name_saturnus', sprite: 'saturn', scale: 6, el: 'terra', hp: 14, xp: 200, pattern: ['light', 'heavy', 'light'], pattern2: ['heavy', 'double', 'heavy'] }
+    atlas:    { name: 'name_atlas', sprite: 'atlas', proj: 'rock', scale: 6, el: 'terra', hp: 10, xp: 150, pattern: ['light', 'guard', 'heavy'] },
+    saturnus: { name: 'name_saturnus', sprite: 'saturn', melee: true, slash: true, scale: 6, el: 'terra', hp: 14, xp: 200, pattern: ['light', 'heavy', 'light'], pattern2: ['heavy', 'double', 'heavy'] }
   };
   var KIND_GLYPH = { light: '', heavy: '⚡ ', double: '⚔️ ', guard: '🛡️ ', heal: '💚 ' };
   Object.keys(ENEMIES).forEach(function (k) {
@@ -66,7 +66,7 @@ var Battle = (function () {
   }
   function fresh() {
     var th = THEME[Game.state().map] || THEME['default'];
-    return { ax: {}, gx: 0, gy: 0, aHit: 0, gHit: 0, fx: null, fxp: 0, spear: null, gAlpha: 1, pops: [], gGuard: 0, healGlow: 0, critHit: false, shownT: maxHp, shownE: B.enemyHp, bg: backdrop(Game.state().map), pad: th.pad, interior: !!th.interior, clouds: !THEME[Game.state().map] };
+    return { ax: {}, gx: 0, gy: 0, aHit: 0, gHit: 0, fx: null, fxp: 0, spear: null, gAlpha: 1, pops: [], gGuard: 0, healGlow: 0, critHit: false, slash: 0, shownT: maxHp, shownE: B.enemyHp, bg: backdrop(Game.state().map), pad: th.pad, interior: !!th.interior, clouds: !THEME[Game.state().map] };
   }
 
   // The allies on screen and on the command list: Jupiter's moves, siblings in the party, recruited helpers.
@@ -96,7 +96,7 @@ var Battle = (function () {
   function render() {
     document.getElementById('msg-text').textContent = log.join('\n');
     var holder = document.getElementById('choices'); holder.innerHTML = '';
-    var hints = HINTS[intentKind()] || [];
+    var hints = HINTS[intentKind()] || [], made = [];
     commands().forEach(function (id) {
       var b = document.createElement('button'), tr = t('cmd_' + id), left = B.uses[id], m = M[id], ch = chance(id);
       var suffix = left === Infinity ? '' : ' ×' + left, glyph = m.el ? EL[m.el] + ' ' : '';
@@ -109,8 +109,9 @@ var Battle = (function () {
       if (!busy && left > 0 && (hints.indexOf(m.kind) >= 0 || (B.teamHp <= 2 && m.kind === 'heal'))) b.className = 'hint';
       b.disabled = busy || left <= 0;
       b.onclick = function () { if (!busy) doMove(id); };
-      holder.appendChild(b);
+      holder.appendChild(b); made.push(b);
     });
+    Game.numberButtons(made);        // each command has a key: 1-9, 0, then Q E R T Y U I O P
   }
 
   function end(result) {
@@ -135,7 +136,7 @@ var Battle = (function () {
     var back = tween(350, function (p) { S.ax[actor] = 60 * (1 - ease(p)); });
     var hit = m.acc === undefined || R() < ch.acc, crit = hit && ch.crit > 0 && R() < ch.crit;
     if ((m.kind === 'dmg' || m.kind === 'stun') && !hit) {                                         // a miss: the enemy sidesteps
-      say('eff_miss'); pop('✖', '#ff8a8a');
+      Sound.play('miss'); say('eff_miss'); pop('✖', '#ff8a8a');
       await Promise.all([back, tween(450, function (p) { S.gx = 30 * Math.sin(p * Math.PI); })]); S.gx = 0;
     } else if (m.kind === 'dmg') {
       var el = B.fire ? 'ignis' : m.el, de = B.def.el, mult = 1;
@@ -146,10 +147,10 @@ var Battle = (function () {
       B.weak = false; B.fire = false; B.enemyHp -= dmg;
       if (mult === 2) say('eff_super'); else if (mult === 0.5) say('eff_weak');
       if (crit) { say('eff_crit'); S.critHit = true; }
-      pop('-' + dmg + (crit ? ' ×2' : ''), crit ? '#ffd24a' : '#ffffff');
+      Sound.play(crit ? 'crit' : 'hit'); pop('-' + dmg + (crit ? ' ×2' : ''), crit ? '#ffd24a' : '#ffffff');
       await Promise.all([back, tween(crit ? 800 : 550, function (p) { S.gHit = p; })]); S.gHit = 0; S.critHit = false;
     } else if (m.kind === 'heal') {
-      var healed = Math.min(maxHp, B.teamHp + m.amt) - B.teamHp; B.teamHp += healed; pop('+' + healed, '#7aff9a', 'a'); await back;
+      var healed = Math.min(maxHp, B.teamHp + m.amt) - B.teamHp; B.teamHp += healed; pop('+' + healed, '#7aff9a', 'a'); Sound.play('heal'); await back;
     } else if (m.kind === 'shield' || m.kind === 'dodge') {
       B.up = m.kind; await back;
     } else if (m.kind === 'stun') {
@@ -180,21 +181,25 @@ var Battle = (function () {
       say(eid(kind, 1)); var gain = Math.min(B.maxEnemy, B.enemyHp + 2) - B.enemyHp; B.enemyHp += gain; pop('+' + gain, '#7aff9a', 'e');
       await tween(700, function (p) { S.healGlow = Math.sin(p * Math.PI); }); S.healGlow = 0; await wait(400);
     } else {
-      var hits = kind === 'double' ? 2 : 1, each = kind === 'heavy' ? 2 : 1;
-      await tween(350, function (p) { S.gx = -50 * ease(p); });
-      await tween(550, function (p) { S.spear = 360 - 230 * p; }); S.spear = null;
-      if (B.up) {                                           // shield or helmet: the attack strikes nothing
-        say(B.def.blocked); B.up = null;
-        await tween(350, function (p) { S.gx = -50 * (1 - ease(p)); });
-      } else {
-        say(eid(kind, 1)); var landed = 0;
-        for (var h = 0; h < hits; h++) {
-          if (kind !== 'heavy' && R() >= 0.88) { pop('✖', '#ff8a8a', 'a'); say('eff_miss'); await wait(300); continue; }   // light bites can miss; heavy blows do not
-          var dm = each * (O.dmg || 1); B.teamHp -= dm; landed++; pop('-' + dm, '#ff8a8a', 'a');
-          await tween(350, function (p) { S.aHit = p; }); S.aHit = 0;
+      var hits = kind === 'double' ? 2 : 1, each = kind === 'heavy' ? 2 : 1, d = B.def, dist = 175 - d.size + 20, blocked = !!B.up, said = false, arc = kind === 'heavy' ? 44 : 30;
+      B.up = null;
+      if (!d.melee) await tween(350, function (p) { S.gx = -50 * ease(p); });                      // a wind-up for throwers
+      for (var h = 0; h < hits; h++) {
+        if (d.melee) await tween(h ? 220 : kind === 'heavy' ? 440 : 330, function (p) { S.gx = -dist * ease(p); S.gy = -arc * Math.sin(p * Math.PI); });   // leaps at Jupiter
+        else { await tween(550, function (p) { S.spear = 360 - 230 * p; }); S.spear = null; }
+        if (blocked) { if (!said) { say(d.blocked); said = true; } Sound.play('block'); await wait(250); }
+        else {
+          if (!said) { say(eid(kind, 1)); said = true; }
+          if (kind !== 'heavy' && R() >= 0.88) { Sound.play('miss'); pop('✖', '#ff8a8a', 'a'); say('eff_miss'); await wait(300); }       // light attacks can miss; heavy blows do not
+          else {
+            var dm = each * (O.dmg || 1); B.teamHp -= dm; Sound.play('hurt'); pop('-' + dm, '#ff8a8a', 'a');
+            if (d.slash) await Promise.all([tween(300, function (p) { S.slash = p; }), tween(350, function (p) { S.aHit = p; })]); else await tween(350, function (p) { S.aHit = p; });
+            S.aHit = 0; S.slash = 0;
+          }
         }
-        await tween(350, function (p) { S.gx = -50 * (1 - ease(p)); });
+        if (d.melee) await tween(h === hits - 1 ? 330 : 180, function (p) { S.gx = -dist * (1 - ease(p)); S.gy = 0; });
       }
+      if (!d.melee) await tween(350, function (p) { S.gx = -50 * (1 - ease(p)); });
       await wait(550);
       if (B.teamHp <= 0) return end('lost');
     }
@@ -306,7 +311,13 @@ var Battle = (function () {
     });
     ctx.globalAlpha = 1; ctx.textAlign = 'left';
     if (S.critHit && S.gHit > 0 && S.gHit < 0.35) { ctx.fillStyle = 'rgba(255,255,220,.35)'; ctx.fillRect(0, 0, 480, 312); }
-    if (S.spear !== null) { ctx.fillStyle = '#e8e8f0'; ctx.fillRect(S.spear, 112, 40, 4); ctx.fillStyle = '#fff'; ctx.fillRect(S.spear - 6, 111, 8, 6); }
+    if (S.spear !== null) {
+      var pr = B.def.proj || 'spear';
+      if (pr === 'orb') { ctx.fillStyle = 'rgba(255,230,90,.45)'; ctx.beginPath(); ctx.arc(S.spear, 114, 16, 0, 6.3); ctx.fill(); ctx.fillStyle = '#fff6a0'; ctx.beginPath(); ctx.arc(S.spear, 114, 9, 0, 6.3); ctx.fill(); }
+      else if (pr === 'rock') { ctx.fillStyle = '#6a6a76'; ctx.fillRect(S.spear - 8, 104, 22, 20); ctx.fillStyle = '#9a9aa8'; ctx.fillRect(S.spear - 8, 104, 22, 6); }
+      else { ctx.fillStyle = '#e8e8f0'; ctx.fillRect(S.spear, 112, 40, 4); ctx.fillStyle = '#fff'; ctx.fillRect(S.spear - 6, 111, 8, 6); }
+    }
+    if (S.slash > 0 && S.slash < 1) { ctx.strokeStyle = 'rgba(255,255,255,' + (1 - S.slash) + ')'; ctx.lineWidth = 5; ctx.beginPath(); ctx.arc(jx + 70, jy + 36, 38, 2.4 + S.slash * 1.2, 3.6 + S.slash * 1.2); ctx.stroke(); }
   };
 
   function effects(ctx, pos, gx, gy, sz) {

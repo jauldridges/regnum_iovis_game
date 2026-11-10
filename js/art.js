@@ -54,13 +54,18 @@ var Art = (function () {
   var blind = function (b, d) { if (d === 'down') b.r(5, 6, 10, 6, '#f4f4f8'); };
   var cyclopsEye = function (b, d) { if (d === 'down') { b.r(5, 5, 10, 7, '#d9a066'); b.r(7, 5, 8, 6, '#fff'); b.p(7, 6, '#1c1624'); b.p(8, 6, '#1c1624'); } };
   var manyArms = function (b) { for (var i = 0; i < 4; i++) { b.p(2 - (i % 2), 8 + i, '#c8b8a0'); b.p(13 + (i % 2), 8 + i, '#c8b8a0'); } b.p(0, 9, '#c8b8a0'); b.p(15, 10, '#c8b8a0'); b.p(1, 11, '#c8b8a0'); b.p(14, 12, '#c8b8a0'); };
+  // Saturn's scythe (falx): a long wooden handle and a curved silver blade at the top
+  var scythe = function (b, d) {
+    b.r(13, 4, 13, 15, '#7a5a2a'); b.r(12, 4, 12, 5, '#7a5a2a');
+    b.r(9, 1, 12, 1, '#e6ecf4'); b.r(8, 2, 11, 2, '#e6ecf4'); b.r(7, 3, 9, 3, '#e6ecf4'); b.p(7, 4, '#cfd6e0'); b.r(10, 3, 12, 3, '#8a909c'); b.p(13, 3, '#7a5a2a');
+  };
   var both = function () { var f = Array.prototype.slice.call(arguments); return function (b, d, fr) { f.forEach(function (g) { g(b, d, fr); }); }; };
 
   var SPR = {
     ops:      H({ hair: '#5a3220', cloth: '#4a78c9', trim: '#f0e8d0', robe: true }),
     jupiter:  H({ hair: '#e8c850', cloth: '#f0f0f6', trim: '#e8a820', boots: '#9a6a3a', extra: both(laurel, bolt) }),
     servant:  H({ hair: '#8a7a6a', cloth: '#8a5fb0', trim: '#d8c8e8', robe: true }),
-    saturn:   H({ hair: '#e8e8e8', cloth: '#a02828', trim: '#e8b020', robe: true, extra: both(crown, beard('#e8e8e8')) }),
+    saturn:   H({ hair: '#e8e8e8', cloth: '#a02828', trim: '#e8b020', robe: true, extra: both(crown, beard('#e8e8e8'), scythe) }),
     guard:    H({ cloth: '#b5651d', trim: '#e8c040', boots: '#4a3a2a', extra: both(helmet('#8a8a99', '#c03030'), spear, shield('#c0873a')) }),
     curete:   H({ skin: '#e0b088', cloth: '#6a7a9a', trim: '#e8c040', boots: '#4a3a2a', extra: both(helmet('#b08a3a', '#e8c040'), shield('#c0873a')) }),
     metis:    H({ hair: '#2a3a6a', cloth: '#3aa8a8', trim: '#e8f4f4', robe: true }),

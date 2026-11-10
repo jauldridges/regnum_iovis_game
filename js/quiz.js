@@ -20,9 +20,10 @@ var Quiz = (function () {
     function ask(attempt) {
       var q = Game.qline(qId); root.innerHTML = '';
       root.appendChild(el('div', Game.clean(q.question), 'page'));
-      q.choices.forEach(function (c, i) {
-        root.appendChild(btn(c, function () { answer(attempt, i === q.answer, q); }));
+      var bs = q.choices.map(function (c, i) {
+        var b = btn(c, function () { answer(attempt, i === q.answer, q); }); root.appendChild(b); return b;
       });
+      Game.numberButtons(bs);
     }
     function answer(attempt, right, q) {
       root.innerHTML = '';

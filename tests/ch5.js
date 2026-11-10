@@ -7,7 +7,7 @@
   assert.equal((await st()).map, 'olympus');
   await H.goTo(18, 6); await H.bump('R'); assert((await H.toast()).includes('Styx tē exspectat'));
   await H.talk('styx');
-  assert((await text()).includes('Styx prīma')); await cont(); assert((await text()).includes('Victōriam')); await cont();
+  assert((await text()).includes('Styx prīma')); await cont(); assert((await text()).includes('Victōriam')); await cont(); await H.calm();
   await H.goTo(18, 6); await H.bump('R');
   await p.waitForFunction(() => Game.state().map === 'othrys', null, { timeout: 5000 });
   await p.waitForFunction(() => !Game.state().trans, null, { timeout: 5000 });

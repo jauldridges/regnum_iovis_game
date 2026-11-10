@@ -84,3 +84,12 @@ button.withimg { display: inline-flex; flex-direction: column; align-items: cent
 button.withimg canvas { width: 56px; height: 56px; image-rendering: pixelated; }
 body.film #bookbtn, body.film #hud, body.film #lvl { display: none; }
 body.inbattle #lvl { display: none; }
+
+#mutebtn { position: absolute; top: 20px; right: 150px; font-size: 1.25rem; padding: .2em .55em; z-index: 2; }
+.kbd { display: inline-block; min-width: 1.15em; margin-right: .45em; padding: 0 .2em; font-size: .78em; line-height: 1.15; text-align: center; background: var(--ink); color: var(--gold); border-radius: 3px; vertical-align: .08em; }
+button:disabled .kbd { opacity: .5; }
+
+/* battle layout: the command box sits BELOW the picture, so it can never cover a name plate, an intent banner or a sprite */
+#msg.battle { position: static; left: auto; right: auto; bottom: auto; width: min(96%, 940px); margin: 12px auto 0; }
+body.inbattle canvas#game { max-height: 52vh; }
+body.inbattle #toast, body.inbattle #hud, body.inbattle #lvl { display: none; }

@@ -28,11 +28,11 @@
   assert((await text()).includes('Neptūnō tridentem dant')); await cont();
   assert((await text()).includes('galeam dant?')); await H.choose('Plūtōnī');
   assert((await text()).includes('Plūtōnī galeam dant')); await cont(); await cont();
-  assert((await text()).includes('Fulmen iace')); await cont();
+  assert((await text()).includes('Fulmen iace')); await cont(); await H.calm();
   let f = (await st()).flags; assert(f.cyclopes && f.fulmen && f.weapons);
   // the Hundred-Handers
   await H.talk('cent2');
-  assert((await text()).includes('Centimanī līberī')); await cont(); await cont();
+  assert((await text()).includes('Centimanī līberī')); await cont(); await cont(); await H.calm();
   assert((await text()).includes('Via aperta')); await cont();
   assert.deepEqual((await p.evaluate(() => Book.partyInfo())).helpers.sort(), ['amalthea', 'centimani', 'curetes', 'cyclopes', 'metis']);
   await H.goTo(10, 11); await H.bump('D');

@@ -12,7 +12,7 @@ module.exports = async function setup() {
   // pause=0.2 shortens the 3-second reading pause and the cutscenes so the tests are quick; pass pause:null for the real 3 seconds
   H.open = async (q, o = {}) => {
     const pause = o.pause === null ? '' : '&pause=' + (o.pause || 0.2);
-    await p.goto(url + '?' + q + pause + '&luck=' + (o.luck || 'hit'));   // luck: hit (no misses or crits), crit (every hit is critical), miss; real dice if the page is opened without it await p.waitForFunction(() => window.Game && window.Story && Game.state().map !== undefined);
+    await p.goto(url + '?' + q + pause + '&mute=1&luck=' + (o.luck || 'hit'));   // luck: hit (no misses or crits), crit (every hit is critical), miss; real dice if the page is opened without it await p.waitForFunction(() => window.Game && window.Story && Game.state().map !== undefined);
   };
   H.text = () => p.textContent('#msg-text');
   const enabled = async sel => { await p.waitForSelector(sel + ':not([disabled])', { timeout: 10000 }); };
@@ -38,12 +38,15 @@ module.exports = async function setup() {
           if (prev[[nx, ny]] !== undefined) continue; if (!(free(nx, ny) || (!adjacent && nx === tx && ny === ty))) continue; prev[[nx, ny]] = [x, y, k]; q.push([nx, ny]); } }
       if (!hit) return null; const keys = []; let c = [hit[0], hit[1]]; while (prev[c]) { keys.unshift(prev[c][2]); c = [prev[c][0], prev[c][1]]; } return { keys, face: hit[2] };
     }`;
+  H.calm = async () => { await p.waitForFunction(() => !Game.state().scene && !Game.state().trans, null, { timeout: 40000 }); };
   H.goTo = async (tx, ty) => {
+    await H.calm();
     const r = await p.evaluate(`(() => { ${ROUTE} return route(${tx}, ${ty}, false); })()`);
     assert(r, `no route to ${tx},${ty}`); for (const k of r.keys) await H.key(k);
   };
   // go next to a tile, face it, press the action key
   H.useAt = async (tx, ty) => {
+    await H.calm();
     const r = await p.evaluate(`(() => { ${ROUTE} return route(${tx}, ${ty}, true); })()`);
     assert(r, `no route next to ${tx},${ty}`); for (const k of r.keys) await H.key(k);
     if (r.face) await H.key(r.face); await p.keyboard.press(' ');
@@ -54,7 +57,8 @@ module.exports = async function setup() {
     const pos = await p.evaluate(ch => { const m = MAPS[Game.state().map]; for (let y = 0; y < 13; y++) { const x = m.rows[y].indexOf(ch); if (x >= 0) return [x, y]; } return null; }, ch);
     assert(pos, 'no tile ' + ch); await H.useAt(pos[0], pos[1]);
   };
-  H.bump = async k => { await p.keyboard.press(KEY[k] || k); await p.waitForTimeout(80); };       // press towards a blocked tile or an exit
+  H.bump = async k => {
+    await H.calm(); await p.keyboard.press(KEY[k] || k); await p.waitForTimeout(80); };       // press towards a blocked tile or an exit
   // a battle is won: wait for the reward (XP, the level-up scene and its boon choice) to finish; take Life if offered
   H.won = async () => {
     await p.waitForFunction(() => !Battle.active, null, { timeout: 20000 });

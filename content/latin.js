@@ -3513,5 +3513,23 @@ window.CONTENT = [
   "nle_category": "",
   "spec_node_id": "",
   "review_status": "draft"
+ },
+ {
+  "id": "new_ally",
+  "latin": "Socius novus!",
+  "english": "New ally!",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "new_power",
+  "latin": "Vīs nova!",
+  "english": "New power!",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
  }
 ];

@@ -226,7 +226,7 @@ var Story = (function () {
       (function poll() { if (Game.state().trans) setTimeout(poll, 60); else res(); })();
     });
   }
-  function film(fn) { return new Promise(function (res) { Game.scene(fn, res); }); }
+  function film(fn) { return new Promise(function (res) { Game.scene(fn, res, 1.7); }); }   // slower than the rest of the game
   function cards(list) { return new Promise(function (res) { panels(list, res); }); }
   async function epilogue() {
     ch = 6; Book.unlock('saturnus'); Game.setHud(null); Game.setLvl(0);
@@ -371,20 +371,20 @@ var Story = (function () {
   // Chapter 2: the keepsake from Chapter 1 can shortcut an ally; a servant or a guard's sighting adds a guard
   function amalthea() {
     if (F.amalDone) return say(['amal_done']);
-    if (F.item === 'mel') { F.amalthea = F.amalDone = true; Book.recruit('amalthea'); return say(['amal_mel', 'amal_join'], checkReady); }
+    if (F.item === 'mel') { F.amalthea = F.amalDone = true; Book.recruit('amalthea'); return say(['amal_mel', 'amal_join'], function () { joined('amalthea', checkReady); }); }
     if (!F.herb) return say(['amal_hungry']);
     choice('amal_choice', 'opt_herba', 'ch1_choice_stone', ['amal_wrong'], function () {
       F.amalthea = F.amalDone = true; Book.recruit('amalthea');
-      say(['amal_ate', 'amal_join'], checkReady);
+      say(['amal_ate', 'amal_join'], function () { joined('amalthea', checkReady); });
     });
   }
   function curetes() {
     if (F.curDone) return say(['cur_done']);
-    if (F.item === 'scutum') { F.curetes = F.curDone = F.nubes = true; Book.recruit('curetes'); return say(['cur_scutum', 'learn_nubes'], checkReady); }
+    if (F.item === 'scutum') { F.curetes = F.curDone = F.nubes = true; Book.recruit('curetes'); return say(['cur_scutum', 'learn_nubes'], function () { joined('curetes', function () { learned('nubes', checkReady); }); }); }
     say(['cur_warn'], function () {
       choice('cur_choice', 'cur_opt_shields', 'cur_opt_sleep', ['cur_wrong'], function () {
         F.curetes = F.curDone = F.nubes = true; Book.recruit('curetes');
-        say(['cur_ok', 'learn_nubes'], checkReady);
+        say(['cur_ok', 'learn_nubes'], function () { joined('curetes', function () { learned('nubes', checkReady); }); });
       });
     });
   }
@@ -397,7 +397,7 @@ var Story = (function () {
   // Chapter 3: Metis, then the cup. Jupiter gives it to Saturn, who drinks, turns green and brings it all up.
   function metis() {
     if (F.metis) return say(['metis_2']);
-    say(['metis_1', 'metis_2'], function () { F.metis = true; Book.recruit('metis'); });
+    say(['metis_1', 'metis_2'], function () { F.metis = true; Book.recruit('metis'); joined('metis'); });
   }
   function cup() {
     say(['cup_2'], function () {
@@ -417,7 +417,7 @@ var Story = (function () {
       var k = order[i], x = 4 + 3 * i;
       await Promise.all([c.shake(300, 2), c.burst(s[0], s[1] + 0.3, '💦', 5)]);
       c.actor(k, k, s[0], s[1] + 0.4, { size: 24 }); await c.move(k, x, 7, 650, 1.4); await c.burst(x, 7, '✨', 5);
-      c.caption('out_' + k, 1400); Book.recruit(k); await c.wait(900);
+      Sound.play('ally'); c.caption('out_' + k, 1400); Book.recruit(k); await c.wait(900);
     }
     c.tint('saturn', '#ff3030', 0.2, 0.55, 300); await c.flash('#ff0000', 350); await c.shake(800, 3); c.caption('cup_end', 1700); await c.wait(1800);
     order.forEach(function (k) { c.remove(k); });                                                               // the five join Jupiter
@@ -450,7 +450,7 @@ var Story = (function () {
             say(['cyc_gift2'], function () {
               choice('q_galea', 'opt_plutoni', 'opt_neptuno', ['cyc_wrong'], function () {
                 F.cyclopes = F.fulmen = F.weapons = true; Book.recruit('cyclopes'); Book.unlock('cyclopes');
-                say(['cyc_gift3', 'cyc_join', 'learn_fulmen'], checkReady);
+                say(['cyc_gift3', 'cyc_join', 'learn_fulmen'], function () { joined('cyclopes', function () { learned('fulmen', checkReady); }); });
               }, { prompt: 'helmet', right: 'pluto', wrong: 'neptunus' });
             });
           }, { prompt: 'trident', right: 'neptunus', wrong: 'jupiter' });
@@ -461,17 +461,17 @@ var Story = (function () {
   function centimani() {
     if (F.centimani) return say(['cent_done']);
     if (F.campe !== true) return;
-    say(['cent_1', 'cent_2'], function () { F.centimani = true; Book.recruit('centimani'); checkReady(); });
+    say(['cent_1', 'cent_2'], function () { F.centimani = true; Book.recruit('centimani'); joined('centimani', checkReady); });
   }
 
   // Chapter 5
   function styx() {
     if (F.styx) return say(['styx_done']);
-    say(['styx_1', 'styx_2'], function () { F.styx = true; Book.recruit('styx'); Book.recruit('victoria'); });
+    say(['styx_1', 'styx_2'], function () { F.styx = true; Book.recruit('styx'); Book.recruit('victoria'); joined('styx', function () { joined('victoria'); }); });
   }
   function titan(flag, book, lineId) {                       // two Titans switch sides
     if (F[flag]) return say([lineId]);
-    say([lineId], function () { F[flag] = true; Book.recruit(book); checkReady(); });
+    say([lineId], function () { F[flag] = true; Book.recruit(book); joined(book, checkReady); });
   }
 
   // ---- battles: the speaker says why we fight, the screen wipes, then the battle
@@ -485,13 +485,33 @@ var Story = (function () {
     }
     say(pre, run);
   }
+  // A celebration: the screen dims, the new ally (or power) grows into view under a banner, stars burst, and a fanfare plays
+  var celebrated = [];
+  function celebrate(kind, sprite, nameText, glyph, done) {
+    celebrated.push({ kind: kind, name: nameText });
+    Game.scene(async function (c) {
+      Sound.play(kind === 'power' ? 'power' : 'ally');
+      await c.dim(0.8, 350); c.actor('hero', sprite, 9.5, 7.2, { size: 10, dir: 'down' });
+      await c.flash(kind === 'power' ? '#9ad0ff' : '#ffe94d', 350);
+      c.banner(Game.clean(Game.line(kind === 'power' ? 'new_power' : 'new_ally') || ''), nameText);
+      await Promise.all([c.grow('hero', 56, 650), c.burst(9.5, 5, glyph || '⭐', 12, { spread: 5, up: 1.6, size: 26, life: 1500 })]);
+      await c.burst(9.5, 5, '✨', 10, { spread: 6, up: 1.2, size: 22, life: 1300 }); await c.wait(2000); await c.dim(0, 350);
+    }, done);
+  }
+  function joined(id, done) { celebrate('ally', Art.allySprite(id), Book.nameNom(id), '⭐', done); }
+  function learned(moveId, done) { celebrate('power', 'jupiter', Game.clean(Game.line('cmd_' + moveId) || ''), { nubes: '☁️', fulmen: '⚡' }[moveId], done); }
+  S.celebrated = celebrated;
+
   // XP, and a choice of boon at every level
   function reward(key, done) {
     var xp = Battle.xpOf(key), ups = Prog.gain(xp);
     Game.toast('★ +' + xp, 1800); refreshLvl();
     (function next(i) {
       if (i >= ups.length) return done();
-      Game.scene(async function (c) { var p = c.player(); await c.flash('#ffe94d', 350); await c.burst(p[0], p[1] - 0.3, '⭐', 9); c.caption('lvl_up', 1500); await c.wait(1300); },
+      Game.scene(async function (c) {
+        Sound.play('level'); await c.dim(0.7, 300); await c.flash('#ffe94d', 400); c.banner(Game.clean(Game.line('lvl_up') || ''), '★ ' + ups[i]);
+        await c.burst(9.5, 5, '⭐', 14, { spread: 6, up: 1.6, size: 26, life: 1500 }); await c.burst(9.5, 6, '✨', 10, { spread: 6, up: 1.2, size: 22, life: 1300 }); await c.wait(2000); await c.dim(0, 300);
+      },
                  function () { boonChoice(function () { refreshLvl(); next(i + 1); }); });
     })(0);
   }

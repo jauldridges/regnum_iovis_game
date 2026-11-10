@@ -16,6 +16,9 @@
   await H.choose('Scūta pulsant'); assert((await text()).includes('nihil audiunt')); await cont();
   assert((await text()).includes('Nūbibus')); await cont();
   let f = (await st()).flags; assert(f.curetes && f.nubes);
+  await H.calm();
+  const cel = await p.evaluate(() => Story.celebrated.map(c => c.kind + ':' + c.name)); assert.deepEqual(cel.map(x => x.split(':')[0]), ['ally', 'ally', 'power'], 'a fanfare for each new ally and the new power: ' + cel);
+  assert.deepEqual(await p.evaluate(() => Sound.log.filter(n => n === 'ally' || n === 'power')), ['ally', 'ally', 'power']);
   await H.talk('guard1');                                                                          // guard 1
   assert((await text()).includes('Īnfāns hīc est')); await cont();
   assert((await text()).includes('Saturnō dō')); assert(!(await p.evaluate(() => Battle.active))); await cont();

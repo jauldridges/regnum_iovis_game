@@ -6,7 +6,7 @@ var Game = (function () {
   var params = new URLSearchParams(location.search);
   var PAUSE = params.has('pause') ? parseFloat(params.get('pause')) : 3;   // seconds; the ?pause= override is for testing only
   var content = {}, ctx, map = null, mapId = '', player = { x: 0, y: 0 }, dir = { x: 0, y: -1 };
-  var msgOpen = false, sceneOn = false, sc = { actors: {}, parts: [], shakeUntil: 0, shakeAmp: 0, flash: null }, TS = Math.max(0.05, PAUSE / 3), held = [], lastTs = 0, trans = null, mv = null, pendingExit = null, follower = null, trail = [], caughtUntil = 0, toastTimer = null;
+  var msgOpen = false, sceneOn = false, sc = { actors: {}, parts: [], shakeUntil: 0, shakeAmp: 0, flash: null, dim: 0, banner: null }, TS = Math.max(0.05, PAUSE / 3), held = [], lastTs = 0, trans = null, mv = null, pendingExit = null, follower = null, trail = [], caughtUntil = 0, toastTimer = null;
 
   function locked() { return msgOpen || sceneOn; }
 
@@ -31,8 +31,8 @@ var Game = (function () {
     var title = document.getElementById('title');
     var tctx = document.getElementById('titleart').getContext('2d');
     (function tloop(ts) { if (title.hidden) return; Art.title(tctx, ts); requestAnimationFrame(tloop); })(0);
-    document.getElementById('btn-la').onclick = function () { LANG = 'la'; start(); };
-    document.getElementById('btn-en').onclick = function () { LANG = 'en'; start(); };
+    document.getElementById('btn-la').onclick = function () { LANG = 'la'; Sound.unlock(); start(); };
+    document.getElementById('btn-en').onclick = function () { LANG = 'en'; Sound.unlock(); start(); };
     if (params.has('lang')) start();
     function start() {
       title.hidden = true;
@@ -40,7 +40,9 @@ var Game = (function () {
       document.getElementById('pad').hidden = false;
       c.width = LW * 2; c.height = LH * 2;
       ctx = c.getContext('2d'); ctx.setTransform(2, 0, 0, 2, 0, 0); ctx.imageSmoothingEnabled = false;
-      bind(); Book.init(); requestAnimationFrame(loop);
+      bind(); Book.init(); Sound.unlock();
+      var mb = document.getElementById('mutebtn'); mb.hidden = false; mb.textContent = Sound.muted() ? '🔇' : '🔊'; mb.onclick = function () { mb.textContent = Sound.toggle() ? '🔇' : '🔊'; mb.blur(); };
+      requestAnimationFrame(loop);
       Story.begin(params.has('ch') ? parseInt(params.get('ch'), 10) : 0);
     }
   }
@@ -189,6 +191,7 @@ var Game = (function () {
       if (o.img) { b.appendChild(o.img); b.classList.add('withimg'); }
       holder.appendChild(b); return b;
     });
+    numberButtons(btns);
     if (nopause) btns.forEach(function (b, i) { var tn = document.createTextNode(clean(opts[i].label)); b.appendChild(tn); }); else pauseButtons(btns, opts.map(function (o) { return clean(o.label); }), clean(prompt));
   }
   // a short note that does not stop the game (the player keeps walking)
@@ -216,19 +219,25 @@ var Game = (function () {
 
   // ---- cutscenes: things that happen on screen. fn(c) is an async script; c has wait, caption, say, walk, actor, move,
   // arc, tint, shake, flash, burst. Timings are scaled with ?pause= so tests run quickly.
-  function ms(n) { return Math.max(16, n * TS); }
-  function scene(fn, done) {
-    sceneOn = true; held = []; sc.actors = {}; sc.parts = [];
+  var sceneSlow = 1;
+  function ms(n) { return Math.max(16, n * TS * sceneSlow); }
+  // how long a caption stays: long sentences need time to read (about 85 ms a letter plus a second and a half)
+  function captionMs(text, asked) { return Math.min(7000, Math.max(asked || 0, 1800, 1500 + 85 * (text || '').length)); }
+  function scene(fn, done, slow) {
+    sceneOn = true; held = []; sc.actors = {}; sc.parts = []; sc.dim = 0; sc.banner = null; sceneSlow = slow || 1;
     var P = function (t) { return new Promise(function (r) { setTimeout(r, ms(t)); }); };
     function tween(t, f) { return new Promise(function (res) { var t0 = performance.now(), d = ms(t); (function g() { var p = Math.min(1, (performance.now() - t0) / d); f(p); p < 1 ? requestAnimationFrame(g) : res(); })(); }); }
     var c = {
       wait: P,
-      caption: function (id, t) { var tx = line(id); toast(tx, ms(t || 2000) + 200); if (tx) seen[clean(tx)] = true; return P(t || 2000); },
+      caption: function (id, t) { var tx = line(id), d = captionMs(clean(tx), t); toast(tx, ms(d) + 200); if (tx) seen[clean(tx)] = true; return P(d); },
       say: function (ids) { return new Promise(function (r) { var tx = ids.map(function (i) { return typeof i === 'string' ? line(i) : i && i.raw; }).filter(Boolean); showMessages(tx, r); }); },
       walk: function (id, path, speed) { return new Promise(function (r) { walkEnt(id, path, speed, r); }); },
       actor: function (id, spr, x, y, o) { sc.actors[id] = Object.assign({ spr: spr, x: x, y: y, dir: 'down', size: 24, alpha: 1, lift: 0 }, o || {}); },
       set: function (id, o) { if (sc.actors[id]) Object.assign(sc.actors[id], o); },
       remove: function (id) { delete sc.actors[id]; },
+      grow: function (id, to, t) { var a = sc.actors[id], s0 = a.size; return tween(t, function (p) { a.size = s0 + (to - s0) * (p * p * (3 - 2 * p)); }); },
+      dim: function (to, t) { var d0 = sc.dim || 0; return tween(t, function (p) { sc.dim = d0 + (to - d0) * p; }); },
+      banner: function (text, sub) { sc.banner = text ? { text: text, sub: sub || '', t0: performance.now() } : null; },
       fade: function (id, to, t) { var a = sc.actors[id]; if (!a) return P(0); var a0 = a.alpha === undefined ? 1 : a.alpha; return tween(t, function (p) { a.alpha = a0 + (to - a0) * p; }); },
       move: function (id, x, y, t, lift) { var a = sc.actors[id], x0 = a.x, y0 = a.y; if (Math.abs(x - x0) + Math.abs(y - y0) > 0.05) a.dir = Math.abs(x - x0) > Math.abs(y - y0) ? (x > x0 ? 'right' : 'left') : (y > y0 ? 'down' : 'up'); return tween(t, function (p) { a.x = x0 + (x - x0) * p; a.y = y0 + (y - y0) * p - (lift || 0) * Math.sin(p * Math.PI); a.walk = p < 1; }); },
       path: async function (id, pts, t) { var a = sc.actors[id], tot = 0, cur = [a.x, a.y], i; pts.forEach(function (q) { tot += Math.abs(q[0] - cur[0]) + Math.abs(q[1] - cur[1]); cur = q; });
@@ -243,9 +252,11 @@ var Game = (function () {
       player: function () { return [player.x, player.y]; },
       ts: TS
     };
-    fn(c).then(function () { sceneOn = false; sc.actors = {}; sc.parts = []; if (done) done(); }, function (e) { sceneOn = false; sc.actors = {}; sc.parts = []; console.error(e); if (done) done(); });
+    function over() { sceneOn = false; sc.actors = {}; sc.parts = []; sc.dim = 0; sc.banner = null; sceneSlow = 1; }
+    fn(c).then(function () { over(); if (done) done(); }, function (e) { over(); console.error(e); if (done) done(); });
   }
   function drawScene(now) {
+    if (sc.dim > 0.01) { ctx.fillStyle = 'rgba(8,6,20,' + sc.dim * 0.7 + ')'; ctx.fillRect(0, 0, LW, LH); }
     Object.keys(sc.actors).forEach(function (id) {
       var a = sc.actors[id]; if (a.follow) { var f = sc.actors[a.follow.id]; if (!f) { delete sc.actors[id]; return; } a.x = f.x + a.follow.dx; a.y = f.y + a.follow.dy; }
       if (a.pulse) ctx.globalAlpha = 0.6 + 0.4 * Math.sin(now / 160 + a.pulse);
@@ -256,6 +267,12 @@ var Game = (function () {
     sc.parts = sc.parts.filter(function (q) { return now - q.t0 < q.life; });
     sc.parts.forEach(function (q) { var a = (now - q.t0) / q.life, tt = (now - q.t0) / 1000; ctx.globalAlpha = 1 - a * a; ctx.font = q.size + 'px sans-serif'; ctx.textAlign = 'center'; ctx.fillText(q.ch, (q.x + q.vx * tt * 0.6) * T, (q.y + q.vy * tt * 0.6 + 1.2 * tt * tt) * T); });
     ctx.globalAlpha = 1; ctx.textAlign = 'left';
+    if (sc.banner) {                                         // a big title over the scene (new ally, new power, new level)
+      var a = Math.min(1, (now - sc.banner.t0) / 350), y = 64 + (1 - a) * -18; ctx.globalAlpha = a; ctx.textAlign = 'center';
+      ctx.font = '40px "Jersey 10", sans-serif'; ctx.lineWidth = 6; ctx.strokeStyle = '#1c1624'; ctx.strokeText(sc.banner.text, LW / 2, y); ctx.fillStyle = '#ffd24a'; ctx.fillText(sc.banner.text, LW / 2, y);
+      if (sc.banner.sub) { ctx.font = '30px "Jersey 10", sans-serif'; ctx.strokeText(sc.banner.sub, LW / 2, y + 34); ctx.fillStyle = '#ffffff'; ctx.fillText(sc.banner.sub, LW / 2, y + 34); }
+      ctx.globalAlpha = 1; ctx.textAlign = 'left';
+    }
   }
 
   // ---- screen wipe: bars close over the scene, `mid` runs while it is covered, then the bars open
@@ -278,10 +295,19 @@ var Game = (function () {
     }
   }
 
+  // ---- number keys: the buttons of the current choice (battle commands, choices, questions) can be pressed from the keyboard
+  var KEYS = '1234567890qertyuiop', numbered = [];
+  function numberButtons(btns) {
+    numbered = btns.slice();
+    btns.forEach(function (b, i) { if (!KEYS[i]) return; var k = document.createElement('span'); k.className = 'kbd'; k.textContent = KEYS[i].toUpperCase(); b.insertBefore(k, b.firstChild); });
+  }
   // ---- input
   function bind() {
     var km = { ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right', w: 'up', s: 'down', a: 'left', d: 'right' };
     addEventListener('keydown', function (e) {
+      Sound.unlock();
+      var ni = KEYS.indexOf((e.key || '').toLowerCase());
+      if (ni >= 0 && !e.ctrlKey && !e.metaKey && !e.altKey && numbered[ni] && numbered[ni].isConnected && !numbered[ni].disabled) { e.preventDefault(); numbered[ni].click(); return; }
       if (locked() && !km[e.key]) return;
       if (km[e.key]) { e.preventDefault(); if (!locked() && !e.repeat) press(km[e.key]); return; }
       if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); if (!locked()) act(); }
@@ -358,7 +384,7 @@ var Game = (function () {
 
   return {
     line: line, clean: clean, qline: qline, init: init, loadMap: loadMap, showMessages: showMessages,
-    showChoice: showChoice, scene: scene, toast: toast, setHud: setHud, setLvl: setLvl, setFilm: setFilm, markSeen: function (t) { if (t) seen[clean(t)] = true; }, pauseButtons: pauseButtons, transition: transition, endBattle: endBattle,
+    showChoice: showChoice, scene: scene, numberButtons: numberButtons, captionMs: captionMs, toast: toast, setHud: setHud, setLvl: setLvl, setFilm: setFilm, markSeen: function (t) { if (t) seen[clean(t)] = true; }, pauseButtons: pauseButtons, transition: transition, endBattle: endBattle,
     finish: finish, face: function (d) { var v = DIRS[d]; dir = { x: v[0], y: v[1] }; }, teleport: teleport, resetPatrols: resetPatrols, walkEnt: walkEnt, setFollower: function (n) { follower = n; },
     rawLatin: function (id) { return content[id].latin; },
     englishOf: function (id) { return content[id].english; },
