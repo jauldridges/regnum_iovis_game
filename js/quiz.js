@@ -8,7 +8,7 @@ var Quiz = (function () {
   function btn(text, fn) { var b = el('button', text); b.onclick = fn; return b; }
 
   // textId: card text; qId: its question (or null for a plain card); key: where the result is kept.
-  Q.run = function (root, textId, qId, key, done, cat) {
+  Q.run = function (root, textId, qId, key, done, cat, askFirst) {
     cat = cat || 'book';
     function card(attempt) {
       root.innerHTML = '';
@@ -40,7 +40,7 @@ var Quiz = (function () {
         root.appendChild(btn(L('ui_continue'), done));
       }
     }
-    card(1);
+    if (askFirst && qId) ask(1); else card(1);   // askFirst: the text was just shown as a scene, go straight to the question
   };
   return Q;
 })();

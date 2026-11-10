@@ -16,8 +16,7 @@
   await cmd('Ignem accende'); assert((await text()).includes('Magnum vulnus'), 'fire beats the underworld');
   assert.equal(await p.evaluate(() => Battle.enemyHp), 3);
   await cmd('Ignem accende');
-  await p.waitForFunction(() => !Battle.active);
-  await H.scene(); assert(!(await p.evaluate(() => MAPS.tartarus.rows.join('').includes('G'))), 'the cells are open');
+  await H.won(); await H.scene(); assert(!(await p.evaluate(() => MAPS.tartarus.rows.join('').includes('G'))), 'the cells are open');
   await p.screenshot({ path: process.env.SHOT || '/tmp/ch4.png' });
   // the Cyclopes: three gifts, three datives
   await H.talk('cyclops2');

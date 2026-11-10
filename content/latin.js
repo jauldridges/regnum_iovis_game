@@ -3243,5 +3243,275 @@ window.CONTENT = [
   "nle_category": "mythology",
   "spec_node_id": "",
   "review_status": "draft"
+ },
+ {
+  "id": "name_lupus",
+  "latin": "Lupus",
+  "english": "Wolf",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "name_dux",
+  "latin": "Dux",
+  "english": "Captain",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "wolf_1",
+  "latin": "Lupus fremit!",
+  "english": "A wolf growls!",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "intent_lupus_light",
+  "latin": "Lupus dentēs ostendit.",
+  "english": "The wolf bares its teeth.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "battle_lupus_light",
+  "latin": "Lupus mordet.",
+  "english": "The wolf bites.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "intent_lupus_double",
+  "latin": "Lupus celeriter currit!",
+  "english": "The wolf runs fast!",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "battle_lupus_double",
+  "latin": "Lupus bis mordet!",
+  "english": "The wolf bites twice!",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "win_lupus",
+  "latin": "Lupus fugit.",
+  "english": "The wolf runs away.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "intent_dux_light",
+  "latin": "Dux gladium parat.",
+  "english": "The captain readies his sword.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "battle_dux_light",
+  "latin": "Dux gladiō ferit.",
+  "english": "The captain strikes with his sword.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "intent_dux_guard",
+  "latin": "Dux scūtum tollit!",
+  "english": "The captain raises his shield!",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "battle_dux_guard",
+  "latin": "Dux scūtō sē tegit.",
+  "english": "The captain covers himself with his shield.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "intent_dux_heavy",
+  "latin": "Dux gladium altē tollit!",
+  "english": "The captain raises his sword high!",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "battle_dux_heavy",
+  "latin": "Gladius ducis validē ferit!",
+  "english": "The captain's sword strikes hard!",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "win_dux",
+  "latin": "Dux cadit.",
+  "english": "The captain falls.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "intent_hyperion_heal",
+  "latin": "Hyperīōn sōlem bibit!",
+  "english": "Hyperion drinks in the sun!",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "battle_hyperion_heal",
+  "latin": "Hyperīōn vīrēs recipit.",
+  "english": "Hyperion regains his strength.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "intent_atlas_guard",
+  "latin": "Atlās montem tenet!",
+  "english": "Atlas holds up a mountain!",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "battle_atlas_guard",
+  "latin": "Mōns Atlantem tegit.",
+  "english": "The mountain shields Atlas.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "battle_rage",
+  "latin": "Saturnus saevit!",
+  "english": "Saturn rages!",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "eff_miss",
+  "latin": "Ictus fallit!",
+  "english": "The blow misses!",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "eff_crit",
+  "latin": "Ictus gravis!",
+  "english": "A heavy blow!",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "eff_guarded",
+  "latin": "Scūtum ictum tenet.",
+  "english": "The shield holds the blow.",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "lvl_up",
+  "latin": "Gradus novus!",
+  "english": "New level!",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "lvl_choice",
+  "latin": "Quid eligis?",
+  "english": "What do you choose?",
+  "type": "message",
+  "nle_category": "mythology",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "opt_vita",
+  "latin": "Vīta",
+  "english": "Life",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "opt_vis",
+  "latin": "Vīs",
+  "english": "Power",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "opt_fortuna",
+  "latin": "Fortūna",
+  "english": "Luck",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "opt_copia",
+  "latin": "Cōpia",
+  "english": "Supply",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
+ },
+ {
+  "id": "map_latium",
+  "latin": "Latium",
+  "english": "Latium",
+  "type": "ui_label",
+  "nle_category": "",
+  "spec_node_id": "",
+  "review_status": "draft"
  }
 ];

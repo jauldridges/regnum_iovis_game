@@ -10,7 +10,7 @@
   await H.talk('curetes1'); assert((await text()).includes('scūtum laudant')); await cont(); assert((await text()).includes('Nūbibus')); await cont();
   const f = (await st()).flags; assert(f.curetes && f.nubes);
   // a suspicious Saturn: a third guard, and the gate waits for him
-  await p.evaluate(() => { Story.flags.suspect = true; Story.flags.guard1 = Story.flags.guard2 = true; });
+  await p.evaluate(() => { Story.flags.suspect = true; Story.flags.guard1 = Story.flags.wolf = true; });
   assert(await H.entPos('guard3'), 'the third guard is there');
   assert.equal(await p.evaluate(() => Story.canExit('ida_east')), false, 'the gate stays shut');
   await p.evaluate(() => { Story.flags.guard3 = true; }); assert.equal(await p.evaluate(() => Story.canExit('ida_east')), true);

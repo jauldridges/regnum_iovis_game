@@ -1,4 +1,5 @@
-// Side-view battle with a party. Each move plays as a sequence:
+// Side-view battle with a party. Moves can miss or hit critically; enemies differ (a wolf bites twice, a captain raises his
+// shield, Hyperion heals, Atlas hides behind a mountain, Saturn rages at half health). Each move plays as a sequence:
 // attacker moves -> the effect travels -> the defender reacts -> the life bar drains.
 // New in step 7: the enemy shows what it will do next (so a shield or dodge is a real choice), heavy attacks,
 // and the type chart (sky > earth > sea > fire > underworld > sky), shown with icons only.
@@ -10,42 +11,48 @@ var Battle = (function () {
 
   // Move data (text lives in content: cmd_<id>, battle_<id>). kind: dmg | heal | shield | dodge | stun | weak | fire | power | escape
   var MOVES = {
-    tona:      { who: 'iuppiter', kind: 'dmg', amt: 1, el: 'caelum', uses: Infinity, fx: 'bolt' },
+    tona:      { who: 'iuppiter', kind: 'dmg', amt: 1, el: 'caelum', uses: Infinity, fx: 'bolt', acc: 0.95, crit: 0.10 },
     nubes:     { who: 'iuppiter', kind: 'shield', uses: 2, fx: 'cloud' },
-    fulmen:    { who: 'iuppiter', kind: 'dmg', amt: 3, el: 'caelum', uses: 2, fx: 'bolt' },
-    neptunus:  { kind: 'dmg', amt: 2, el: 'mare', uses: 2, fx: 'wave' },
+    fulmen:    { who: 'iuppiter', kind: 'dmg', amt: 3, el: 'caelum', uses: 2, fx: 'bolt', acc: 0.75, crit: 0.15 },
+    neptunus:  { kind: 'dmg', amt: 2, el: 'mare', uses: 2, fx: 'wave', acc: 0.85, crit: 0.10 },
     pluto:     { kind: 'dodge', uses: 2, fx: 'ghost' },
-    iuno:      { kind: 'stun', el: 'caelum', uses: 2, fx: 'fear' },
+    iuno:      { kind: 'stun', el: 'caelum', uses: 2, fx: 'fear', acc: 0.8 },
     ceres:     { kind: 'heal', amt: 2, uses: 2, fx: 'heal' },
-    vesta:     { kind: 'dmg', amt: 2, el: 'ignis', uses: 2, fx: 'fire' },
+    vesta:     { kind: 'dmg', amt: 2, el: 'ignis', uses: 2, fx: 'fire', acc: 0.85, crit: 0.10 },
     amalthea:  { kind: 'heal', amt: 1, uses: 2, fx: 'heal' },
     metis:     { kind: 'weak', uses: 1, fx: 'advice' },
-    cyclopes:  { kind: 'dmg', amt: 3, uses: 1, fx: 'hammer' },
-    centimani: { kind: 'dmg', amt: 3, el: 'terra', uses: 1, fx: 'rocks' },
+    cyclopes:  { kind: 'dmg', amt: 3, uses: 1, fx: 'hammer', acc: 0.8, crit: 0.15 },
+    centimani: { kind: 'dmg', amt: 3, el: 'terra', uses: 1, fx: 'rocks', acc: 0.7, crit: 0.10 },
     prometheus:{ kind: 'fire', uses: 2, fx: 'fire' },
-    themis:    { kind: 'stun', uses: 1, fx: 'advice' },
+    themis:    { kind: 'stun', uses: 1, fx: 'advice', acc: 0.9 },
     victoria:  { kind: 'power', uses: 1, fx: 'heal' }
   };
   var COLORS = { iuppiter: '#2f7fd1', neptunus: '#2aa6c9', pluto: '#555', iuno: '#c9a2e8', ceres: '#e0b84a', vesta: '#e0622e',
                  amalthea: '#f0f0f0', metis: '#5ac8c8', cyclopes: '#d9822b', centimani: '#c0c0e0',
                  prometheus: '#f08030', themis: '#b070d0', victoria: '#f5d76e' };
-  // Enemies: element, hit points, the cycle of intended actions, and their lines (content ids).
+  // Enemies: element, hit points, xp, a cycle of intended actions, and what they look like.
+  // Kinds of action: light (1), heavy (2), double (two bites), guard (raises a shield: your next hit is halved), heal (recovers 2).
   var ENEMIES = {
-    guard:    { name: 'name_custos', color: '#b5651d', size: 56, el: null, hp: 3, pattern: ['light', 'light', 'heavy'], flee: true,
-                light: 'battle_enemy_spear', heavy: 'battle_guard_heavy', iLight: 'intent_guard_light', iHeavy: 'intent_guard_heavy', win: 'battle_win_1', blocked: 'battle_blocked' },
-    campe:    { name: 'name_campe', color: '#7a2a5a', size: 72, el: 'inferi', hp: 8, pattern: ['light', 'heavy'] },
-    hyperion: { name: 'name_hyperion', color: '#f0c040', size: 72, el: 'terra', hp: 8, pattern: ['light', 'light', 'heavy'] },
-    iapetus:  { name: 'name_iapetus', color: '#8a6a4a', size: 72, el: 'terra', hp: 9, pattern: ['light', 'heavy', 'light'] },
-    atlas:    { name: 'name_atlas', color: '#5a5a6a', size: 80, el: 'terra', hp: 10, pattern: ['light', 'light', 'heavy'] },
-    saturnus: { name: 'name_saturnus', color: '#b02a2a', size: 80, el: 'terra', hp: 14, pattern: ['light', 'heavy', 'light', 'heavy'] }
+    guard:    { name: 'name_custos', sprite: 'guard', scale: 4, el: null, hp: 3, xp: 25, pattern: ['light', 'light', 'heavy'], flee: true,
+                ids: { light: ['intent_guard_light', 'battle_enemy_spear'], heavy: ['intent_guard_heavy', 'battle_guard_heavy'] }, win: 'battle_win_1', blocked: 'battle_blocked' },
+    lupus:    { name: 'name_lupus', sprite: 'lupus', scale: 4, el: null, hp: 4, xp: 30, pattern: ['double', 'light', 'double'], flee: true },
+    dux:      { name: 'name_dux', sprite: 'dux', scale: 5, el: null, hp: 7, xp: 45, pattern: ['light', 'guard', 'heavy'], flee: true },
+    campe:    { name: 'name_campe', sprite: 'campe', scale: 5, el: 'inferi', hp: 8, xp: 90, pattern: ['light', 'heavy'] },
+    hyperion: { name: 'name_hyperion', sprite: 'hyperion', scale: 5, el: 'terra', hp: 8, xp: 110, pattern: ['light', 'heal', 'heavy'] },
+    iapetus:  { name: 'name_iapetus', sprite: 'iapetus', scale: 5, el: 'terra', hp: 9, xp: 130, pattern: ['light', 'heavy', 'light'] },
+    atlas:    { name: 'name_atlas', sprite: 'atlas', scale: 6, el: 'terra', hp: 10, xp: 150, pattern: ['light', 'guard', 'heavy'] },
+    saturnus: { name: 'name_saturnus', sprite: 'saturn', scale: 6, el: 'terra', hp: 14, xp: 200, pattern: ['light', 'heavy', 'light'], pattern2: ['heavy', 'double', 'heavy'] }
   };
-  var LOOK = { guard: ['guard', 4], campe: ['campe', 5], hyperion: ['hyperion', 5], iapetus: ['iapetus', 5], atlas: ['atlas', 6], saturnus: ['saturn', 6] };
+  var KIND_GLYPH = { light: '', heavy: '⚡ ', double: '⚔️ ', guard: '🛡️ ', heal: '💚 ' };
   Object.keys(ENEMIES).forEach(function (k) {
-    ENEMIES[k].sprite = LOOK[k][0]; ENEMIES[k].size = 16 * LOOK[k][1];
-    var e = ENEMIES[k]; if (k === 'guard') return;
-    e.light = 'battle_' + k + '_light'; e.heavy = 'battle_' + k + '_heavy'; e.iLight = 'intent_' + k + '_light';
-    e.iHeavy = 'intent_' + k + '_heavy'; e.win = 'win_' + k; e.blocked = 'battle_blocked_g';
+    var e = ENEMIES[k]; e.key = k; e.size = 16 * e.scale;
+    e.win = e.win || 'win_' + k; e.blocked = e.blocked || 'battle_blocked_g';
   });
+  // the content id of an enemy's intent line (type 0) or battle line (type 1) for an action
+  function eid(kind, type) {
+    var d = B.def; if (d.ids && d.ids[kind]) return d.ids[kind][type];
+    return (type ? 'battle_' : 'intent_') + d.key + '_' + kind;
+  }
 
   function t(id) { return Game.line(id) || ''; }
   function say(id) { log.push(t(id)); log = log.slice(-3); render(); }
@@ -59,7 +66,7 @@ var Battle = (function () {
   }
   function fresh() {
     var th = THEME[Game.state().map] || THEME['default'];
-    return { ax: {}, gx: 0, gy: 0, aHit: 0, gHit: 0, fx: null, fxp: 0, spear: null, gAlpha: 1, shownT: maxHp, shownE: B.enemyHp, bg: backdrop(Game.state().map), pad: th.pad, interior: !!th.interior, clouds: !THEME[Game.state().map] };
+    return { ax: {}, gx: 0, gy: 0, aHit: 0, gHit: 0, fx: null, fxp: 0, spear: null, gAlpha: 1, pops: [], gGuard: 0, healGlow: 0, critHit: false, shownT: maxHp, shownE: B.enemyHp, bg: backdrop(Game.state().map), pad: th.pad, interior: !!th.interior, clouds: !THEME[Game.state().map] };
   }
 
   // The allies on screen and on the command list: Jupiter's moves, siblings in the party, recruited helpers.
@@ -73,20 +80,33 @@ var Battle = (function () {
     if (Story.flags.fulmen) ids.push('fulmen');
     return ids.concat(allies());
   }
-  function intentId() { return B.def[B.pattern[B.turn % B.pattern.length] === 'heavy' ? 'iHeavy' : 'iLight']; }
+  function intentKind() { return B.pattern[B.turn % B.pattern.length]; }
+  function intentId() { return eid(intentKind(), 0); }
+  // chance of a hit and of a critical hit (luck boons add to both); ?luck=hit|crit|miss fixes the dice for tests
+  var LUCK = new URLSearchParams(location.search).get('luck');
+  function R() { return LUCK === 'hit' ? 0.5 : LUCK === 'crit' ? 0.001 : LUCK === 'miss' ? 0.999 : Math.random(); }
+  function chance(id) {
+    var m = M[id];
+    return { acc: m.acc === undefined ? 1 : Math.min(0.98, m.acc + Prog.accBonus()), crit: m.crit === undefined ? 0 : Math.min(0.5, m.crit + Prog.critBonus()) };
+  }
+  B.chance = function (id) { if (!M) return null; return chance(id); };
+  B.xpOf = function (key) { return ENEMIES[key || 'guard'].xp; };
+  // which of the player's buttons answer what the enemy is about to do
+  var HINTS = { heavy: ['shield', 'dodge', 'stun'], double: ['shield', 'dodge', 'stun'], heal: ['stun'], guard: ['weak', 'fire'] };
   function render() {
     document.getElementById('msg-text').textContent = log.join('\n');
     var holder = document.getElementById('choices'); holder.innerHTML = '';
+    var hints = HINTS[intentKind()] || [];
     commands().forEach(function (id) {
-      var b = document.createElement('button'), tr = t('cmd_' + id), left = B.uses[id], m = M[id];
+      var b = document.createElement('button'), tr = t('cmd_' + id), left = B.uses[id], m = M[id], ch = chance(id);
       var suffix = left === Infinity ? '' : ' ×' + left, glyph = m.el ? EL[m.el] + ' ' : '';
       if (LANG === 'en') {
         b.appendChild(document.createTextNode(glyph + Game.clean(tr) + suffix));
         var small = document.createElement('small'); small.textContent = ' ' + Game.clean(Game.rawLatin('cmd_' + id));
         small.style.fontSize = '.6em'; b.appendChild(small);
-      } else b.textContent = glyph + Game.clean(tr) + suffix;
-      var heavyNext = B.pattern[B.turn % B.pattern.length] === 'heavy';
-      if (!busy && left > 0 && ((heavyNext && (m.kind === 'shield' || m.kind === 'dodge' || m.kind === 'stun')) || (B.teamHp <= 2 && m.kind === 'heal'))) b.className = 'hint';
+      } else b.appendChild(document.createTextNode(glyph + Game.clean(tr) + suffix));
+      if (ch.acc < 1) { var pc = document.createElement('small'); pc.textContent = ' ' + Math.round(ch.acc * 100) + '%'; pc.style.fontSize = '.65em'; pc.style.opacity = '.75'; b.appendChild(pc); }
+      if (!busy && left > 0 && (hints.indexOf(m.kind) >= 0 || (B.teamHp <= 2 && m.kind === 'heal'))) b.className = 'hint';
       b.disabled = busy || left <= 0;
       b.onclick = function () { if (!busy) doMove(id); };
       holder.appendChild(b);
@@ -102,24 +122,34 @@ var Battle = (function () {
 
   async function effect(name, ms) { S.fx = name; await tween(ms, function (p) { S.fxp = p; }); S.fx = null; }
 
+  function pop(txt, col, who) { S.pops.push({ txt: txt, col: col, who: who || 'e', t0: performance.now() }); }
+
   async function doMove(id) {
-    var m = M[id], actor = m.who || id;
+    var m = M[id], actor = m.who || id, ch = chance(id);
     busy = true; if (m.uses !== Infinity) B.uses[id]--; render();
     // 1. the actor steps forward and the effect plays
     await tween(350, function (p) { S.ax[actor] = 60 * ease(p); });
     await effect(m.fx, 600);
-    // 2. the result: the log line, the reaction, the life bar
+    // 2. the result: the dice, the log line, the reaction, the life bar
     say('battle_' + id);
     var back = tween(350, function (p) { S.ax[actor] = 60 * (1 - ease(p)); });
-    if (m.kind === 'dmg') {
+    var hit = m.acc === undefined || R() < ch.acc, crit = hit && ch.crit > 0 && R() < ch.crit;
+    if ((m.kind === 'dmg' || m.kind === 'stun') && !hit) {                                         // a miss: the enemy sidesteps
+      say('eff_miss'); pop('✖', '#ff8a8a');
+      await Promise.all([back, tween(450, function (p) { S.gx = 30 * Math.sin(p * Math.PI); })]); S.gx = 0;
+    } else if (m.kind === 'dmg') {
       var el = B.fire ? 'ignis' : m.el, de = B.def.el, mult = 1;
       if (el && de) mult = BEATS[el] === de ? 2 : BEATS[de] === el ? 0.5 : 1;
-      var dmg = Math.max(1, Math.ceil(m.amt * mult)) + (B.weak ? 1 : 0) + (B.fire ? 1 : 0) + B.power;
+      var base = Math.max(1, Math.ceil(m.amt * mult)) + (B.weak ? 1 : 0) + (B.fire ? 1 : 0) + B.power + (m.who === 'iuppiter' ? Prog.boons.vis : 0);
+      var dmg = crit ? base * 2 : base;
+      if (B.eGuard) { if (!crit) { dmg = Math.max(1, Math.ceil(dmg / 2)); say('eff_guarded'); } B.eGuard = false; }          // the shield holds, or a critical blow breaks it
       B.weak = false; B.fire = false; B.enemyHp -= dmg;
       if (mult === 2) say('eff_super'); else if (mult === 0.5) say('eff_weak');
-      await Promise.all([back, tween(550, function (p) { S.gHit = p; })]); S.gHit = 0;
+      if (crit) { say('eff_crit'); S.critHit = true; }
+      pop('-' + dmg + (crit ? ' ×2' : ''), crit ? '#ffd24a' : '#ffffff');
+      await Promise.all([back, tween(crit ? 800 : 550, function (p) { S.gHit = p; })]); S.gHit = 0; S.critHit = false;
     } else if (m.kind === 'heal') {
-      B.teamHp = Math.min(maxHp, B.teamHp + m.amt); await back;
+      var healed = Math.min(maxHp, B.teamHp + m.amt) - B.teamHp; B.teamHp += healed; pop('+' + healed, '#7aff9a', 'a'); await back;
     } else if (m.kind === 'shield' || m.kind === 'dodge') {
       B.up = m.kind; await back;
     } else if (m.kind === 'stun') {
@@ -136,20 +166,34 @@ var Battle = (function () {
       await wait(300); say('battle_win_2'); await wait(1400);
       return end('won');
     }
-    // 3. the enemy does what it announced (unless stopped)
+    // 3. the enemy does what it announced (unless stopped). At half health Saturn changes his pattern.
     await wait(300);
-    var kind = B.pattern[B.turn % B.pattern.length]; B.turn++;
+    if (B.def.pattern2 && !B.enraged && B.enemyHp <= B.maxEnemy / 2) {
+      B.enraged = true; B.pattern = B.def.pattern2; B.turn = 0; say('battle_rage');
+      await tween(700, function (p) { S.gHit = p; }); S.gHit = 0; await wait(500);
+    }
+    var kind = intentKind(); B.turn++;
     if (B.stun) { B.stun = false; say('battle_frozen'); await wait(1000); }
-    else {
+    else if (kind === 'guard') {
+      say(eid(kind, 1)); B.eGuard = true; await tween(700, function (p) { S.gHit = 0; S.fx = null; S.gGuard = p; }); await wait(500);
+    } else if (kind === 'heal') {
+      say(eid(kind, 1)); var gain = Math.min(B.maxEnemy, B.enemyHp + 2) - B.enemyHp; B.enemyHp += gain; pop('+' + gain, '#7aff9a', 'e');
+      await tween(700, function (p) { S.healGlow = Math.sin(p * Math.PI); }); S.healGlow = 0; await wait(400);
+    } else {
+      var hits = kind === 'double' ? 2 : 1, each = kind === 'heavy' ? 2 : 1;
       await tween(350, function (p) { S.gx = -50 * ease(p); });
       await tween(550, function (p) { S.spear = 360 - 230 * p; }); S.spear = null;
       if (B.up) {                                           // shield or helmet: the attack strikes nothing
         say(B.def.blocked); B.up = null;
         await tween(350, function (p) { S.gx = -50 * (1 - ease(p)); });
       } else {
-        say(kind === 'heavy' ? B.def.heavy : B.def.light); B.teamHp -= (kind === 'heavy' ? 2 : 1) * (O.dmg || 1);
-        await Promise.all([tween(350, function (p) { S.gx = -50 * (1 - ease(p)); }),
-                           tween(550, function (p) { S.aHit = p; })]); S.aHit = 0;
+        say(eid(kind, 1)); var landed = 0;
+        for (var h = 0; h < hits; h++) {
+          if (kind !== 'heavy' && R() >= 0.88) { pop('✖', '#ff8a8a', 'a'); say('eff_miss'); await wait(300); continue; }   // light bites can miss; heavy blows do not
+          var dm = each * (O.dmg || 1); B.teamHp -= dm; landed++; pop('-' + dm, '#ff8a8a', 'a');
+          await tween(350, function (p) { S.aHit = p; }); S.aHit = 0;
+        }
+        await tween(350, function (p) { S.gx = -50 * (1 - ease(p)); });
       }
       await wait(550);
       if (B.teamHp <= 0) return end('lost');
@@ -157,7 +201,7 @@ var Battle = (function () {
     busy = false; render();
   }
 
-  // opts: { enemy: 'guard' | 'campe' | ..., hp (optional), final (Victoria available) }. onEnd(result): 'won' | 'lost' | 'escaped'.
+  // opts: { enemy: 'guard' | 'lupus' | 'dux' | 'campe' | ..., hp (optional), max, final (Victoria available) }. onEnd(result, enemyHp, enemyMax): 'won' | 'lost'.
   // Called under the screen wipe: the box appears once the battle scene is revealed.
   B.start = function (opts, onEnd) {
     O = opts || {}; B.def = ENEMIES[O.enemy || 'guard']; B.pattern = B.def.pattern; B.turn = 0;
@@ -165,9 +209,10 @@ var Battle = (function () {
     if (Story.flags.weapons) { M.neptunus.amt = 3; M.pluto.uses = 3; }       // the Cyclopes' weapons
     var item = Story.flags.item;                                             // the keepsake Ops took from the storeroom
     if (item === 'scutum') M.nubes.uses += 1; if (item === 'mel') { M.amalthea.amt = 2; M.amalthea.uses = 3; }
-    maxHp = 4 + Math.max(0, Story.ch() - 3) + (Story.flags.item === 'pallium' ? 1 : 0);
+    Object.keys(M).forEach(function (k) { if (M[k].uses !== Infinity) M[k].uses += Prog.boons.copia; });   // the Supply boon
+    maxHp = 4 + Prog.hpBonus() + (item === 'pallium' ? 1 : 0);
     B.active = true; B.teamHp = maxHp; B.enemyHp = O.hp || B.def.hp; B.maxEnemy = O.max || B.enemyHp;   // O.hp is lower than O.max on a retry: the enemy stays hurt
-    B.weak = false; B.fire = false; B.stun = false; B.up = null; B.power = 0;
+    B.weak = false; B.fire = false; B.stun = false; B.up = null; B.power = 0; B.eGuard = false; B.enraged = false;
     B.uses = {}; Object.keys(M).forEach(function (k) { B.uses[k] = M[k].uses; });
     log = []; busy = true; done = onEnd; S = fresh(); Game.setBusy(true);
     wait(700).then(function () {
@@ -228,7 +273,7 @@ var Battle = (function () {
     var jx = 150 + (S.ax.iuppiter || 0) + shake(S.aHit), jy = 76;
     pos.iuppiter = [jx, jy, 80];
     others.forEach(function (id, i) { pos[id] = [10 + (i % 3) * 34 + (S.ax[id] || 0), 66 + Math.floor(i / 3) * 36, 32]; });
-    var gx = 410 - sz + S.gx + shake(S.gHit), gy = 150 - sz + S.gy;
+    var gx = 410 - sz + S.gx + shake(S.gHit) * (S.critHit ? 2 : 1), gy = 150 - sz + S.gy;
     ctx.fillStyle = S.pad;                                                        // platforms
     ctx.beginPath(); ctx.ellipse(jx + 40 - (S.ax.iuppiter || 0), 154, 52, 10, 0, 0, 6.3); ctx.fill();
     ctx.beginPath(); ctx.ellipse(410 - sz / 2, 154, sz / 2 + 14, 10, 0, 0, 6.3); ctx.fill();
@@ -236,18 +281,31 @@ var Battle = (function () {
       var p = pos[id]; ctx.fillStyle = 'rgba(0,0,0,.25)'; ctx.beginPath(); ctx.ellipse(p[0] + p[2] / 2, p[1] + p[2] - 1, p[2] / 2 - 2, 4, 0, 0, 6.3); ctx.fill();
       Art.big(ctx, Art.allySprite(id), 'right', p[0], p[1], p[2], id === 'iuppiter' ? tint(S.aHit, '#ff3030') : null, id === 'iuppiter' && B.up === 'dodge' ? 0.4 : 1);
     });
-    Art.big(ctx, B.def.sprite, 'left', gx, gy, sz, tint(S.gHit, S.fx === 'fear' ? '#aa55ff' : '#ffffff'), S.gAlpha);
+    var et = tint(S.gHit, S.critHit ? '#ffd24a' : S.fx === 'fear' ? '#aa55ff' : '#ffffff');
+    if (!et && S.healGlow > 0) et = { c: '#55ff88', a: 0.55 * S.healGlow };
+    if (!et && B.enraged) et = { c: '#ff2a2a', a: 0.3 };
+    if (!et && B.eGuard) et = { c: '#6aa8ff', a: 0.16 };
+    Art.big(ctx, B.def.sprite, 'left', gx, gy, sz, et, S.gAlpha);
+    if (B.eGuard) { ctx.fillStyle = 'rgba(120,180,255,.45)'; ctx.strokeStyle = 'rgba(210,230,255,.95)'; ctx.lineWidth = 3; ctx.beginPath(); ctx.ellipse(gx + 6, gy + sz / 2, 12, sz * 0.52, 0, 0, 6.3); ctx.fill(); ctx.stroke(); }
     if (B.up === 'shield') { ctx.fillStyle = 'rgba(255,255,255,.6)'; [[10, 30], [40, 40], [64, 28], [30, 8], [52, 12]].forEach(function (o) { ctx.beginPath(); ctx.arc(jx + o[0], jy + o[1], 14, 0, 6.3); ctx.fill(); }); }
     effects(ctx, pos, gx, gy, sz);
     plate(ctx, 8, 6, 160, Game.clean(t('name_iuppiter')), S.shownT, maxHp, EL.caelum);
     plate(ctx, 176, 6, 160, Game.clean(t(B.def.name)), S.shownE, B.maxEnemy, B.def.el ? EL[B.def.el] : '');
     // what the enemy will do next
     if (!S.fx && B.active && B.enemyHp > 0) {
-      var heavy = B.pattern[B.turn % B.pattern.length] === 'heavy', txt = (heavy ? '⚡ ' : '') + Game.clean(t(intentId()));
+      var ik = intentKind(), heavy = ik === 'heavy' || ik === 'double', txt = KIND_GLYPH[ik] + Game.clean(t(intentId()));
       ctx.font = '18px "Jersey 10", sans-serif'; ctx.textAlign = 'right';
       var w = ctx.measureText(txt).width; ctx.fillStyle = 'rgba(20,16,36,.8)'; ctx.fillRect(474 - w - 10, 160, w + 14, 22);
-      ctx.fillStyle = heavy ? '#ffd24a' : '#fff'; ctx.fillText(txt, 470, 176); ctx.textAlign = 'left';
+      ctx.fillStyle = ik === 'heal' ? '#7aff9a' : ik === 'guard' ? '#9ac8ff' : heavy ? '#ffd24a' : '#fff'; ctx.fillText(txt, 470, 176); ctx.textAlign = 'left';
     }
+    // floating numbers: damage, healing, misses
+    S.pops = S.pops.filter(function (q) { return now - q.t0 < 1100; });
+    S.pops.forEach(function (q) {
+      var a = (now - q.t0) / 1100, x = q.who === 'e' ? gx + sz / 2 : jx + 40, y = (q.who === 'e' ? gy : jy) + 6 - 34 * a;
+      ctx.globalAlpha = 1 - a * a; ctx.font = '26px "Jersey 10", sans-serif'; ctx.textAlign = 'center'; ctx.lineWidth = 4; ctx.strokeStyle = '#1c1624'; ctx.strokeText(q.txt, x, y); ctx.fillStyle = q.col; ctx.fillText(q.txt, x, y);
+    });
+    ctx.globalAlpha = 1; ctx.textAlign = 'left';
+    if (S.critHit && S.gHit > 0 && S.gHit < 0.35) { ctx.fillStyle = 'rgba(255,255,220,.35)'; ctx.fillRect(0, 0, 480, 312); }
     if (S.spear !== null) { ctx.fillStyle = '#e8e8f0'; ctx.fillRect(S.spear, 112, 40, 4); ctx.fillStyle = '#fff'; ctx.fillRect(S.spear - 6, 111, 8, 6); }
   };
 

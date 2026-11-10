@@ -12,7 +12,7 @@ module.exports = async function setup() {
   // pause=0.2 shortens the 3-second reading pause and the cutscenes so the tests are quick; pass pause:null for the real 3 seconds
   H.open = async (q, o = {}) => {
     const pause = o.pause === null ? '' : '&pause=' + (o.pause || 0.2);
-    await p.goto(url + '?' + q + pause); await p.waitForFunction(() => window.Game && window.Story && Game.state().map !== undefined);
+    await p.goto(url + '?' + q + pause + '&luck=' + (o.luck || 'hit'));   // luck: hit (no misses or crits), crit (every hit is critical), miss; real dice if the page is opened without it await p.waitForFunction(() => window.Game && window.Story && Game.state().map !== undefined);
   };
   H.text = () => p.textContent('#msg-text');
   const enabled = async sel => { await p.waitForSelector(sel + ':not([disabled])', { timeout: 10000 }); };
@@ -55,6 +55,17 @@ module.exports = async function setup() {
     assert(pos, 'no tile ' + ch); await H.useAt(pos[0], pos[1]);
   };
   H.bump = async k => { await p.keyboard.press(KEY[k] || k); await p.waitForTimeout(80); };       // press towards a blocked tile or an exit
+  // a battle is won: wait for the reward (XP, the level-up scene and its boon choice) to finish; take Life if offered
+  H.won = async () => {
+    await p.waitForFunction(() => !Battle.active, null, { timeout: 20000 });
+    let calm = 0;
+    while (calm < 6) {
+      await p.waitForTimeout(150);
+      const choice = await p.locator('#choices button:has-text("Vīta")').count();
+      if (choice) { await p.click('#choices button:has-text("Vīta")'); calm = 0; continue; }
+      const s = await H.st(); calm = (s.scene || s.trans) ? 0 : calm + 1;
+    }
+  };
   H.battleReady = async () => {
     await p.waitForFunction(() => Battle.active, null, { timeout: 10000 });
     await p.waitForSelector('#choices button:not([disabled])', { timeout: 10000 });

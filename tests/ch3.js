@@ -1,7 +1,7 @@
 // Chapter 3: Metis, the cup (a scene you watch), the five siblings, the war's first battle, then Tartarus.
 (async () => {
   const H = await require('./lib')(); const { p, assert, st, text, cont, pcont, cmd, battleReady } = H;
-  await H.open('lang=la&drafts=1&ch=3');
+  await H.open('lang=la&drafts=1&ch=3', { luck: 'crit' });
   assert.equal((await st()).map, 'oceanus');
   await H.goTo(9, 11); await H.bump('D'); assert((await H.toast()).includes('exspectat'));           // Metis first
   await H.talk('metis'); assert((await text()).includes('dea sapiēns')); await cont(); assert((await text()).includes('medicāmentum')); await cont();
@@ -21,11 +21,10 @@
   await battleReady();
   const cmds = await p.$$eval('#choices button', bs => bs.map(b => b.textContent.trim()));
   ['Tonā', 'Tridente', 'Galeam', 'Hostēs', 'Cōnsilium'].forEach(c => assert(cmds.some(x => x.includes(c)), c + ' in ' + cmds));
-  assert(await p.evaluate(() => Battle.def.pattern.join()) === 'light,light,heavy');
-  await cmd('Cōnsilium'); await cmd('Tridente'); await cmd('Nūbibus');
-  assert((await text()).includes('Hasta nihil ferit'), 'heavy attack blocked: ' + await text());
-  await cmd('Tridente');
-  await p.waitForFunction(() => !Battle.active);
+  assert.equal(await p.evaluate(() => Battle.def.key), 'dux', 'the guards\' captain, not another guard');
+  assert.equal(await p.evaluate(() => Battle.def.pattern.join()), 'light,guard,heavy');
+  await cmd('Cōnsilium'); await cmd('Tridente'); await cmd('Tridente');                              // a critical blow breaks even a raised shield
+  await H.won();
   assert((await st()).flags.guardH); await H.scene();                                              // the guards run for the doors
   assert.equal(await p.evaluate(() => Story.flags.guardsGone), true);
   await H.goTo(10, 11); await H.bump('D');                                                         // out through the door: on to Tartarus

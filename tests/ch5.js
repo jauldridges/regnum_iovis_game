@@ -19,7 +19,7 @@
   assert(!cmds.some(c => c.includes('Iovī victōriam')), 'Victory only helps in the final battle');
   await cmd('Fulmen iace'); assert((await text()).includes('Magnum vulnus'));
   await cmd('Tonā');
-  await p.waitForFunction(() => !Battle.active);
+  await H.won();
   assert((await text()).includes('Duo Titānēs')); await cont();
   // two Titans change sides; only then does Iapetus come
   await H.talk('themis'); assert((await text()).includes('Themis quoque')); await cont();
@@ -27,19 +27,18 @@
   assert((await text()).includes('Via aperta')); await cont();
   await H.talk('iapetus'); assert((await text()).includes('Hyperīōnis frāter')); await cont(); await battleReady();
   await cmd('Fulmen iace'); await cmd('Fulmen iace');
-  await p.waitForFunction(() => !Battle.active);
+  await H.won();
   await H.talk('atlas'); assert((await text()).includes('Titānum dux')); await cont(); await battleReady();
   await cmd('Fulmen iace'); await cmd('Fulmen iace');
-  await p.waitForFunction(() => !Battle.active);
+  await H.won();
   await H.talk('saturn_boss'); assert((await text()).includes('Saturnus ipse venit')); await cont(); await battleReady();
   const sc = await p.$$eval('#choices button', bs => bs.map(b => b.textContent));
   assert(sc.some(c => c.includes('Iovī victōriam')), 'Victory is offered in the final battle');
   await cmd('Iovī victōriam');
   await p.screenshot({ path: process.env.SHOT || '/tmp/ch5.png' });
   await cmd('Fulmen iace'); await cmd('Fulmen iace');
-  await p.waitForFunction(() => !Battle.active);
-  await p.waitForSelector('#story .page', { timeout: 5000 });
-  assert((await p.textContent('#story')).includes('Iuppiter fulmen iacit'), 'the epilogue begins after Saturn falls');
+  await H.won();
+  await p.waitForFunction(() => Game.state().trans || Game.state().scene, null, { timeout: 15000 });   // the epilogue film begins after Saturn falls
   const bd = await p.evaluate(() => Score.breakdown().reduce((o, r) => (o[r.key] = r.pts, o), {}));
   assert.equal(bd.battles, 600, 'four boss battles');
   await H.finish('ch5');

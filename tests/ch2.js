@@ -1,7 +1,7 @@
 // Chapter 2: Crete. Gate shut, feed Amalthea, the Curetes, two guard battles (shield used), gate opens, Chapter 3 begins.
 (async () => {
   const H = await require('./lib')(); const { p, assert, st, text, cont, pcont, cmd, battleReady } = H;
-  await H.open('lang=la&drafts=1&ch=2');
+  await H.open('lang=la&drafts=1&ch=2', { luck: 'crit' });
   assert.equal((await st()).map, 'ida');
   await H.goTo(18, 6); await H.bump('R'); assert((await H.toast()).includes('Nōndum'), 'the gate is shut at first');
   await H.talk('amalthea'); assert((await text()).includes('ēsurit')); await cont();               // hungry, no grass yet
@@ -25,12 +25,14 @@
   assert(cmds.some(c => c.includes('Tonā')) && cmds.some(c => c.includes('Nūbibus')) && cmds.some(c => c.includes('Iovī lac')), 'party commands: ' + cmds);
   assert(!cmds.some(c => c.includes('Scūta pulsā')), 'the escape move is gone');
   await cmd('Nūbibus'); assert((await text()).includes('Hasta nihil ferit')); assert.equal(await p.evaluate(() => Battle.teamHp), 4);
-  await cmd('Tonā'); await cmd('Tonā'); await cmd('Tonā');
-  await p.waitForFunction(() => !Battle.active);
+  await cmd('Tonā'); await cmd('Tonā');                                                          // two critical hits
+  await H.won();
   assert((await st()).flags.guard1, 'guard 1 beaten');
-  await H.talk('guard2'); await cont(); await cont(); await battleReady();
-  await cmd('Tonā'); await cmd('Iovī lac'); await cmd('Tonā'); await cmd('Tonā');
-  await p.waitForFunction(() => !Battle.active);
+  await H.talk('wolf'); assert((await text()).includes('Lupus fremit')); await cont(); await battleReady();
+  assert.equal(await p.evaluate(() => Battle.def.pattern.join()), 'double,light,double', 'a wolf bites twice');
+  await cmd('Tonā'); await cmd('Tonā');
+  await H.won();                                                                                    // 25 + 30 xp: level 2, choose a boon
+  assert.equal(await p.evaluate(() => Prog.level), 2); assert.equal(await p.evaluate(() => Prog.boons.vita), 1, 'the boon was chosen');
   assert((await text()).includes('Via aperta')); await cont();
   const bd = await p.evaluate(() => Score.breakdown().reduce((o, r) => (o[r.key] = r.pts, o), {}));
   assert.equal(bd.battles, 300); assert.equal(bd.allies, 200); assert.equal(bd.choice, 100);

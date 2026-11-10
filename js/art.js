@@ -84,6 +84,9 @@ var Art = (function () {
     terra:    H({ hair: '#3a6a2a', cloth: '#4a8a4a', trim: '#d8f0b8', robe: true }),
     cup:      { kind: 'cup' },
     goat:     { kind: 'goat' },
+    lupus:    { kind: 'wolf' },
+    dux:      H({ cloth: '#8a2a2a', trim: '#e8c040', boots: '#3a2a2a', extra: both(helmet('#aeb0bc', '#e03030'), shield('#8a2a2a'), function (b) { b.r(6, 0, 9, 0, '#e03030'); b.r(7, -1, 8, -1, '#e03030'); b.r(13, 3, 13, 14, '#d6d6e0'); b.r(12, 1, 14, 2, '#fff'); }) }),
+    sky:      { kind: 'sky' }, urn: { kind: 'urn' }, boat: { kind: 'boat' }, city: { kind: 'city' },
     campe:    { kind: 'snake' }
   };
 
@@ -128,6 +131,17 @@ var Art = (function () {
   function orb() { var b = new Buf(); b.r(6, 6, 9, 9, '#fff6a0'); b.r(5, 7, 10, 8, '#ffe040'); b.r(7, 5, 8, 10, '#ffe040'); b.r(7, 7, 8, 8, '#ffffff'); return b; }
   function stone() { var b = new Buf(); b.r(4, 6, 11, 12, '#8a8a96'); b.r(5, 5, 10, 5, '#8a8a96'); b.r(5, 6, 9, 7, '#b0b0bc'); b.r(5, 12, 10, 13, '#555560'); b.r(10, 8, 11, 11, '#6a6a76'); return b; }
   function cup() { var b = new Buf(); b.r(5, 5, 10, 9, '#e8c040'); b.r(6, 4, 9, 4, '#f0d060'); b.r(7, 10, 8, 12, '#c9a227'); b.r(5, 13, 10, 13, '#a07a10'); b.r(6, 6, 9, 7, '#8a2a3a'); b.r(11, 6, 12, 8, '#c9a227'); return b; }
+  function wolf(dir, fr) {
+    var b = new Buf(), c = '#6a6a76', d = '#4a4a56', l = '#9a9aa6', st = fr === 1 ? 1 : 0;
+    b.r(3, 7, 11, 11, c); b.r(3, 7, 11, 8, l); b.r(3, 11, 11, 11, d); b.r(1, 6, 2, 9, c); b.r(0, 5, 1, 6, d);          // body, tail
+    b.r(4, 12, 4, 14 - st, d); b.r(6, 12, 6, 14, d); b.r(9, 12, 9, 14, d); b.r(11, 12, 11, 14 - st, d);
+    b.r(10, 5, 14, 9, c); b.r(13, 7, 15, 9, l); b.p(15, 8, OUT); b.r(10, 3, 11, 4, c); b.r(13, 3, 13, 4, c); b.p(12, 6, '#ffd24a'); b.p(14, 10, '#fff'); b.p(13, 10, '#fff');
+    return b;
+  }
+  function sky() { var b = new Buf(); b.r(3, 3, 12, 12, '#3a5fb0'); b.r(2, 5, 13, 10, '#3a5fb0'); b.r(5, 2, 10, 13, '#3a5fb0'); b.r(4, 4, 6, 6, '#5a82d8'); b.p(8, 5, '#fff'); b.p(5, 9, '#fff'); b.p(10, 8, '#fff'); b.p(7, 11, '#ffe94d'); b.p(11, 6, '#ffe94d'); return b; }
+  function urn() { var b = new Buf(); b.r(5, 3, 10, 4, '#a0643a'); b.r(4, 5, 11, 11, '#b8743a'); b.r(5, 12, 10, 13, '#8a542a'); b.r(4, 7, 11, 7, '#e8c040'); b.r(6, 5, 7, 10, '#d88a4a'); return b; }
+  function boat() { var b = new Buf(); b.r(2, 10, 13, 12, '#8a5a2a'); b.r(3, 12, 12, 13, '#5a3a1a'); b.r(7, 2, 7, 10, '#5a3a1a'); b.r(8, 3, 12, 9, '#f4f0e0'); b.r(8, 3, 12, 4, '#e8e0c8'); b.p(7, 1, '#e03030'); b.r(8, 1, 9, 2, '#e03030'); return b; }
+  function city() { var b = new Buf(); b.r(1, 8, 14, 14, '#c8b890'); b.r(1, 8, 14, 9, '#e0d0a8'); b.r(2, 4, 4, 8, '#d8c8a0'); b.r(7, 2, 9, 8, '#e0d0a8'); b.r(11, 5, 13, 8, '#d8c8a0'); b.r(7, 0, 9, 1, '#b03030'); b.p(3, 11, '#4a3a2a'); b.p(6, 11, '#4a3a2a'); b.p(9, 11, '#4a3a2a'); b.p(12, 11, '#4a3a2a'); b.r(7, 12, 8, 14, '#4a3a2a'); return b; }
   function snake() {
     var b = new Buf(), c = '#7a2a7a', l = '#b05ab0', d = '#4a1a4a';
     b.r(9, 2, 13, 5, c); b.r(10, 1, 10, 1, d); b.r(12, 1, 12, 1, d); b.p(12, 3, '#ffe040'); b.p(11, 3, '#ffe040'); b.r(14, 4, 15, 4, '#e03030'); b.r(9, 5, 13, 5, l);   // head
@@ -143,7 +157,7 @@ var Art = (function () {
     var key = name + '|' + dir + '|' + fr; if (cache[key]) return cache[key];
     var P = SPR[name] || SPR.servant, b;
     var left = dir === 'left';
-    if (P.kind === 'goat') b = goat(dir, fr); else if (P.kind === 'snake') b = snake(); else if (P.kind === 'baby') b = baby(); else if (P.kind === 'orb') b = orb(); else if (P.kind === 'stone') b = stone(); else if (P.kind === 'cup') b = cup(); else b = human(P, left ? 'right' : dir, fr);
+    if (P.kind === 'goat') b = goat(dir, fr); else if (P.kind === 'snake') b = snake(); else if (P.kind === 'baby') b = baby(); else if (P.kind === 'wolf') b = wolf(dir, fr); else if (P.kind === 'sky') b = sky(); else if (P.kind === 'urn') b = urn(); else if (P.kind === 'boat') b = boat(); else if (P.kind === 'city') b = city(); else if (P.kind === 'orb') b = orb(); else if (P.kind === 'stone') b = stone(); else if (P.kind === 'cup') b = cup(); else b = human(P, left ? 'right' : dir, fr);
     if (left) b.mirror();
     if (P.kind !== 'orb') b.outline(OUT);
     return (cache[key] = b.canvas(1));
@@ -157,7 +171,9 @@ var Art = (function () {
     if (id.indexOf('cyclops') === 0) return 'cyclops';
     if (id.indexOf('cent') === 0) return 'centimanus';
     if (id === 'amalthea') return 'goat';
+    if (id === 'wolf') return 'lupus';
     if (id === 'famula') return 'servant';
+    if (id === 'gH2') return 'dux';
     if (id.indexOf('patrol') === 0 || id.indexOf('gH') === 0) return 'guard';
     return SPR[id] ? id : 'servant';
   };
@@ -320,10 +336,10 @@ var Art = (function () {
     o.putImageData(res, 0, 0); return out;
   }
   // t in ms since the slide appeared. The view starts on the whole sea, then settles on Crete.
-  A.med = function (ctx, t, labels) {
+  A.med = function (ctx, t, labels, ship) {
     ctx.imageSmoothingEnabled = false;
     if (!medMap) medMap = buildMed();
-    var e = 1 + 0.85 * Math.min(1, Math.max(0, (t - 1100) / 1500)), cx = 73.5, cy = 56.5, sx = cx * 2, sy = cy * 2;
+    var e = ship ? 1 : 1 + 0.85 * Math.min(1, Math.max(0, (t - 1100) / 1500)), cx = 73.5, cy = 56.5, sx = cx * 2, sy = cy * 2;
     ctx.save(); ctx.fillStyle = '#2f6ab5'; ctx.fillRect(0, 0, 240, 160);
     ctx.fillStyle = '#3a7bc8'; for (var wy = 0; wy < 160; wy += 8) for (var wx = (wy / 8 % 2) * 12; wx < 240; wx += 24) ctx.fillRect(wx + ((t / 400 + wy) % 3) * 2, wy, 8, 2);
     var ox = 120 - sx * e, oy = 75 - sy * e; ox = Math.min(0, Math.max(240 - 240 * e, ox)); oy = Math.min(0, Math.max(160 - 160 * e, oy));
@@ -332,6 +348,14 @@ var Art = (function () {
     if (labels) { ctx.fillStyle = '#2a1d12'; ctx.font = '10px "Jersey 10", "Pixelify Sans", sans-serif'; ctx.textAlign = 'center';
       labels.forEach(function (l) { ctx.lineWidth = 2.5; ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.strokeText(l.text, l.x * 2, l.y * 2); ctx.fillText(l.text, l.x * 2, l.y * 2); }); }
     // Crete: a pulsing ring and a bouncing arrow
+    if (ship) {                                                  // a boat follows the route, leaving a dotted wake
+      var pts = ship.path, total = pts.length - 1, q = Math.min(1, Math.max(0, (t - 500) / ship.ms)) * total, i = Math.min(total - 1, Math.floor(q)), f = q - i;
+      ctx.fillStyle = '#fff'; for (var w = 0; w <= q; w += 0.08) { var wi = Math.min(total - 1, Math.floor(w)), wf = w - wi; ctx.fillRect((pts[wi][0] + (pts[wi + 1][0] - pts[wi][0]) * wf) * 2, (pts[wi][1] + (pts[wi + 1][1] - pts[wi][1]) * wf) * 2, 1.5, 1.5); }
+      var bx = (pts[i][0] + (pts[i + 1][0] - pts[i][0]) * f) * 2, by = (pts[i][1] + (pts[i + 1][1] - pts[i][1]) * f) * 2 + Math.sin(t / 200) * 1.2;
+      ctx.drawImage(A.sprite('boat', 'down', 0), 0, 0, 16, 16, bx - 9, by - 14, 18, 18);
+      var end = pts[total]; ctx.strokeStyle = 'rgba(255,230,90,' + (0.4 + 0.4 * Math.sin(t / 250)) + ')'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(end[0] * 2, end[1] * 2, 8 + 2 * Math.sin(t / 250), 0, 6.3); ctx.stroke();
+      ctx.globalAlpha = 1; ctx.restore(); return;
+    }
     var px = cx * 2, py = 56.5 * 2, k = (t % 1400) / 1400, appear = Math.min(1, Math.max(0, (t - 700) / 400));
     ctx.strokeStyle = 'rgba(255,230,90,' + (1 - k) * appear + ')'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(px, py, 5 + 26 * k, 0, 6.3); ctx.stroke();
     ctx.strokeStyle = 'rgba(255,255,255,' + appear + ')'; ctx.beginPath(); ctx.arc(px, py, 7, 0, 6.3); ctx.stroke();
@@ -339,6 +363,23 @@ var Art = (function () {
     ctx.globalAlpha = appear; ctx.fillStyle = '#ffe94d'; ctx.strokeStyle = '#2a1d12'; ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.moveTo(px, by + 12); ctx.lineTo(px - 8, by); ctx.lineTo(px - 3, by); ctx.lineTo(px - 3, by - 10); ctx.lineTo(px + 3, by - 10); ctx.lineTo(px + 3, by); ctx.lineTo(px + 8, by); ctx.closePath(); ctx.fill(); ctx.stroke();
     ctx.globalAlpha = 1; ctx.restore();
+  };
+  // ---- icons for choices: the Cyclopes' gifts, drawn big, and a god's portrait
+  var ICONS = {
+    bolt: function (b) { [[9, 1, 11, 1], [8, 2, 10, 2], [7, 3, 9, 3], [6, 4, 10, 4], [8, 5, 11, 5], [7, 6, 9, 6], [6, 7, 8, 7], [5, 8, 7, 8], [5, 9, 6, 9], [4, 10, 5, 10], [4, 11, 4, 12], [3, 13, 4, 13]].forEach(function (r) { b.r(r[0], r[1], r[2], r[3], '#ffe94d'); }); b.r(7, 4, 8, 4, '#fff8b0'); b.r(7, 3, 8, 3, '#fff8b0'); },
+    trident: function (b) { b.r(7, 6, 8, 15, '#c9a227'); b.r(2, 2, 3, 7, '#e8e8f4'); b.r(12, 2, 13, 7, '#e8e8f4'); b.r(7, 0, 8, 6, '#e8e8f4'); b.r(2, 7, 13, 8, '#e8e8f4'); b.r(1, 1, 4, 1, '#fff'); b.r(11, 1, 14, 1, '#fff'); b.r(6, 0, 9, 0, '#fff'); },
+    helmet: function (b) { b.r(3, 4, 12, 10, '#8a8a99'); b.r(4, 3, 11, 3, '#8a8a99'); b.r(5, 2, 10, 2, '#8a8a99'); b.r(3, 4, 12, 5, '#b0b0c0'); b.r(4, 8, 11, 10, '#5a5a68'); b.r(6, 8, 9, 10, '#1c1624'); b.r(7, 0, 8, 2, '#b03030'); b.r(3, 11, 12, 12, '#6a6a78'); b.r(2, 7, 3, 12, '#6a6a78'); b.r(12, 7, 13, 12, '#6a6a78'); }
+  };
+  A.icon = function (name, size) {
+    var key = 'i|' + name + '|' + size; if (cache[key]) return cache[key];
+    var b = new Buf(); ICONS[name](b); b.outline(OUT);
+    var c = mk(size, size), x = c.getContext('2d'); x.imageSmoothingEnabled = false; x.drawImage(b.canvas(1), 0, 0, 16, 16, 0, 0, size, size);
+    return (cache[key] = c);
+  };
+  A.portrait = function (name, size) {
+    var key = 'p|' + name + '|' + size; if (cache[key]) return cache[key];
+    var c = mk(size, size), x = c.getContext('2d'); x.imageSmoothingEnabled = false; x.drawImage(A.sprite(name, 'down', 0), 0, 0, 16, 16, 0, 0, size, size);
+    return (cache[key] = c);
   };
   A.shade = shade;
   return A;

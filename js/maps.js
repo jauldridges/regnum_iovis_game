@@ -67,7 +67,7 @@ var MAPS = {
            { id: 'curetes1', x: 15, y: 9, show: function () { return true; } },
            { id: 'curetes2', x: 16, y: 9, show: function () { return true; } },
            { id: 'guard1', x: 8, y: 9, show: function () { return !Story.flags.guard1; } },
-           { id: 'guard2', x: 14, y: 11, show: function () { return !Story.flags.guard2; } },
+           { id: 'wolf', x: 14, y: 11, show: function () { return !Story.flags.wolf; } },
            { id: 'guard3', x: 10, y: 4, show: function () { return Story.flags.suspect && !Story.flags.guard3; } }]
   },
   oceanus: {         // Chapter 3: the edge of Ocean (Metis)

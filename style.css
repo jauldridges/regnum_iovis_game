@@ -75,3 +75,11 @@ body.inbattle #bookbtn { display: none; }
 #msg.battle button.hint { animation: hint 0.9s ease-in-out infinite; }
 @keyframes hint { 0%, 100% { box-shadow: inset 0 -4px 0 rgba(0,0,0,.2), 0 4px 0 var(--ink), 0 0 0 0 rgba(255,255,255,0); } 50% { box-shadow: inset 0 -4px 0 rgba(0,0,0,.2), 0 4px 0 var(--ink), 0 0 12px 5px rgba(255,255,255,.95); } }
 @media (prefers-reduced-motion: reduce) { #msg.battle button.hint { animation: none; outline: 3px solid #fff; } }
+
+/* level, pictures on choices, and film mode */
+#lvl { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 10px; z-index: 2; background: rgba(20,16,36,.82); border: 3px solid var(--ink); border-radius: 4px; box-shadow: inset 0 0 0 2px var(--gold); padding: .1em .7em; color: var(--gold); font-size: 1.6rem; }
+#lvl i { display: block; width: 90px; height: 10px; background: #0c0a14; border: 2px solid #6a6a88; } #lvl b { display: block; height: 100%; background: var(--gold); transition: width .6s; }
+#msg-art:not(:empty) { float: left; margin-right: .8em; } #msg-art canvas { width: 72px; height: 72px; image-rendering: pixelated; display: block; }
+button.withimg { display: inline-flex; flex-direction: column; align-items: center; gap: .1em; padding: .25em .9em; }
+button.withimg canvas { width: 56px; height: 56px; image-rendering: pixelated; }
+body.film #bookbtn, body.film #hud, body.film #lvl { display: none; }
