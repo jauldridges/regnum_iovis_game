@@ -3521,7 +3521,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_unda",
@@ -3530,7 +3530,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cmd_umbrae",
@@ -3539,7 +3539,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_umbrae",
@@ -3548,7 +3548,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cmd_regina",
@@ -3557,7 +3557,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_regina",
@@ -3566,7 +3566,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cmd_flamma",
@@ -3575,7 +3575,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_flamma",
@@ -3584,7 +3584,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cmd_scuta",
@@ -3593,7 +3593,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_scuta",
@@ -3602,7 +3602,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "cmd_defend",
@@ -3611,7 +3611,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_defend",
@@ -3620,7 +3620,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_down",
@@ -3629,7 +3629,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "team_title",
@@ -3638,7 +3638,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "team_go",
@@ -3647,7 +3647,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "lose_all",
@@ -3656,7 +3656,7 @@ window.CONTENT = [
   "type": "message",
   "nle_category": "mythology",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "battle_target",
@@ -3665,7 +3665,7 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  },
  {
   "id": "ui_back",
@@ -3674,6 +3674,6 @@ window.CONTENT = [
   "type": "ui_label",
   "nle_category": "",
   "spec_node_id": "",
-  "review_status": "draft"
+  "review_status": "approved"
  }
 ];
